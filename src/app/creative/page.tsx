@@ -1,84 +1,70 @@
 import Link from "next/link";
 import MoltenGold from "@/components/creative/kit/MoltenGold";
 import Lines from "@/components/creative/kit/Lines";
-import Loader from "@/components/creative/kit/Loader";
-import Tapes from "@/components/creative/home/Tapes";
-import ScrollStopper from "@/components/creative/home/ScrollStopper";
-import SiteBuilder from "@/components/creative/home/SiteBuilder";
-import NightCall from "@/components/creative/home/NightCall";
-import Flood from "@/components/creative/home/Flood";
-import DayClock from "@/components/creative/home/DayClock";
-import Constellation from "@/components/creative/home/Constellation";
-import Reel from "@/components/creative/home/Reel";
-import Film from "@/components/creative/home/Film";
-import { videos } from "@/content/creativeMedia";
+import LiveHero from "@/components/creative/home/LiveHero";
+import DayStory, { type Moment } from "@/components/creative/home/DayStory";
+import Rewind from "@/components/creative/home/Rewind";
+import Compare from "@/components/creative/home/Compare";
+import Systems from "@/components/creative/home/Systems";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
   exp: "creative",
   path: "",
-  title: "We make brands impossible to ignore",
+  title: "One day, told twice",
   description:
-    "Kllezo Creative: cinematic content, flagship websites and AI agents that answer every call and message — designed as one system for brands that want to be wanted.",
+    "Watch one ordinary business day without a system — and the same day with Kllezo's content, websites and AI agents catching every customer.",
 });
+
+// One ordinary day (illustrative). Act I: what slips away. Act II: the same moments, caught.
+const LOST: Moment[] = [
+  { m: 8 * 60 + 10, kind: "ignored", tag: "08:10 · Content", t: "You post. Everyone scrolls past.", s: "No plan, no hook — the feed doesn't stop for it." },
+  { m: 11 * 60 + 42, kind: "bounce", tag: "11:42 · Website", t: "Someone finds your site. Gone in six seconds.", s: "It describes the business. It never asks for anything." },
+  { m: 13 * 60 + 5, kind: "unread", tag: "13:05 · Messages", t: "An enquiry lands in your DMs.", s: "Nobody sees it until tomorrow." },
+  { m: 19 * 60 + 48, kind: "missed", tag: "19:48 · Calls", t: "A customer calls after hours.", s: "Voicemail. They don't leave one." },
+  { m: 22 * 60 + 30, kind: "elsewhere", tag: "22:30 · Follow-up", t: "They book with someone else.", s: "Nobody followed up. Nobody even knew." },
+];
+const WON: Moment[] = [
+  { m: 8 * 60 + 10, kind: "stopped", tag: "08:10 · Content Engine", t: "You post. They stop.", s: "A planned story with a hook, shot to be watched." },
+  { m: 11 * 60 + 42, kind: "enquire", tag: "11:42 · Website Experiences", t: "They land — and they enquire.", s: "One clear path from interest to a booking." },
+  { m: 13 * 60 + 5, kind: "replied", tag: "13:05 · AI Texting Agents", t: "Replied in seconds. Booked by 13:06.", s: "The agent answers, qualifies and books — on WhatsApp." },
+  { m: 19 * 60 + 48, kind: "answered", tag: "19:48 · AI Calling Agents", t: "The phone rings. The agent answers.", s: "First ring, appointment booked, summary sent to your team." },
+  { m: 22 * 60 + 30, kind: "booked", tag: "22:30 · The whole system", t: "Tomorrow is already full.", s: "Follow-ups did the rest while you slept." },
+];
+
+const COLD = ["#121518", "#1a1f23", "#20262a", "#1b2024", "#14181b", "#0c0f11", "#08090a"];
+const WARM = ["#2b2213", "#3a2b12", "#0d3a34", "#0f4a42", "#3a2410", "#0b1714", "#070a09"];
 
 export default function CreativeHome() {
   return (
     <>
-      <Loader />
+      <LiveHero />
 
-      {/* HERO — molten gold, live; press and hold to heat it */}
-      <section className="cx-hero">
-        <MoltenGold className="cx-hero-canvas" />
-        <div className="cx-wrap cx-hero-inner">
-          <p className="cx-kicker" data-cx-fade="0.2">
-            Kllezo Creative — Content · Websites · AI
-          </p>
-          <Lines as="h1" className="cx-hero-title" delay={0.1} lines={["We make brands", <em key="i">impossible</em>, "to ignore."]} />
-          <div className="cx-hero-foot">
-            <p data-cx-fade="0.6">Stories people stop for, websites they stay in, and a voice that answers at 2 a.m. — designed and run as one system.</p>
-            <p className="cx-hero-hint" data-cx-fade="0.7" aria-hidden="true">
-              <i /> Press and hold to melt the gold
-            </p>
-            <a href="#belief" className="cx-scroll" data-cx-fade="0.8">
-              <span>Scroll</span>
-              <i aria-hidden="true" />
-            </a>
+      <DayStory id="act-1" mode="lost" act="Act I" title="A day without a system" moments={LOST} counterLabel="customers lost today" sky={COLD} />
+
+      <Rewind />
+
+      <DayStory id="act-2" mode="won" act="Act II" title="The same day, with Kllezo" moments={WON} counterLabel="customers won today" sky={WARM} />
+
+      <Compare />
+
+      <Systems />
+
+      <section className="cx-finale" aria-labelledby="fin-h">
+        <MoltenGold className="cx-finale-gold" />
+        <div className="cx-wrap cx-finale-inner">
+          <p className="cx-kicker">Your turn</p>
+          <Lines as="h2" id="fin-h" className="cx-finale-title" lines={["Let's run", <em key="d">your day.</em>]} />
+          <div className="cx-finale-actions" data-cx-fade="0.3">
+            <Link href="/creative/contact" className="cx-pill" data-cx-magnetic>
+              Start a project
+            </Link>
+            <Link href="/creative/services" className="cx-arrow-link">
+              All services <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>
-
-      <Tapes />
-
-      {/* BELIEF */}
-      <section id="belief" className="cx-belief cx-wrap">
-        <p className="cx-kicker">Belief</p>
-        <p className="cx-statement" data-cx-words>
-          Attention is earned before it is converted. We build the whole journey — <em>the story</em> people stop for, <em>the website</em> they stay in, <em>the voice</em> that answers when you can&apos;t — and we build it as one system.
-        </p>
-        <div className="cx-belief-foot">
-          <p data-cx-fade>Four systems. One studio. Nothing lost in the hand-off.</p>
-          <Link href="/creative/services" className="cx-arrow-link" data-cx-fade="0.1">
-            All services <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-      </section>
-
-      {/* THE FOUR SYSTEMS — each one a toy you can play with */}
-      <ScrollStopper />
-      <SiteBuilder />
-      <NightCall />
-      <Flood />
-
-      {/* A DAY OF THE SYSTEM */}
-      <DayClock />
-
-      {/* ONE STUDIO */}
-      <Constellation />
-
-      {/* STUDIO FRAMES + FILM FINALE */}
-      <Reel />
-      <Film src={videos.studio2} />
     </>
   );
 }
