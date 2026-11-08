@@ -1,0 +1,137 @@
+.still {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: #050505;
+  --sky-a: #1a120a;
+  --sky-b: #0b0b0b;
+  --sun: rgba(228, 207, 159, 0.9);
+  --sun-x: 62%;
+  --sun-y: 58%;
+  --ground: #050505;
+  --subject: #020202;
+}
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.plate {
+  position: absolute;
+  inset: -6%;
+  animation: breathe 16s var(--ease-inout) infinite alternate;
+}
+@keyframes breathe {
+  to {
+    transform: scale(1.07) translate3d(-2%, -1%, 0);
+  }
+}
+.plate > span {
+  position: absolute;
+  inset: 0;
+}
+.sky {
+  background: linear-gradient(180deg, var(--sky-b) 0%, var(--sky-a) 62%, var(--sky-a) 64%);
+}
+.sun {
+  background: radial-gradient(circle at var(--sun-x) var(--sun-y), var(--sun) 0, transparent 9%), radial-gradient(ellipse at var(--sun-x) var(--sun-y), color-mix(in srgb, var(--sun) 45%, transparent) 0, transparent 38%);
+  mix-blend-mode: screen;
+}
+.horizon {
+  top: 62% !important;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--sun) 35%, var(--ground)) 0, var(--ground) 30%);
+}
+.subject {
+  background:
+    radial-gradient(ellipse 7% 22% at 34% 64%, var(--subject) 60%, transparent 62%),
+    radial-gradient(circle at 34% 41%, var(--subject) 2.6%, transparent 2.8%);
+}
+.flare {
+  background: linear-gradient(100deg, transparent 40%, rgba(228, 207, 159, 0.08) 50%, transparent 60%);
+  animation: flare 9s var(--ease-inout) infinite alternate;
+}
+@keyframes flare {
+  from {
+    transform: translateX(-20%);
+  }
+  to {
+    transform: translateX(20%);
+  }
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+}
+.meta {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(251, 245, 233, 0.75);
+}
+.tc {
+  color: var(--k-gold);
+}
+
+/* Moods */
+.dusk {
+  --sky-a: #5a2e12;
+  --sky-b: #120a08;
+  --sun: rgba(240, 190, 110, 0.95);
+  --ground: #0d0805;
+}
+.noir {
+  --sky-a: #23252a;
+  --sky-b: #050505;
+  --sun: rgba(220, 220, 215, 0.7);
+  --sun-x: 70%;
+  --sun-y: 40%;
+  --ground: #080808;
+}
+.ember {
+  --sky-a: #6b1f0f;
+  --sky-b: #1a0604;
+  --sun: rgba(255, 150, 80, 0.9);
+  --sun-x: 48%;
+  --ground: #120403;
+}
+.tide {
+  --sky-a: #0c4a43;
+  --sky-b: #03100f;
+  --sun: rgba(200, 230, 210, 0.75);
+  --sun-x: 30%;
+  --sun-y: 52%;
+  --ground: #031210;
+}
+.velvet {
+  --sky-a: #3a1630;
+  --sky-b: #0b0509;
+  --sun: rgba(230, 170, 190, 0.8);
+  --sun-x: 74%;
+  --ground: #0a0408;
+}
+.gold {
+  --sky-a: #7a5a22;
+  --sky-b: #1a1206;
+  --sun: rgba(255, 230, 170, 1);
+  --sun-x: 55%;
+  --sun-y: 60%;
+  --ground: #120c04;
+}
+.tide .subject,
+.noir .subject {
+  background:
+    linear-gradient(transparent 58%, var(--subject) 58% 100%) 68% 0 / 14% 100% no-repeat,
+    linear-gradient(transparent 50%, var(--subject) 50% 100%) 82% 0 / 6% 100% no-repeat;
+}

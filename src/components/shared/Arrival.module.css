@@ -1,0 +1,51 @@
+.arrival {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  display: none;
+}
+/* Visible from first paint when the entry screen handed off (html[data-arrive]). */
+:global(html[data-arrive="creative"]) .creative,
+:global(html[data-arrive="business"]) .business,
+.arrival[data-on] {
+  display: block;
+}
+
+.top,
+.bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: var(--k-dark);
+}
+.top {
+  top: 0;
+}
+.bottom {
+  bottom: 0;
+}
+.line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--k-gold), transparent);
+  box-shadow: 0 0 24px 2px rgba(200, 162, 90, 0.55);
+}
+
+.business {
+  display: none;
+}
+:global(html[data-arrive="business"]) .business,
+.business[data-on] {
+  display: flex;
+}
+.tile {
+  flex: 1;
+  height: 100%;
+  background: var(--k-beige);
+  border-right: 1px solid rgba(9, 69, 62, 0.06);
+}
