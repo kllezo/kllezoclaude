@@ -1,2 +1,21 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+.next-build/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Local data (enquiries saved in development)
 .data/
+
+# Environment — never commit secrets
+.env*
 !.env.example
+
+# OS / logs
+.DS_Store
+*.log
+.vercel

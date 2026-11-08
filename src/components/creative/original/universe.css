@@ -885,3 +885,89 @@ html:has(.kz-u) body.hov #cur-ring { width: 54px; height: 54px; border-color: va
   :where(.kz-u) .nav-switch-label { display: none; }
   :where(.kz-u) .nav-switch-icon { display: inline; font-size: 0.85rem; line-height: 1; }
 }
+
+/* ── Chapter index (added 2026-11) ──────────────────────────────────────
+   Replaces the passive 1px progress line on pointer devices with the same
+   line, made of six stops. Hover names a stop; click travels there along
+   the original camera path. Phones keep the swipe journey and progress line. */
+:where(.kz-u) .kz-chapters {
+  position: fixed;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+:where(.kz-u) .kz-chapters:not([data-active="0"]),
+:where(.kz-u) .kz-chapters:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+:where(.kz-u) .kz-chapters ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+:where(.kz-u) .kz-chapters button {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  height: 22px;
+  padding-left: 12px;
+  cursor: none;
+}
+:where(.kz-u) .kz-chapter-tick {
+  width: 14px;
+  height: 1px;
+  background: rgba(247, 243, 235, 0.22);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.5s;
+}
+:where(.kz-u) .kz-chapter-label {
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(247, 243, 235, 0.72);
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+:where(.kz-u) .kz-chapter-label i {
+  font-style: normal;
+  color: #c8a25a;
+  margin-right: 6px;
+}
+:where(.kz-u) .kz-chapters ol:hover .kz-chapter-label,
+:where(.kz-u) .kz-chapters button:focus-visible .kz-chapter-label {
+  opacity: 1;
+  transform: none;
+}
+:where(.kz-u) .kz-chapters button:hover .kz-chapter-tick,
+:where(.kz-u) .kz-chapters button:focus-visible .kz-chapter-tick {
+  width: 22px;
+  background: rgba(247, 243, 235, 0.6);
+}
+:where(.kz-u) .kz-chapters [aria-current] .kz-chapter-tick {
+  width: 28px;
+  background: #c8a25a;
+}
+:where(.kz-u) .kz-chapters [aria-current] .kz-chapter-label {
+  color: #f7f3eb;
+}
+:where(.kz-u) .kz-chapters button:focus-visible {
+  outline: 1px solid rgba(200, 162, 90, 0.6);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  :where(.kz-u) #progress-track { display: none; }
+}
+@media (hover: none), (pointer: coarse) {
+  :where(.kz-u) .kz-chapters { display: none; }
+}

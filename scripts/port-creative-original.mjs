@@ -84,6 +84,23 @@ function indent(code) {
   code = code.replace(/window\.location\.href = urls\[idx\];/, "navigateTo.go(urls[idx]);");
   // three r134 (the version the original loaded) has no SRGBColorSpace: the original assigned undefined, a no-op. Keep it a no-op.
   code = code.replace(/tex\.colorSpace = THREE\.SRGBColorSpace;/, "tex.colorSpace = undefined; // r134: no SRGBColorSpace (no-op in the original)");
+  /* ── Refinements (2026-11) — behaviour only; the scene, camera path and art are untouched. ── */
+  const must = (re, to, why) => {
+    if (!re.test(code)) throw new Error(`port patch did not apply: ${why}`);
+    code = code.replace(re, to);
+  };
+  // Frame-rate independence: the original advanced time by 0.01 per frame, so 120Hz
+  // displays ran every animation at double speed. Same pace, measured in seconds (0.01 × 60).
+  must(/\n(\s*)time \+= 0\.01;\n/, "\n", "time step");
+  must(/(lastAnimateTime = nowAnimate;\n)/, "$1  time += dt * 0.6; // 0.01 per 60Hz frame, now independent of refresh rate\n", "time step (dt)");
+  // Lighter mode for phones and touch tablets: fewer void particles, capped pixel ratio, no MSAA.
+  must(/antialias: true,/, "antialias: !__LITE,", "antialias");
+  must(/renderer\.setPixelRatio\(Math\.min\(window\.devicePixelRatio, 2\)\);/, "renderer.setPixelRatio(Math.min(window.devicePixelRatio, __LITE ? 1.5 : 2));", "pixel ratio");
+  must(/const VOID_COUNT = 3000;/, "const VOID_COUNT = __LITE ? 1200 : 3000;", "void count");
+  // Reduced motion: the same journey, travelled in a shorter, calmer move.
+  must(/let transitionDuration = 4\.8;/, "let transitionDuration = __REDUCED ? 1.8 : 4.8;", "transition duration");
+  // Chapter navigation: report the section the camera is heading to.
+  must(/(\n\s*\/\/ Active section typing time accumulator)/, "\n  if (__pendingGoTo >= 0 && sectionTransitionProgress >= 1.0) { const __i = __pendingGoTo; __pendingGoTo = -1; if (__i !== currentSectionIdx) { triggerSectionTransition(__i); lastGestureTime = performance.now(); } }\n  if (__reported !== targetSectionIdx) { __reported = targetSectionIdx; navigateTo.section && navigateTo.section(targetSectionIdx); }$1", "section report");
   code = lifecycleRewrite(code);
   const body = `/* eslint-disable */
 // @ts-nocheck
@@ -94,18 +111,26 @@ function indent(code) {
  * module imports for THREE/GSAP, a mount/destroy lifecycle so the scene can
  * live inside the Next.js app, asset paths, and service links routed to the
  * app's URLs. Do not restyle the scene here — this is the original identity.
+ * Behaviour refinements (frame-rate independent timing, a lighter mobile mode,
+ * reduced motion and chapter navigation) are applied as checked patches.
  */
 import * as THREE from "three";
 import { gsap } from "gsap";
 
 export function mountUniverse(navigateTo) {
 ${LIFECYCLE("universe")}
+  const __LITE = window.matchMedia("(max-width: 760px), (pointer: coarse)").matches;
+  const __REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let __reported = -1;
+  let __pendingGoTo = -1;
+  // The original locks page scroll for the gesture-driven journey; remember what to restore on unmount.
+  const __bodyOverflow = document.body.style.overflow;
 ${indent(code.replace(/\nanimate\(\);\s*$/, "\n"))}
 
   /* ── Start ── */
   animate();
 
-  return function destroy() {
+  function destroy() {
     __release();
     scene.traverse((obj) => {
       if (obj.geometry) obj.geometry.dispose();
@@ -123,7 +148,18 @@ ${indent(code.replace(/\nanimate\(\);\s*$/, "\n"))}
     window.inspectedCardObj = null;
     window.inspectionClone = null;
     document.body.classList.remove("hov");
+    // Without this, every page reached by client navigation after the universe could not scroll.
+    document.body.style.overflow = __bodyOverflow;
+  }
+  /** Jump to a chapter (0–5). Explicit choices skip the gesture locks; a choice made while
+      the camera is moving is held and taken as soon as it settles (never interrupting a move). */
+  destroy.goTo = (idx) => {
+    if (sectionTransitionProgress < 1.0) { __pendingGoTo = idx; return; }
+    if (idx === currentSectionIdx) return;
+    triggerSectionTransition(idx);
+    lastGestureTime = performance.now();
   };
+  return destroy;
 }
 `;
   fs.writeFileSync(path.join(out, "universe.js"), body);

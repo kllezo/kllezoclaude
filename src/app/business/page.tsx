@@ -4,6 +4,7 @@ import LeadFlow from "@/components/business/LeadFlow";
 import BrowserShowcase from "@/components/business/BrowserShowcase";
 import ConversionJourney from "@/components/business/ConversionJourney";
 import ServiceArchitecture from "@/components/business/ServiceArchitecture";
+import LeakDiagram from "@/components/business/LeakDiagram";
 import { divisions, servicesIn } from "@/content/services";
 import { publishedCaseStudies } from "@/content/work";
 import { pageMeta } from "@/lib/seo";
@@ -26,9 +27,9 @@ const how = [
 ];
 
 const leaks = [
-  { where: "Attention", t: "Content without a system", d: "Posts go out, but they aren't planned to bring the right people to you — so reach never becomes demand.", fix: "Content Creation" },
-  { where: "Conversion", t: "A website that only describes", d: "Visitors arrive, read and leave, because there's no clear path from interest to enquiry.", fix: "Website Experiences" },
-  { where: "Follow-up", t: "Leads that wait", d: "Enquiries arrive after hours and across channels, and go cold before anyone replies.", fix: "AI Communication Systems" },
+  { vendor: "Content agency", where: "Attention", t: "Content without a system", d: "Posts go out, but they aren't planned to bring the right people to you — so reach never becomes demand.", fix: "Content Creation" },
+  { vendor: "Web developer", where: "Conversion", t: "A website that only describes", d: "Visitors arrive, read and leave, because there's no clear path from interest to enquiry.", fix: "Website Experiences" },
+  { vendor: "Chatbot", where: "Follow-up", t: "Leads that wait", d: "Enquiries arrive after hours and across channels, and go cold before anyone replies.", fix: "AI Communication Systems" },
 ];
 
 const why = [
@@ -81,18 +82,7 @@ export default function BusinessHome() {
           <p className={s.statement} data-reveal>
             Most businesses buy growth in pieces — a content agency, a web developer, a chatbot. <span className={s.statementMuted}>None of them are built to work together, so growth leaks between them.</span>
           </p>
-          <ol className={s.leaks}>
-            {leaks.map((l, i) => (
-              <li key={l.where} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
-                <span className={s.leakWhere}>{l.where}</span>
-                <h3 className={s.leakTitle}>{l.t}</h3>
-                <p className={b.muted}>{l.d}</p>
-                <span className={s.leakFix}>
-                  Fixed by <b>{l.fix}</b>
-                </span>
-              </li>
-            ))}
-          </ol>
+          <LeakDiagram leaks={leaks} />
         </div>
       </section>
 
@@ -106,21 +96,28 @@ export default function BusinessHome() {
             </div>
             <p className={b.lead}>Each division stands on its own. Together they form one system — from first impression to booked customer.</p>
           </div>
-          <div className={s.divisions}>
+          {/* The answer to the broken pipes above: one continuous line through all three. */}
+          <ol className={s.divisions}>
             {divisions.map((d, i) => (
-              <Link key={d.id} href={`/business/services#${d.id}`} className={`${b.card} ${b.cardLink} ${s.division}`} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
-                <span className={s.dIndex}>{d.index}</span>
-                <h3 className={b.h3}>{d.name}</h3>
-                <p className={b.muted}>{d.positioning}</p>
-                <ul className={s.dList}>
-                  {servicesIn(d.id).map((sv) => (
-                    <li key={sv.slug}>{sv.name}</li>
-                  ))}
-                </ul>
-                <span className={s.dMore}>View division →</span>
-              </Link>
+              <li key={d.id} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
+                <Link href={`/business/services#${d.id}`} className={s.division}>
+                  <span className={s.dIndex}>{d.index}</span>
+                  <span className={s.dHead}>
+                    <span className={s.dName}>{d.name}</span>
+                    <span className={s.dPos}>{d.positioning}</span>
+                  </span>
+                  <span className={s.dList}>
+                    {servicesIn(d.id).map((sv) => (
+                      <span key={sv.slug}>{sv.name}</span>
+                    ))}
+                  </span>
+                  <span className={s.dMore} aria-hidden="true">
+                    →
+                  </span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
@@ -254,13 +251,12 @@ export default function BusinessHome() {
 
       {/* 10 · FINAL CTA */}
       <section className={s.cta}>
-        <div className={b.wrap}>
-          <div className={s.ctaBox} data-reveal>
+        <div className={`${b.wrap} ${s.ctaGrid}`}>
+          <div data-reveal>
             <span className={b.eyebrow}>Strategy call</span>
-            <h2 className={b.h2}>
+            <h2 className={s.ctaTitle}>
               Let&apos;s design your <span className={b.serif}>growth system.</span>
             </h2>
-            <p className={b.lead}>A focused conversation about where growth is leaking and which system would fix it. No obligation.</p>
             <div className={b.actions}>
               <Link href="/business/contact" className={b.btnGold}>
                 Book a Strategy Call →
@@ -270,6 +266,26 @@ export default function BusinessHome() {
               </Link>
             </div>
           </div>
+          <ol className={s.ctaSteps} data-reveal style={{ ["--d" as string]: "0.1s" }}>
+            <li>
+              <span>01</span>
+              <p>
+                <b>A focused conversation.</b> Where growth is leaking today, in attention, conversion or follow-up.
+              </p>
+            </li>
+            <li>
+              <span>02</span>
+              <p>
+                <b>A recommended system.</b> Which services fit, how they connect and what we&apos;d build first.
+              </p>
+            </li>
+            <li>
+              <span>03</span>
+              <p>
+                <b>No obligation.</b> You leave with a clear plan whether or not we work together.
+              </p>
+            </li>
+          </ol>
         </div>
       </section>
     </>

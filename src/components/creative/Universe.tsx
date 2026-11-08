@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ExperienceSwitch from "@/components/shared/ExperienceSwitch";
+import type { UniverseHandle } from "./original/universe";
 import "./original/universe.css";
 
 const SERVICE_ROUTE: Record<string, string> = {
@@ -14,11 +15,15 @@ const SERVICE_ROUTE: Record<string, string> = {
   texting: "/creative/services/ai-texting",
 };
 
+const CHAPTERS = ["Kllezo", "Content Engine", "Website Experiences", "AI Calling Agents", "AI Texting Agents", "The Ecosystem"];
+
 /** The original Kllezo Creative homepage (kllezo-v3 index.html): one WebGL
     universe the camera travels through, with the original overlay UI. */
 export default function Universe() {
   const host = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const handle = useRef<UniverseHandle | null>(null);
+  const [chapter, setChapter] = useState(0);
 
   useEffect(() => {
     // A fresh canvas per mount, so a released WebGL context is never reused
@@ -26,19 +31,20 @@ export default function Universe() {
     const canvas = document.createElement("canvas");
     canvas.id = "universe";
     host.current!.prepend(canvas);
-    let destroy: (() => void) | undefined;
     let cancelled = false;
     import("./original/universe").then(({ mountUniverse }) => {
       if (cancelled) return;
-      destroy = mountUniverse({
+      handle.current = mountUniverse({
         service: (key: string) => SERVICE_ROUTE[key],
         go: (url: string) => router.push(url),
+        section: setChapter,
       });
     });
     Object.values(SERVICE_ROUTE).forEach((r) => router.prefetch(r));
     return () => {
       cancelled = true;
-      destroy?.();
+      handle.current?.();
+      handle.current = null;
       canvas.remove();
     };
   }, [router]);
@@ -116,6 +122,22 @@ export default function Universe() {
 
         <div className="zone-text" id="zt-ecosystem" />
       </div>
+
+      {/* Chapter index — the original progress line, made navigable: every stop on the journey is one click away. */}
+      <nav className="kz-chapters" aria-label="Chapters" data-active={chapter}>
+        <ol>
+          {CHAPTERS.map((name, i) => (
+            <li key={name}>
+              <button type="button" aria-current={chapter === i ? "step" : undefined} onClick={() => handle.current?.goTo(i)}>
+                <span className="kz-chapter-label">
+                  <i>{String(i).padStart(2, "0")}</i> {name}
+                </span>
+                <span className="kz-chapter-tick" aria-hidden="true" />
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
 
       {/* Progress bar */}
       <div id="progress-track">

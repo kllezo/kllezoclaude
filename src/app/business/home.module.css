@@ -28,81 +28,100 @@
 .statementMuted {
   color: var(--k-grey);
 }
-.leaks {
+/* Divisions — an index, joined by one continuous rule (the fix for the broken pipes). */
+.divisions {
   list-style: none;
   padding: 0;
-  margin: clamp(36px, 5vw, 56px) 0 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  position: relative;
   border-top: 1px solid var(--k-line-strong);
 }
-.leaks li {
-  display: grid;
-  align-content: start;
-  gap: 10px;
-  padding: 24px 28px 4px 0;
-}
-.leaks li + li {
-  padding-left: 28px;
-  border-left: 1px solid var(--k-line);
-}
-.leakWhere {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--k-grey);
-}
-.leakTitle {
-  font-size: 19px;
-  line-height: 1.3;
-  letter-spacing: -0.015em;
-  font-weight: 600;
-}
-.leakFix {
-  margin-top: 6px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--k-line-strong);
-  font-size: 13.5px;
-  color: var(--k-grey);
-}
-.leakFix b {
-  color: var(--k-green);
-  font-weight: 600;
-}
-
-.divisions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+.divisions::before {
+  content: "";
+  position: absolute;
+  left: 27px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(var(--k-gold), var(--k-green));
+  opacity: 0.55;
 }
 .division {
+  position: relative;
   display: grid;
-  align-content: start;
-  gap: 12px;
-  background: var(--k-beige);
+  grid-template-columns: 56px minmax(0, 1.25fr) minmax(0, 1fr) 40px;
+  gap: 24px;
+  align-items: start;
+  padding: clamp(26px, 3.2vw, 40px) 0;
+  border-bottom: 1px solid var(--k-line);
+  transition: background-color 0.4s var(--ease-out);
+}
+.division:hover {
+  background: rgba(9, 69, 62, 0.025);
 }
 .dIndex {
+  position: relative;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--k-white);
+  border: 1px solid var(--k-line-strong);
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: 11.5px;
+  color: var(--k-green);
+  transition:
+    background-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out);
+}
+.division:hover .dIndex {
+  background: var(--k-green);
+  border-color: var(--k-green);
+  color: var(--k-beige);
+}
+.dHead {
+  display: grid;
+  gap: 10px;
+}
+.dName {
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--k-dark);
+}
+.dPos {
   color: var(--k-grey);
+  font-size: 16px;
+  line-height: 1.55;
+  max-width: 420px;
 }
 .dList {
-  margin-top: 8px;
   display: grid;
-  border-top: 1px solid var(--k-line);
+  padding-top: 6px;
 }
-.dList li {
-  padding: 11px 0;
-  border-bottom: 1px solid var(--k-line);
+.dList span {
+  padding: 7px 0;
   font-size: 14.5px;
   font-weight: 500;
+  color: var(--k-dark);
+  border-bottom: 1px solid var(--k-line);
+}
+.dList span:last-child {
+  border-bottom: 0;
 }
 .dMore {
-  margin-top: 6px;
-  font-weight: 600;
+  justify-self: end;
+  padding-top: 6px;
+  font-size: 20px;
   color: var(--k-green);
-  font-size: 14px;
+  transition: transform 0.4s var(--ease-out);
+}
+.division:hover .dMore {
+  transform: translateX(6px);
 }
 
 .how {
@@ -173,41 +192,79 @@
 }
 
 .cta {
-  padding: 0 0 clamp(72px, 10vw, 120px);
-}
-.ctaBox {
   background: var(--k-green);
   color: var(--k-beige);
-  border-radius: 16px;
-  padding: clamp(36px, 6vw, 80px);
+  padding-block: clamp(80px, 11vw, 144px);
 }
-.ctaBox > span {
+.ctaGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: end;
+}
+
+.ctaGrid > div > span {
   color: var(--k-gold-soft);
 }
-.ctaBox p {
-  color: rgba(251, 245, 233, 0.72);
+.ctaTitle {
+  margin: 20px 0 8px;
+  font-size: clamp(40px, 5.4vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -0.038em;
+  font-weight: 600;
+  text-wrap: balance;
 }
-.ctaBox h2 span {
+.ctaTitle span {
   color: var(--k-gold-soft);
 }
-.ctaBox a:last-child {
+.ctaGrid a:last-child {
   color: var(--k-beige);
   border-color: rgba(251, 245, 233, 0.3);
 }
+.ctaSteps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(251, 245, 233, 0.18);
+}
+.ctaSteps li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(251, 245, 233, 0.12);
+}
+.ctaSteps span {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  line-height: 2.1;
+  color: var(--k-gold);
+}
+.ctaSteps p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(251, 245, 233, 0.68);
+}
+.ctaSteps b {
+  color: var(--k-beige);
+  font-weight: 600;
+}
 
 @media (max-width: 960px) {
-  .divisions,
   .cases,
-  .leaks {
+  .ctaGrid {
     grid-template-columns: 1fr;
   }
-  .leaks li,
-  .leaks li + li {
-    padding: 22px 0 18px;
-    border-left: 0;
+  .division {
+    grid-template-columns: 56px minmax(0, 1fr) 28px;
   }
-  .leaks li + li {
-    border-top: 1px solid var(--k-line);
+  .dList {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .dMore {
+    grid-column: 3;
+    grid-row: 1;
   }
   .how {
     grid-template-columns: 1fr 1fr;
@@ -215,6 +272,17 @@
   }
 }
 @media (max-width: 600px) {
+  .divisions::before {
+    left: 17px;
+  }
+  .division {
+    grid-template-columns: 36px minmax(0, 1fr) 20px;
+    gap: 14px;
+  }
+  .dIndex {
+    width: 32px;
+    height: 32px;
+  }
   .how {
     grid-template-columns: 1fr;
   }

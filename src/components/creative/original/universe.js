@@ -7,6 +7,8 @@
  * module imports for THREE/GSAP, a mount/destroy lifecycle so the scene can
  * live inside the Next.js app, asset paths, and service links routed to the
  * app's URLs. Do not restyle the scene here — this is the original identity.
+ * Behaviour refinements (frame-rate independent timing, a lighter mobile mode,
+ * reduced motion and chapter navigation) are applied as checked patches.
  */
 import * as THREE from "three";
 import { gsap } from "gsap";
@@ -43,6 +45,12 @@ export function mountUniverse(navigateTo) {
   };
   /* ─────────────────────────────────────────────────── universe ── */
 
+  const __LITE = window.matchMedia("(max-width: 760px), (pointer: coarse)").matches;
+  const __REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let __reported = -1;
+  let __pendingGoTo = -1;
+  // The original locks page scroll for the gesture-driven journey; remember what to restore on unmount.
+  const __bodyOverflow = document.body.style.overflow;
   /**
    * KLLEZO — Universe Engine
    *
@@ -105,7 +113,7 @@ export function mountUniverse(navigateTo) {
   let currentSectionIdx = 0;
   let targetSectionIdx = 0;
   let sectionTransitionProgress = 1.0; // 1.0 means transition is complete
-  let transitionDuration = 4.8; // 4.8s cinematic snap transition duration (reduced speed by ~12.5% for luxury feel)
+  let transitionDuration = __REDUCED ? 1.8 : 4.8; // 4.8s cinematic snap transition duration (reduced speed by ~12.5% for luxury feel)
   let transitionTimeElapsed = 0;
   let startScrollProgress = 0;
   let targetScrollProgress = 0;
@@ -164,10 +172,10 @@ export function mountUniverse(navigateTo) {
   const canvas = document.getElementById('universe');
   const renderer = new THREE.WebGLRenderer({
     canvas,
-    antialias: true,
+    antialias: !__LITE,
     powerPreference: 'high-performance',
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, __LITE ? 1.5 : 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(PALETTE.bg, 1);
   renderer.toneMapping = THREE.LinearToneMapping;
@@ -2796,7 +2804,7 @@ export function mountUniverse(navigateTo) {
   /* ═══════════════════════════════════════════
      7. PARTICLE SYSTEM — Universal void particles
      ═══════════════════════════════════════════ */
-  const VOID_COUNT = 3000;
+  const VOID_COUNT = __LITE ? 1200 : 3000;
   const voidGeo = new THREE.BufferGeometry();
   const voidPos = new Float32Array(VOID_COUNT * 3);
   const voidCol = new Float32Array(VOID_COUNT * 3);
@@ -5258,12 +5266,12 @@ export function mountUniverse(navigateTo) {
   const lookTarget = new THREE.Vector3();
   function animate() {
     __raf(animate);
-    time += 0.01;
     tickDynamicTextures();
     /* -- Smooth snap transitions -- */
     const nowAnimate = performance.now() / 1000.0;
     const dt = Math.min(0.1, nowAnimate - lastAnimateTime); // Clamp delta time to max 0.1s to handle frame lag/suspend safely
     lastAnimateTime = nowAnimate;
+    time += dt * 0.6; // 0.01 per 60Hz frame, now independent of refresh rate
     let progressVal = 1.0;
     if (sectionTransitionProgress < 1.0) {
       transitionTimeElapsed += dt;
@@ -5289,6 +5297,8 @@ export function mountUniverse(navigateTo) {
         lastGestureTime = performance.now(); // reset snap transition cooldown anchor
       }
     }
+    if (__pendingGoTo >= 0 && sectionTransitionProgress >= 1.0) { const __i = __pendingGoTo; __pendingGoTo = -1; if (__i !== currentSectionIdx) { triggerSectionTransition(__i); lastGestureTime = performance.now(); } }
+    if (__reported !== targetSectionIdx) { __reported = targetSectionIdx; navigateTo.section && navigateTo.section(targetSectionIdx); }
     // Active section typing time accumulator
     if (sectionTransitionProgress >= 0.99) {
       sectionActiveTimes[currentSectionIdx] += dt;
@@ -5868,7 +5878,7 @@ export function mountUniverse(navigateTo) {
   /* ── Start ── */
   animate();
 
-  return function destroy() {
+  function destroy() {
     __release();
     scene.traverse((obj) => {
       if (obj.geometry) obj.geometry.dispose();
@@ -5886,5 +5896,16 @@ export function mountUniverse(navigateTo) {
     window.inspectedCardObj = null;
     window.inspectionClone = null;
     document.body.classList.remove("hov");
+    // Without this, every page reached by client navigation after the universe could not scroll.
+    document.body.style.overflow = __bodyOverflow;
+  }
+  /** Jump to a chapter (0–5). Explicit choices skip the gesture locks; a choice made while
+      the camera is moving is held and taken as soon as it settles (never interrupting a move). */
+  destroy.goTo = (idx) => {
+    if (sectionTransitionProgress < 1.0) { __pendingGoTo = idx; return; }
+    if (idx === currentSectionIdx) return;
+    triggerSectionTransition(idx);
+    lastGestureTime = performance.now();
   };
+  return destroy;
 }

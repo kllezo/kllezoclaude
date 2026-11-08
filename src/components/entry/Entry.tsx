@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import Logo from "@/components/shared/Logo";
-import GoldFlow from "@/components/shared/GoldFlow";
+import Image from "next/image";
 import BusinessPreview from "./BusinessPreview";
 import Timecode from "./Timecode";
 import { markArrival, rememberExperience } from "@/components/shared/experienceState";
@@ -121,7 +121,8 @@ export default function Entry() {
           aria-label="Enter the Creative experience — for brands that want to capture attention and create desire"
         >
           <div className={s.visual} aria-hidden="true">
-            <GoldFlow ribbons={8} />
+            {/* The golden orb from the original Creative universe: the panel opens onto that world. */}
+            <Image src="/creative/assets/golden-orb.webp" alt="" width={800} height={800} className={s.orb} priority unoptimized />
             <span className={s.letterTop} />
             <span className={s.letterBottom} />
             <span className={s.bigWord}>desire</span>

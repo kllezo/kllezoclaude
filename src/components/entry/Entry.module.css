@@ -97,6 +97,39 @@
   z-index: -1;
 }
 
+.orb {
+  position: absolute;
+  right: -6%;
+  top: 50%;
+  width: min(62%, 560px);
+  height: auto;
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  opacity: 0.9;
+  animation: orbTurn 90s linear infinite;
+  transition:
+    scale 1.2s var(--ease-out),
+    opacity 1.2s var(--ease-out);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 71%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 71%);
+}
+.creative:hover .orb {
+  scale: 1.04;
+  opacity: 1;
+}
+@keyframes orbTurn {
+  to {
+    rotate: 360deg;
+  }
+}
+@media (max-width: 760px) {
+  .orb {
+    width: 70%;
+    right: -18%;
+    opacity: 0.7;
+  }
+}
+
 .copy {
   position: relative;
   padding: clamp(22px, 3vw, 40px);
