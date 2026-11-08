@@ -1,48 +1,68 @@
 import Link from "next/link";
 import Image from "next/image";
-import OriginalShell from "@/components/creative/OriginalShell";
+import Lines from "@/components/creative/kit/Lines";
+import { orbs } from "@/content/creativeMedia";
 import { site } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
   exp: "creative",
   path: "/about",
-  title: "About",
+  title: "Studio",
   description: site.description,
 });
 
-/* The four systems, in the original orb-card markup from services.html. */
-const systems = [
-  { href: "/creative/services/content-growth", img: "content-creation-orb", title: "Content Systems", sub: "Cinematic storytelling & authority engine" },
-  { href: "/creative/services/business-website", img: "websites-orb", title: "Website Experiences", sub: "High-converting WebGL flagships" },
-  { href: "/creative/services/ai-texting", img: "texting-orb", title: "AI Texting Agents", sub: "24/7 Omnichannel sales dialogue" },
-  { href: "/creative/services/ai-calling", img: "calling-orb", title: "AI Calling Agents", sub: "Human-grade autonomous voice models" },
+const SYSTEMS = [
+  { orb: orbs.content, name: "Content", line: "Stories people stop for.", href: "/creative/services/content-growth" },
+  { orb: orbs.websites, name: "Websites", line: "Rooms people want to stay in.", href: "/creative/services/business-website" },
+  { orb: orbs.calling, name: "AI Calling", line: "A voice that never sleeps.", href: "/creative/services/ai-calling" },
+  { orb: orbs.texting, name: "AI Texting", line: "Every message, answered.", href: "/creative/services/ai-texting" },
+];
+
+const PRINCIPLES = [
+  { t: "Desire before reach", d: "We would rather a hundred of the right people want you than a million scroll past." },
+  { t: "One studio, no hand-offs", d: "Story, design, engineering and AI sit at one table, so nothing is lost between vendors." },
+  { t: "Craft you can measure", d: "Every frame is made to be felt — and every system is measured against numbers we agree with you up front." },
+  { t: "Honest by default", d: "We publish results only when clients have verified them. No inflated claims, ever." },
 ];
 
 export default function CreativeAbout() {
   return (
-    <OriginalShell back={{ href: "/creative", label: "Back To Universe" }}>
-      <div className="landing-hero">
-        <div className="hero-subtitle">About Kllezo</div>
-        <h1 className="hero-title">Built To Grow Businesses.</h1>
-        <p className="hero-desc">{site.description}</p>
-      </div>
-      <div className="orbs-grid-container">
-        <div className="orbs-grid">
-          {systems.map((s) => (
-            <Link key={s.href} href={s.href} className="orb-card" style={{ textDecoration: "none" }}>
-              <div className="orb-visual-wrapper">
-                <div className="orb-light-glow" />
-                <Image src={`/creative/assets/${s.img}.webp`} alt={s.title} className="orb-img" width={1024} height={1024} unoptimized />
-              </div>
-              <div className="orb-info">
-                <h2 className="orb-title">{s.title}</h2>
-                <p className="orb-sub">{s.sub}</p>
-              </div>
-            </Link>
+    <>
+      <section className="cx-page-hero cx-wrap">
+        <p className="cx-kicker" data-cx-fade>
+          The studio
+        </p>
+        <Lines as="h1" className="cx-display" lines={["Creative brains,", <em key="a">automated gains.</em>]} />
+      </section>
+      <section className="cx-belief cx-wrap" aria-label="What we believe">
+        <p className="cx-statement" data-cx-words>
+          {site.positioning} Kllezo is where <em>creative thinking</em> meets <em>intelligent execution</em> — a studio that makes brands wanted, then builds the systems that turn wanting into business.
+        </p>
+      </section>
+      <section className="cx-wrap cx-orbs" aria-label="The four systems">
+        {SYSTEMS.map((s, i) => (
+          <Link key={s.name} href={s.href} className="cx-orb-card" data-cx-fade={i * 0.08} data-cursor="Explore">
+            <Image src={s.orb.src} alt="" width={s.orb.w} height={s.orb.h} sizes="(max-width: 760px) 60vw, 22vw" unoptimized />
+            <span className="cx-orb-name">{s.name}</span>
+            <span className="cx-orb-line">{s.line}</span>
+          </Link>
+        ))}
+      </section>
+      <section className="cx-wrap cx-sv-block" aria-labelledby="principles">
+        <p className="cx-kicker" id="principles">
+          How we work
+        </p>
+        <ol className="cx-principles">
+          {PRINCIPLES.map((p, i) => (
+            <li key={p.t} data-cx-fade={i * 0.06}>
+              <span className="cx-gold">0{i + 1}</span>
+              <h2>{p.t}</h2>
+              <p>{p.d}</p>
+            </li>
           ))}
-        </div>
-      </div>
-    </OriginalShell>
+        </ol>
+      </section>
+    </>
   );
 }
