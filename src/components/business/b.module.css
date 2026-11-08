@@ -5,6 +5,13 @@
   background: var(--k-beige);
   color: var(--k-dark);
   min-height: 100vh;
+  /* Business speaks in one typeface: monospace labels read as a developer
+     template, so every "mono" label here resolves to Inter with tabular figures. */
+  --f-mono: var(--f-sans);
+  font-feature-settings: "cv11", "ss01";
+}
+.exp :where([class]) {
+  font-variant-numeric: tabular-nums;
 }
 
 .wrap {
@@ -15,11 +22,11 @@
 }
 
 .section {
-  padding-block: clamp(72px, 11vw, 140px);
+  padding-block: clamp(64px, 8.5vw, 116px);
   position: relative;
 }
 .tight {
-  padding-block: clamp(48px, 7vw, 88px);
+  padding-block: clamp(48px, 6vw, 80px);
 }
 .white {
   background: var(--k-white);
@@ -33,17 +40,16 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--f-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--k-grey);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--k-green);
 }
 .eyebrow::before {
   content: "";
-  width: 16px;
-  height: 1px;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
   background: var(--k-gold);
 }
 .green .eyebrow {
@@ -115,9 +121,9 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 48px;
+  min-height: 46px;
   padding: 0 22px;
-  border-radius: 10px;
+  border-radius: 999px;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.005em;
@@ -181,9 +187,8 @@
     transform 0.3s var(--ease-out);
 }
 .cardLink:hover {
-  transform: translateY(-2px);
-  border-color: rgba(9, 69, 62, 0.28);
-  box-shadow: 0 18px 40px -28px rgba(9, 69, 62, 0.35);
+  border-color: rgba(9, 69, 62, 0.3);
+  box-shadow: 0 1px 0 rgba(9, 69, 62, 0.04), 0 12px 32px -24px rgba(9, 69, 62, 0.4);
 }
 
 .tag {
@@ -191,10 +196,8 @@
   align-items: center;
   padding: 4px 10px;
   border-radius: 6px;
-  font-family: var(--f-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 12.5px;
+  font-weight: 500;
   background: rgba(9, 69, 62, 0.07);
   color: var(--k-green);
 }

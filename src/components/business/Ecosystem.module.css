@@ -175,27 +175,26 @@
 .demo {
   max-width: 100%;
 }
+/* Service links — a quiet list under the demo, not a cloud of pills. */
 .chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  border-top: 1px solid var(--k-line);
 }
 .chip {
-  display: inline-flex;
+  display: flex;
+  justify-content: space-between;
   gap: 6px;
-  padding: 8px 14px;
-  border-radius: 99px;
-  font-size: 13.5px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--k-line);
+  font-size: 14px;
   font-weight: 500;
-  background: rgba(9, 69, 62, 0.06);
-  color: var(--k-green);
-  transition:
-    background 0.2s,
-    color 0.2s;
+  color: var(--k-dark);
+  transition: color 0.2s;
 }
 .chip:hover {
-  background: var(--k-green);
-  color: var(--k-beige);
+  color: var(--k-green);
 }
 
 @media (max-width: 960px) {

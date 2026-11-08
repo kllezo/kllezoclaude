@@ -3,11 +3,13 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import ExperienceSwitch from "@/components/shared/ExperienceSwitch";
+import { useSmoothScroll } from "./useSmoothScroll";
 import "./original/services.css";
 
 /** Page frame for Creative pages the original site did not have (contact, work, about):
     the original services header, ambient glow, cursor and type system — nothing new. */
 export default function OriginalShell({ back = { href: "/creative/services", label: "Back To Services" }, children }: { back?: { href: string; label: string }; children: React.ReactNode }) {
+  useSmoothScroll();
   useEffect(() => {
     let destroy: (() => void) | undefined;
     let cancelled = false;

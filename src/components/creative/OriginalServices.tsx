@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { markArrival, rememberExperience } from "@/components/shared/experienceState";
 import { track } from "@/lib/analytics";
+import { useSmoothScroll } from "./useSmoothScroll";
 import "./original/services.css";
 
 const CATEGORY_ROUTE: Record<string, string> = {
@@ -19,6 +20,7 @@ export default function OriginalServices({ html, landing = false }: { html: stri
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname() ?? "/creative/services";
+  useSmoothScroll();
 
   useEffect(() => {
     const root = ref.current!;

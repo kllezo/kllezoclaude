@@ -120,12 +120,18 @@
   flex-wrap: wrap;
   gap: 6px;
 }
+.measure {
+  gap: 4px 0;
+}
 .measure li {
-  padding: 7px 12px;
-  border-radius: 99px;
-  background: rgba(200, 162, 90, 0.14);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
+  color: var(--k-dark);
+}
+.measure li + li::before {
+  content: "·";
+  margin: 0 10px;
+  color: var(--k-gold);
 }
 
 @media (max-width: 720px) {

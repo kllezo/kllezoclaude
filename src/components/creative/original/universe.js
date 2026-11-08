@@ -5283,7 +5283,7 @@ export function mountUniverse(navigateTo) {
       // Phase 2 (0.2 to 0.8): Travel. Camera moves along spline using t_travel.
       else if (progressVal <= 0.8) {
         const t_travel = (progressVal - 0.2) / 0.6;
-        const ease = t_travel * t_travel * (3 - 2 * t_travel); // smoothstep
+        const ease = t_travel * t_travel * t_travel * (t_travel * (t_travel * 6 - 15) + 10); // smootherstep
         scrollProgress = lerp(startScrollProgress, targetScrollProgress, ease);
       }
       // Phase 3 (0.8 to 1.0): Settle. Camera is at destination.
@@ -5347,8 +5347,9 @@ export function mountUniverse(navigateTo) {
     const payoff = t >= 0.86 ? lerp(1.0, 2.0, clamp((t - 0.86) / 0.08, 0, 1)) : 1.0;
     ecoTime += 0.01 * payoff;
     /* -- Mouse smooth -- */
-    mouse.sx = lerp(mouse.sx, mouse.x, 0.04);
-    mouse.sy = lerp(mouse.sy, mouse.y, 0.04);
+    const __mk = 1 - Math.pow(0.96, dt * 60);
+    mouse.sx = lerp(mouse.sx, mouse.x, __mk);
+    mouse.sy = lerp(mouse.sy, mouse.y, __mk);
     /* -- Helper for stationary camera state at each section -- */
     function getStationCamera(sectionIdx, webProgress) {
       if (sectionIdx === 2) {
@@ -5877,6 +5878,16 @@ export function mountUniverse(navigateTo) {
 
   /* ── Start ── */
   animate();
+
+  /* ── Texture filtering (added): screens, cards and gallery images are seen at steep
+     angles as the camera travels; anisotropic filtering keeps them sharp instead of smeared.
+     Images load asynchronously, so the pass repeats while the scene fills in. */
+  const __maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const __sharpen = () => scene.traverse((o) => {
+    const mats = Array.isArray(o.material) ? o.material : o.material ? [o.material] : [];
+    mats.forEach((m) => { if (m.map && m.map.anisotropy !== __maxAniso) { m.map.anisotropy = __maxAniso; if (m.map.image) m.map.needsUpdate = true; } });
+  });
+  [0, 1500, 4000, 9000].forEach((ms) => __setTimeout(__sharpen, ms));
 
   function destroy() {
     __release();

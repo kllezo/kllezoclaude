@@ -82,10 +82,8 @@ export default function Nav() {
 
         <div className={s.right}>
           <ExperienceSwitch current="business" className={s.switch}>
-            <span className={s.switchTrack} aria-hidden="true">
-              <i />
-            </span>
-            <span className={s.switchLabel}>Creative view</span>
+            <span className={s.switchMark} aria-hidden="true" />
+            <span className={s.switchLabel}>Creative</span>
           </ExperienceSwitch>
           <Link href="/business/contact" className={s.cta}>
             Book a Strategy Call

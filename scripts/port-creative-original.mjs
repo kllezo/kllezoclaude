@@ -99,6 +99,11 @@ function indent(code) {
   must(/const VOID_COUNT = 3000;/, "const VOID_COUNT = __LITE ? 1200 : 3000;", "void count");
   // Reduced motion: the same journey, travelled in a shorter, calmer move.
   must(/let transitionDuration = 4\.8;/, "let transitionDuration = __REDUCED ? 1.8 : 4.8;", "transition duration");
+  // Camera travel: quintic smootherstep instead of cubic — zero acceleration at both ends,
+  // so departures and arrivals glide instead of lurching. Same phases, same duration.
+  must(/const ease = t_travel \* t_travel \* \(3 - 2 \* t_travel\); \/\/ smoothstep/, "const ease = t_travel * t_travel * t_travel * (t_travel * (t_travel * 6 - 15) + 10); // smootherstep", "travel easing");
+  // Pointer parallax eased per second, not per frame (identical at 60Hz, steady at 120Hz).
+  must(/mouse\.sx = lerp\(mouse\.sx, mouse\.x, 0\.04\);\n(\s*)mouse\.sy = lerp\(mouse\.sy, mouse\.y, 0\.04\);/, "const __mk = 1 - Math.pow(0.96, dt * 60);\n$1mouse.sx = lerp(mouse.sx, mouse.x, __mk);\n$1mouse.sy = lerp(mouse.sy, mouse.y, __mk);", "mouse easing");
   // Chapter navigation: report the section the camera is heading to.
   must(/(\n\s*\/\/ Active section typing time accumulator)/, "\n  if (__pendingGoTo >= 0 && sectionTransitionProgress >= 1.0) { const __i = __pendingGoTo; __pendingGoTo = -1; if (__i !== currentSectionIdx) { triggerSectionTransition(__i); lastGestureTime = performance.now(); } }\n  if (__reported !== targetSectionIdx) { __reported = targetSectionIdx; navigateTo.section && navigateTo.section(targetSectionIdx); }$1", "section report");
   code = lifecycleRewrite(code);
@@ -129,6 +134,16 @@ ${indent(code.replace(/\nanimate\(\);\s*$/, "\n"))}
 
   /* ── Start ── */
   animate();
+
+  /* ── Texture filtering (added): screens, cards and gallery images are seen at steep
+     angles as the camera travels; anisotropic filtering keeps them sharp instead of smeared.
+     Images load asynchronously, so the pass repeats while the scene fills in. */
+  const __maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const __sharpen = () => scene.traverse((o) => {
+    const mats = Array.isArray(o.material) ? o.material : o.material ? [o.material] : [];
+    mats.forEach((m) => { if (m.map && m.map.anisotropy !== __maxAniso) { m.map.anisotropy = __maxAniso; if (m.map.image) m.map.needsUpdate = true; } });
+  });
+  [0, 1500, 4000, 9000].forEach((ms) => __setTimeout(__sharpen, ms));
 
   function destroy() {
     __release();
