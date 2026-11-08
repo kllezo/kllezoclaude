@@ -147,7 +147,7 @@
 
 /* mock-ups */
 .mock {
-  width: min(460px, 100%);
+  width: min(560px, 100%);
   display: grid;
   gap: 14px;
 }
@@ -155,7 +155,7 @@
   color: var(--k-beige);
 }
 .mockTitle {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 .chart {
@@ -298,10 +298,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
+  padding: 13px 16px;
   border-radius: 10px;
   background: rgba(0, 0, 0, 0.05);
-  font-size: 14px;
+  font-size: 15.5px;
   font-weight: 500;
 }
 .after .inbox li {

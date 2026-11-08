@@ -12,24 +12,24 @@ const SEG = [
   { x0: 820, x1: 1110 },
 ];
 
-export default function LeakDiagram({ leaks }: { leaks: Leak[] }) {
+export default function LeakDiagram({ leaks, dark = false }: { leaks: Leak[]; dark?: boolean }) {
   return (
-    <div className={s.root}>
+    <div className={`${s.root} ${dark ? s.dark : ""}`}>
       <svg className={s.svg} viewBox="0 0 1200 170" role="img" aria-label="Three disconnected services, each losing demand at its edge">
         {SEG.map((g, i) => (
           <g key={i} className={s.seg} data-i={i}>
             <text className={s.vendor} x={g.x0} y="30">
               {leaks[i].vendor}
             </text>
-            <rect className={s.pipe} x={g.x0} y="54" width={g.x1 - g.x0} height="16" rx="8" />
-            {[0, 1, 2].map((p) => (
+            <rect className={s.pipe} x={g.x0} y="48" width={g.x1 - g.x0} height="28" rx="14" />
+            {[0, 1, 2, 3].map((p) => (
               <circle
                 key={p}
                 className={s.drop}
-                r="4"
+                r="7"
                 cx="0"
                 cy="62"
-                style={{ ["--x0" as string]: g.x0 + 10, ["--x1" as string]: g.x1, ["--delay" as string]: `${p * 1.2 + i * 0.4}s` }}
+                style={{ ["--x0" as string]: g.x0 + 10, ["--x1" as string]: g.x1, ["--delay" as string]: `${p * 0.9 + i * 0.35}s` }}
               />
             ))}
             <g className={s.gap} transform={`translate(${g.x1 + 24} 0)`}>

@@ -1,0 +1,108 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 24px);
+}
+.item:nth-child(2) {
+  margin-top: clamp(20px, 4vw, 56px);
+}
+.frame {
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--k-white);
+  box-shadow:
+    0 0 0 1px var(--k-line),
+    0 30px 60px -40px rgba(9, 69, 62, 0.5);
+  transition:
+    transform 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
+}
+.frame:hover,
+.frame:focus-visible {
+  transform: translateY(-6px);
+  box-shadow:
+    0 0 0 1px rgba(9, 69, 62, 0.25),
+    0 40px 80px -40px rgba(9, 69, 62, 0.6);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  background: var(--k-beige-2);
+}
+.bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(9, 69, 62, 0.2);
+}
+.bar span {
+  margin: 0 auto;
+  padding: 3px 12px;
+  border-radius: 6px;
+  background: var(--k-white);
+  font-size: 11px;
+  color: var(--k-grey);
+}
+.view {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+.view img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: translateY(0);
+  transition: transform 6s cubic-bezier(0.45, 0, 0.55, 1);
+}
+.frame:hover .view img,
+.frame:focus-visible .view img {
+  transform: translateY(calc(-100% + 100cqh));
+}
+.view {
+  container-type: size;
+}
+.cap {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+}
+.cap span {
+  color: var(--k-grey);
+  font-size: 12.5px;
+}
+@media (hover: none) {
+  .cap span {
+    display: none;
+  }
+  .view img {
+    animation: autoscroll 14s ease-in-out infinite alternate;
+  }
+}
+@keyframes autoscroll {
+  to {
+    transform: translateY(calc(-100% + 100cqh));
+  }
+}
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .item:nth-child(2) {
+    margin-top: 0;
+  }
+  .view {
+    aspect-ratio: 4 / 3.4;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .view img {
+    animation: none;
+    transition: none;
+  }
+}

@@ -82,7 +82,7 @@ export default function LeakSimulator() {
         const x0 = X[i] * w;
         const x1 = X[i + 1] * w;
         ctx.strokeStyle = good ? "rgba(9,69,62,0.16)" : "rgba(9,69,62,0.1)";
-        ctx.lineWidth = 26 * dpr;
+        ctx.lineWidth = 32 * dpr;
         ctx.beginPath();
         // without a system the pipe has gaps
         const gap = good ? 0 : 26 * dpr;
@@ -126,7 +126,7 @@ export default function LeakSimulator() {
         ctx.globalAlpha = Math.max(0, Math.min(1, d.life));
         ctx.fillStyle = d.falling ? "#c4553a" : d.gate === 3 ? "#c8a25a" : good ? "#09453e" : "#687b75";
         ctx.beginPath();
-        ctx.arc(d.x, d.y, (d.gate === 3 ? 7 : 5) * dpr, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, (d.gate === 3 ? 9 : 6.5) * dpr, 0, Math.PI * 2);
         ctx.fill();
       });
       ctx.globalAlpha = 1;
@@ -136,11 +136,11 @@ export default function LeakSimulator() {
         const x = fx * w;
         ctx.fillStyle = i === 3 ? "#c8a25a" : "#09453e";
         ctx.beginPath();
-        ctx.arc(x, mid, 12 * dpr, 0, Math.PI * 2);
+        ctx.arc(x, mid, 16 * dpr, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = "#fffdf8";
         ctx.beginPath();
-        ctx.arc(x, mid, 4.5 * dpr, 0, Math.PI * 2);
+        ctx.arc(x, mid, 6 * dpr, 0, Math.PI * 2);
         ctx.fill();
       });
     };

@@ -185,6 +185,16 @@ export default function DayStory({
           </div>
 
           <div className="cx-stage" aria-hidden="true">
+            <div className="cx-art" data-state={active < 0 ? "now" : "past"}>
+              <Phone>
+                <div className="cx-a-open">
+                  <p className="cx-a-open-t">06:00</p>
+                  <p className="cx-a-open-d">Monday · your business</p>
+                  <p className="cx-a-open-sign">OPEN</p>
+                  <p className="cx-a-open-n">{mode === "lost" ? "Ready for customers. Ready for anything?" : "Ready for customers — and a system that never sleeps."}</p>
+                </div>
+              </Phone>
+            </div>
             {moments.map((x, i) => (
               <div key={x.m} className="cx-art" data-state={i < active ? "past" : i === active ? "now" : "next"}>
                 <Artifact kind={x.kind} />

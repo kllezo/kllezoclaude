@@ -1,11 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
+import { calling, studioFrames, websites } from "@/content/creativeMedia";
+import { IconBolt, IconCalendar, IconChart, IconLayers } from "@/components/business/icons";
 import LeakSimulator from "@/components/business/LeakSimulator";
 import Diagnose from "@/components/business/Diagnose";
 import SolutionSwitcher from "@/components/business/SolutionSwitcher";
 import VsTable from "@/components/business/VsTable";
 import MethodSteps from "@/components/business/MethodSteps";
 import LeadFlow from "@/components/business/LeadFlow";
-import BrowserShowcase from "@/components/business/BrowserShowcase";
+import SiteShowcase from "@/components/business/SiteShowcase";
 import ConversionJourney from "@/components/business/ConversionJourney";
 import LeakDiagram from "@/components/business/LeakDiagram";
 import { divisions, servicesIn } from "@/content/services";
@@ -26,6 +29,16 @@ const leaks = [
   { vendor: "Content agency", where: "Attention", t: "Content without a system", d: "Reach that never turns into demand.", fix: "Content Creation" },
   { vendor: "Web developer", where: "Conversion", t: "A website that only describes", d: "Visitors read, then leave.", fix: "Website Experiences" },
   { vendor: "Chatbot", where: "Follow-up", t: "Leads that wait", d: "Enquiries go cold before anyone replies.", fix: "AI Communication Systems" },
+];
+
+// The division rows show real Kllezo work, not icons.
+const DIV_MEDIA = { content: studioFrames[0], websites: websites[0], ai: calling[2] } as const;
+
+const PROOF = [
+  { icon: IconLayers, t: "Content, web & AI", d: "One team, one plan" },
+  { icon: IconBolt, t: "Replies in seconds", d: "24/7, every channel" },
+  { icon: IconCalendar, t: "Bookings, not likes", d: "Built around enquiries" },
+  { icon: IconChart, t: "Reported monthly", d: "Numbers agreed up front" },
 ];
 
 export default function BusinessHome() {
@@ -60,10 +73,28 @@ export default function BusinessHome() {
             <LeakSimulator />
           </div>
         </div>
+        <div className={b.wrap}>
+          <ul className={s.proof} data-arrive-item>
+            {PROOF.map((p) => {
+              const Icon = p.icon;
+              return (
+                <li key={p.t}>
+                  <span className={s.proofIcon}>
+                    <Icon size={20} />
+                  </span>
+                  <span>
+                    <b>{p.t}</b>
+                    <small>{p.d}</small>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </section>
 
       {/* 3 · THE PROBLEM — where growth leaks, before any solution is offered */}
-      <section className={`${b.section} ${b.tight}`}>
+      <section className={`${b.section} ${b.green} ${s.problemBand}`}>
         <div className={b.wrap}>
           <span className={b.eyebrow} data-reveal>
             The problem
@@ -71,7 +102,7 @@ export default function BusinessHome() {
           <p className={s.statement} data-reveal>
             Growth bought in pieces <span className={s.statementMuted}>leaks between the pieces.</span>
           </p>
-          <LeakDiagram leaks={leaks} />
+          <LeakDiagram leaks={leaks} dark />
         </div>
       </section>
 
@@ -136,6 +167,9 @@ export default function BusinessHome() {
                       <span key={sv.slug}>{sv.name}</span>
                     ))}
                   </span>
+                  <span className={s.dThumb} aria-hidden="true">
+                    <Image src={DIV_MEDIA[d.id].src} alt="" width={DIV_MEDIA[d.id].w} height={DIV_MEDIA[d.id].h} sizes="220px" unoptimized />
+                  </span>
                   <span className={s.dMore} aria-hidden="true">
                     →
                   </span>
@@ -147,7 +181,7 @@ export default function BusinessHome() {
       </section>
 
       {/* 5 · HOW KLLEZO WORKS */}
-      <section className={b.section}>
+      <section className={`${b.section} ${b.tight}`}>
         <div className={b.wrap}>
           <div className={b.head}>
             <div>
@@ -192,7 +226,7 @@ export default function BusinessHome() {
             <p className={b.lead}>
               {cases.length
                 ? "Selected engagements across content, websites and AI automation."
-                : "Our case studies are being documented with verified client results. Here’s the kind of system we build."}
+                : "Real builds from the studio. Hover a frame to scroll the whole page."}
             </p>
           </div>
           {cases.length > 0 ? (
@@ -205,7 +239,7 @@ export default function BusinessHome() {
               ))}
             </div>
           ) : (
-            <BrowserShowcase />
+            <SiteShowcase />
           )}
           <div className={b.actions}>
             <Link href="/business/work" className={b.btnGhost}>

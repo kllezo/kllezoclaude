@@ -1,6 +1,6 @@
 import Link from "next/link";
 import WorkBrowser from "@/components/shared/WorkBrowser";
-import BrowserShowcase from "@/components/business/BrowserShowcase";
+import SiteShowcase from "@/components/business/SiteShowcase";
 import { pageMeta } from "@/lib/seo";
 import b from "@/components/business/b.module.css";
 import p from "../pages.module.css";
@@ -53,7 +53,7 @@ export default function BusinessWork() {
             </div>
             <p className={b.lead}>Illustrative interfaces of the website experiences we design and build.</p>
           </div>
-          <BrowserShowcase />
+          <SiteShowcase />
           <div className={b.actions}>
             <Link href="/business/contact" className={b.btn}>
               Book a Strategy Call →

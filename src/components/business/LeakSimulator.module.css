@@ -63,7 +63,7 @@
 }
 .stage {
   position: relative;
-  height: 240px;
+  height: 290px;
   background:
     linear-gradient(var(--k-line), var(--k-line)) 0 100% / 100% 1px no-repeat,
     var(--k-beige);

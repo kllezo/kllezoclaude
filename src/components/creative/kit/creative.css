@@ -1270,6 +1270,7 @@ html:has(.cx) {
 }
 .cx-live-clock {
   margin-top: 10px;
+  font-variant-numeric: lining-nums tabular-nums !important;
   font-family: var(--display);
   font-size: clamp(110px, 21vw, 360px);
   line-height: 0.82;
@@ -1278,8 +1279,14 @@ html:has(.cx) {
   color: var(--bone);
 }
 .cx-live-colon {
-  animation: cx-blink 2s steps(2) infinite;
-  margin: 0 -0.04em;
+  animation: cx-dim 1s ease-in-out infinite alternate;
+  margin: 0 0.02em;
+  color: #e5484d;
+}
+@keyframes cx-dim {
+  to {
+    opacity: 0.35;
+  }
 }
 .cx-live-clock small {
   font-family: var(--sans);
@@ -1292,7 +1299,7 @@ html:has(.cx) {
 }
 .cx-live-title {
   margin-top: clamp(24px, 4vh, 40px);
-  max-width: 980px;
+  max-width: min(980px, 58vw);
   font-family: var(--display);
   font-weight: 400;
   font-size: clamp(26px, 3.2vw, 52px);
@@ -1315,9 +1322,11 @@ html:has(.cx) {
 }
 .cx-pile {
   position: absolute;
-  top: 110px;
+  top: 50%;
   right: var(--pad);
-  width: min(360px, 40vw);
+  transform: translateY(-62%) perspective(900px) rotateY(-14deg) rotateX(4deg);
+  transform-origin: right center;
+  width: min(420px, 36vw);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1326,11 +1335,11 @@ html:has(.cx) {
 }
 .cx-note {
   display: grid;
-  grid-template-columns: 36px 1fr auto;
-  gap: 12px;
+  grid-template-columns: 40px 1fr auto;
+  gap: 14px;
   align-items: center;
-  padding: 12px 14px;
-  border-radius: 18px;
+  padding: 16px 18px;
+  border-radius: 20px;
   background: rgba(30, 34, 36, 0.72);
   backdrop-filter: blur(18px) saturate(1.3);
   -webkit-backdrop-filter: blur(18px) saturate(1.3);
@@ -1357,8 +1366,8 @@ html:has(.cx) {
 .cx-note > i {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   background: #3a1d1e;
   color: #ff8a8d;
@@ -1366,10 +1375,10 @@ html:has(.cx) {
 }
 .cx-note b {
   display: block;
-  font-size: 13.5px;
+  font-size: 15px;
 }
 .cx-note span {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--bone-3);
 }
 .cx-note time {
@@ -1402,8 +1411,9 @@ html:has(.cx) {
   width: clamp(70px, 8vw, 130px);
   aspect-ratio: 1;
   border-radius: 50%;
-  left: calc(48% + var(--p) * 44%);
-  top: calc(30% - sin(var(--p) * 180deg) * 22%);
+  width: clamp(44px, 4.4vw, 70px);
+  left: calc(3% + var(--p) * 92%);
+  top: calc(15% - sin(var(--p) * 180deg) * 8%);
   background: radial-gradient(circle at 35% 35%, #fff1cc, var(--gold) 60%, #a07a35);
   box-shadow: 0 0 140px 40px rgba(233, 211, 160, 0.25);
   opacity: 0.85;
@@ -1619,7 +1629,7 @@ html:has(.cx) {
 /* Stage */
 .cx-stage {
   position: relative;
-  height: min(66svh, 620px);
+  height: min(72svh, 700px);
   perspective: 1400px;
 }
 .cx-art {
@@ -1680,7 +1690,7 @@ html:has(.cx) {
 /* Devices */
 .cx-dev-phone {
   position: relative;
-  width: min(290px, 72vw);
+  width: min(330px, 72vw);
   aspect-ratio: 290 / 580;
   max-height: 100%;
   border-radius: 42px;
@@ -1704,7 +1714,7 @@ html:has(.cx) {
 }
 .cx-dev-browser {
   position: relative;
-  width: min(560px, 100%);
+  width: min(640px, 100%);
   aspect-ratio: 16 / 11;
   border-radius: 12px;
   background: #f7f5f0;
@@ -2499,6 +2509,7 @@ html:has(.cx) {
 }
 .cx-rw-time {
   position: relative;
+  font-variant-numeric: lining-nums tabular-nums !important;
   font-family: var(--display);
   font-size: clamp(110px, 22vw, 380px);
   line-height: 0.85;
@@ -2668,7 +2679,7 @@ html:has(.cx) {
 .cx-sys-row {
   position: relative;
   display: grid;
-  grid-template-columns: 48px minmax(0, 0.9fr) minmax(0, 1.2fr) minmax(0, 0.8fr) 40px;
+  grid-template-columns: 48px 84px minmax(0, 0.8fr) minmax(0, 1.2fr) minmax(0, 0.8fr) 40px;
   gap: 20px;
   align-items: center;
   padding: clamp(22px, 2.6vw, 36px) 0;
@@ -2700,24 +2711,18 @@ html:has(.cx) {
   font-size: 17px;
 }
 .cx-sys-orb {
-  position: absolute;
-  right: 12%;
-  top: 50%;
-  width: 150px;
+  grid-column: 2;
+  grid-row: 1;
+  width: 84px;
   height: auto;
   -webkit-mask-image: radial-gradient(circle, #000 52%, transparent 66%);
   mask-image: radial-gradient(circle, #000 52%, transparent 66%);
-  opacity: 0;
-  transform: translateY(-50%) scale(0.6) rotate(-40deg);
-  transition:
-    opacity 0.5s var(--ease),
-    transform 0.8s var(--ease);
+  transition: transform 0.9s var(--ease);
   pointer-events: none;
 }
 .cx-sys-row:hover .cx-sys-orb,
 .cx-sys-row:focus-visible .cx-sys-orb {
-  opacity: 1;
-  transform: translateY(-50%) scale(1) rotate(0);
+  transform: rotate(-24deg) scale(1.15);
 }
 .cx-sys-row:hover .cx-sys-name {
   transform: translateX(14px);
@@ -2777,6 +2782,7 @@ html:has(.cx) {
     left: var(--pad);
     right: var(--pad);
     width: auto;
+    transform: none;
   }
   .cx-note:nth-child(n + 3) {
     display: none;
@@ -2797,15 +2803,29 @@ html:has(.cx) {
     order: -1;
     height: 40svh;
   }
+  /* Devices keep their real proportions and scale down as a whole. */
+  .cx-dev-phone,
+  .cx-dev-browser {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    max-height: none;
+  }
   .cx-dev-phone {
-    width: auto;
-    height: 100%;
+    width: 330px;
+    transform: translate(-50%, -50%) scale(0.5);
   }
   .cx-dev-browser {
-    width: 92%;
+    width: 640px;
+    max-width: none;
+    transform: translate(-50%, -50%) scale(0.54);
   }
   .cx-dev-cal {
-    transform: scale(0.68);
+    transform: scale(0.72);
+  }
+  .cx-stamp {
+    right: 10%;
+    top: 4%;
   }
   .cx-story-clock {
     font-size: 19vw;
@@ -2826,8 +2846,11 @@ html:has(.cx) {
     display: none;
   }
   .cx-sys-row {
-    grid-template-columns: 32px 1fr 24px;
+    grid-template-columns: 56px 1fr 24px;
     gap: 6px 12px;
+  }
+  .cx-sys-n {
+    display: none;
   }
   .cx-sys-problem {
     grid-column: 2;
@@ -2843,7 +2866,10 @@ html:has(.cx) {
     grid-row: 1 / span 3;
   }
   .cx-sys-orb {
-    display: none;
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    width: 52px;
+    align-self: center;
   }
   .cx-cmp-panel li {
     grid-template-columns: 50px 1fr;
@@ -2858,4 +2884,60 @@ html:has(.cx) {
   .cx-rw-scan {
     animation: none;
   }
+}
+
+/* Opening scene: the business before the day starts */
+.cx-a-open {
+  position: absolute;
+  inset: 0;
+  padding: 80px 18px;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 18px;
+  background: linear-gradient(180deg, #1a1f21, #0d1011);
+}
+.cx-story[data-mode="won"] .cx-a-open {
+  background: linear-gradient(180deg, #1d2a20, #0b1512);
+}
+.cx-a-open-t {
+  font-size: 68px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+.cx-a-open-d {
+  font-size: 13px;
+  color: var(--bone-3);
+  margin-top: -14px;
+}
+.cx-a-open-sign {
+  margin-top: 28px;
+  padding: 14px 22px;
+  border-radius: 12px;
+  border: 2px solid currentColor;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  font-size: 18px;
+  color: #ffd27a;
+  text-shadow: 0 0 18px rgba(255, 210, 122, 0.6);
+  animation: cx-neon 2.4s ease-in-out infinite;
+}
+@keyframes cx-neon {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  52% {
+    opacity: 1;
+  }
+}
+.cx-a-open-n {
+  font-size: 12.5px;
+  color: var(--bone-3);
 }

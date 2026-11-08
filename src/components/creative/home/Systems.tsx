@@ -24,10 +24,10 @@ export default function Systems() {
           <li key={r.name} data-cx-fade={i * 0.06}>
             <Link href={r.href} className="cx-sys-row" data-cursor="Open">
               <span className="cx-sys-n">0{i + 1}</span>
+              <Image className="cx-sys-orb" src={r.orb.src} alt="" width={1024} height={1024} sizes="90px" unoptimized />
               <span className="cx-sys-problem">{r.problem}</span>
               <span className="cx-sys-name">{r.name}</span>
               <span className="cx-sys-line">{r.line}</span>
-              <Image className="cx-sys-orb" src={r.orb.src} alt="" width={1024} height={1024} sizes="180px" unoptimized />
               <span className="cx-sys-arrow" aria-hidden="true">
                 →
               </span>
