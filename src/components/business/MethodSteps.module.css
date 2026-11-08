@@ -1,0 +1,98 @@
+.track {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.track::before,
+.line {
+  content: "";
+  position: absolute;
+  top: 32px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: var(--k-line-strong);
+}
+.line {
+  right: auto;
+  width: calc(75% * var(--lit));
+  background: var(--k-green);
+  transition: width 0.45s var(--ease-out);
+}
+.step {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 4px;
+}
+.dot {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--k-white);
+  border: 2px solid var(--k-line-strong);
+  color: var(--k-grey);
+  transition:
+    background 0.4s,
+    border-color 0.4s,
+    color 0.4s,
+    transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+.step[data-on] .dot {
+  background: var(--k-green);
+  border-color: var(--k-green);
+  color: var(--k-gold-soft);
+  transform: scale(1.08);
+}
+.step small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--k-gold);
+}
+.step b {
+  font-size: clamp(18px, 1.7vw, 22px);
+  letter-spacing: -0.02em;
+}
+.d {
+  font-size: 14.5px;
+  color: var(--k-grey);
+}
+@media (max-width: 760px) {
+  .track {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .track::before,
+  .line {
+    top: 32px;
+    bottom: 32px;
+    left: 31px;
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+  .line {
+    height: calc((100% - 64px) * var(--lit));
+    bottom: auto;
+    transition: height 0.45s var(--ease-out);
+  }
+  .step {
+    grid-template-columns: 64px 1fr;
+    justify-items: start;
+    text-align: left;
+    column-gap: 16px;
+    row-gap: 0;
+  }
+  .dot {
+    grid-row: span 3;
+    margin: 0;
+  }
+}

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import LeakSimulator from "@/components/business/LeakSimulator";
 import Diagnose from "@/components/business/Diagnose";
-import ProblemFiles from "@/components/business/ProblemFiles";
+import SolutionSwitcher from "@/components/business/SolutionSwitcher";
+import VsTable from "@/components/business/VsTable";
+import MethodSteps from "@/components/business/MethodSteps";
 import LeadFlow from "@/components/business/LeadFlow";
 import BrowserShowcase from "@/components/business/BrowserShowcase";
 import ConversionJourney from "@/components/business/ConversionJourney";
@@ -20,24 +22,10 @@ export const metadata = pageMeta({
     "Kllezo finds where your business leaks customers — attention, conversion or follow-up — and builds the connected system of content, websites and AI agents that keeps them.",
 });
 
-const how = [
-  { t: "Diagnose", d: "We map where growth is leaking today — attention, conversion or follow-up — before recommending anything." },
-  { t: "Design the system", d: "Content, website and AI components are scoped to work together, with clear deliverables and owners." },
-  { t: "Build & launch", d: "We produce, build and integrate, then launch with tracking in place from day one." },
-  { t: "Measure & refine", d: "Monthly reviews of the numbers that matter, and changes made where the data points." },
-];
-
 const leaks = [
-  { vendor: "Content agency", where: "Attention", t: "Content without a system", d: "Posts go out, but they aren't planned to bring the right people to you — so reach never becomes demand.", fix: "Content Creation" },
-  { vendor: "Web developer", where: "Conversion", t: "A website that only describes", d: "Visitors arrive, read and leave, because there's no clear path from interest to enquiry.", fix: "Website Experiences" },
-  { vendor: "Chatbot", where: "Follow-up", t: "Leads that wait", d: "Enquiries arrive after hours and across channels, and go cold before anyone replies.", fix: "AI Communication Systems" },
-];
-
-const why = [
-  { t: "One connected system", d: "Content, websites and AI built by one team, designed to hand off to each other — not three vendors guessing." },
-  { t: "Creative and technical under one roof", d: "Cinematic production and engineering in the same studio, so quality doesn't drop at the hand-off." },
-  { t: "AI that's actually integrated", d: "Agents connected to your WhatsApp, website, calendar and CRM, with human handover built in." },
-  { t: "Honest measurement", d: "We agree the metrics up front and report on them plainly. We publish results only when they're verified." },
+  { vendor: "Content agency", where: "Attention", t: "Content without a system", d: "Reach that never turns into demand.", fix: "Content Creation" },
+  { vendor: "Web developer", where: "Conversion", t: "A website that only describes", d: "Visitors read, then leave.", fix: "Website Experiences" },
+  { vendor: "Chatbot", where: "Follow-up", t: "Leads that wait", d: "Enquiries go cold before anyone replies.", fix: "AI Communication Systems" },
 ];
 
 export default function BusinessHome() {
@@ -57,7 +45,7 @@ export default function BusinessHome() {
               <span className={b.serif}>You&apos;re losing them.</span>
             </h1>
             <p className={b.lead} data-arrive-item>
-              Somewhere between your post, your website and your reply, people who wanted to buy from you drift away. We find exactly where — and build the system that keeps them.
+              Buyers slip away between your post, your website and your reply. <b>We find where — and fix it.</b>
             </p>
             <div className={b.actions} data-arrive-item>
               <a href="#diagnose" className={b.btn}>
@@ -81,7 +69,7 @@ export default function BusinessHome() {
             The problem
           </span>
           <p className={s.statement} data-reveal>
-            Most businesses buy growth in pieces — a content agency, a web developer, a chatbot. <span className={s.statementMuted}>None of them are built to work together, so growth leaks between them.</span>
+            Growth bought in pieces <span className={s.statementMuted}>leaks between the pieces.</span>
           </p>
           <LeakDiagram leaks={leaks} />
         </div>
@@ -97,7 +85,7 @@ export default function BusinessHome() {
                 Which of these <span className={b.serif}>sound familiar?</span>
               </h2>
             </div>
-            <p className={b.lead}>Tick everything that applies. Your plan builds itself as you go — the same way we&apos;d start on a strategy call.</p>
+            <p className={b.lead}>Tick what applies. Your plan builds itself.</p>
           </div>
           <div data-reveal>
             <Diagnose />
@@ -115,9 +103,11 @@ export default function BusinessHome() {
                 We don&apos;t sell services. <span className={b.serif}>We solve problems.</span>
               </h2>
             </div>
-            <p className={b.lead}>Four problems we hear every week, why they keep happening, and exactly how we fix them.</p>
+            <p className={b.lead}>Pick a problem. Drag the line to see it solved.</p>
           </div>
-          <ProblemFiles />
+          <div data-reveal>
+            <SolutionSwitcher />
+          </div>
         </div>
       </section>
 
@@ -129,7 +119,7 @@ export default function BusinessHome() {
               <span className={b.eyebrow}>One system · Three divisions</span>
               <h2 className={b.h2}>Every fix, built to work together.</h2>
             </div>
-            <p className={b.lead}>Each division stands on its own. Together they form one system — from first impression to booked customer.</p>
+            <p className={b.lead}>Use one, or connect all three.</p>
           </div>
           {/* The answer to the broken pipes above: one continuous line through all three. */}
           <ol className={s.divisions}>
@@ -166,17 +156,11 @@ export default function BusinessHome() {
                 A method, <span className={b.serif}>not a menu.</span>
               </h2>
             </div>
-            <p className={b.lead}>Every engagement follows the same four stages, so you always know what&apos;s happening and why.</p>
+            <p className={b.lead}>Same four stages, every time. No surprises.</p>
           </div>
-          <ol className={s.how}>
-            {how.map((h, i) => (
-              <li key={h.t} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
-                <span className={s.hNum}>0{i + 1}</span>
-                <h3 className={b.h3}>{h.t}</h3>
-                <p className={b.muted}>{h.d}</p>
-              </li>
-            ))}
-          </ol>
+          <div data-reveal>
+            <MethodSteps />
+          </div>
         </div>
       </section>
 
@@ -189,7 +173,7 @@ export default function BusinessHome() {
                 Every lead answered, <span className={b.serif}>qualified and routed.</span>
               </h2>
             </div>
-            <p className={b.lead}>Messages and calls from every channel flow through one AI layer that responds, qualifies, books and hands over to your team.</p>
+            <p className={b.lead}>Every channel, one AI layer. Responds, qualifies, books, hands over.</p>
           </div>
           <div data-reveal>
             <LeadFlow />
@@ -237,18 +221,12 @@ export default function BusinessHome() {
           <div className={b.head}>
             <div>
               <span className={b.eyebrow}>Why Kllezo</span>
-              <h2 className={b.h2}>Built by people who understand how businesses operate.</h2>
+              <h2 className={b.h2}>
+                One team <span className={b.serif}>instead of three vendors.</span>
+              </h2>
             </div>
           </div>
-          <div className={s.why}>
-            {why.map((w, i) => (
-              <div key={w.t} className={s.whyItem} data-reveal style={{ ["--d" as string]: `${i * 0.06}s` }}>
-                <span className={s.whyNum}>0{i + 1}</span>
-                <h3 className={b.h3}>{w.t}</h3>
-                <p className={b.muted}>{w.d}</p>
-              </div>
-            ))}
-          </div>
+          <VsTable />
         </div>
       </section>
 
@@ -260,7 +238,7 @@ export default function BusinessHome() {
               <span className={b.eyebrow}>Results &amp; measurable outcomes</span>
               <h2 className={b.h2}>From visitor to customer — measured at every step.</h2>
             </div>
-            <p className={b.lead}>We agree the numbers that matter before we start, track them at each stage, and report on them every month.</p>
+            <p className={b.lead}>We agree the numbers up front and report them monthly.</p>
           </div>
           <div data-reveal>
             <ConversionJourney />

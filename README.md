@@ -20,8 +20,10 @@ The Business home tells visitors their problem before it sells anything, then sh
 | Hero | "You're not short of customers. You're losing them." beside a live lead-flow simulation you can switch between *Without a system* and *With Kllezo* (illustrative) | `components/business/LeakSimulator.tsx` |
 | The problem | Three disconnected vendors drawn as leaking pipes | `components/business/LeakDiagram.tsx` |
 | Diagnosis | Visitors tick the problems that sound familiar; a plan of the exact services builds beside them and carries into the enquiry form (`?service=…`) | `components/business/Diagnose.tsx` |
-| From problem to solved | Four case files: the problem in the customer's words → why it keeps happening → how we solve it → how it works → what changes (all from the service catalogue) | `components/business/ProblemFiles.tsx` |
-| Then | One-system divisions index, AI lead flow demo, method, work, why Kllezo, measured journey, CTA | `app/business/page.tsx` |
+| Problem → solved | Pick a problem; drag a before/after line across a live interface mock-up (content graph, website, inbox, call log), with the fix in four short steps | `components/business/SolutionSwitcher.tsx` |
+| Method | Four stages that light up in order on a track | `components/business/MethodSteps.tsx` |
+| Why Kllezo | The usual setup vs Kllezo, row by row (✕ / ✓) | `components/business/VsTable.tsx` |
+| Also | Divisions index, AI lead-flow demo, work, measured journey, CTA | `app/business/page.tsx` |
 
 ## Creative — "One day, told twice"
 
