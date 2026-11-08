@@ -1503,6 +1503,24 @@ html:has(.cx) {
   letter-spacing: -0.025em;
   max-width: 640px;
 }
+.cx-cap-link {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--gold-hi);
+  border-bottom: 1px solid rgba(200, 162, 90, 0.4);
+  padding-bottom: 3px;
+}
+.cx-cap-link:hover {
+  border-color: var(--gold);
+}
+.cx-cap-end .cx-cap-t {
+  font-size: clamp(34px, 4.2vw, 72px);
+}
+.cx-story[data-mode="lost"] .cx-cap-end em {
+  color: #ff8a8d;
+}
 .cx-cap-s {
   margin-top: 12px;
   color: var(--bone-2);
@@ -2381,16 +2399,29 @@ html:has(.cx) {
 }
 .cx-tl-tick {
   position: absolute;
-  top: -4px;
-  width: 9px;
-  height: 9px;
-  margin-left: -4.5px;
+  top: -7px;
+  width: 15px;
+  height: 15px;
+  margin-left: -7.5px;
+  padding: 0;
   border-radius: 50%;
   background: var(--ink);
   border: 1px solid var(--hair-2);
+  cursor: pointer;
   transition:
     background 0.4s,
-    border-color 0.4s;
+    border-color 0.4s,
+    transform 0.4s var(--ease);
+}
+.cx-tl-tick:hover,
+.cx-tl-tick:focus-visible {
+  transform: scale(1.35);
+}
+.cx-tl-tick[data-now] {
+  box-shadow: 0 0 0 5px rgba(200, 162, 90, 0.18);
+}
+.cx-story[data-mode="lost"] .cx-tl-tick[data-now] {
+  box-shadow: 0 0 0 5px rgba(255, 107, 111, 0.18);
 }
 .cx-tl-tick[data-on] {
   background: var(--gold);
@@ -2402,7 +2433,7 @@ html:has(.cx) {
 }
 .cx-tl-tick em {
   position: absolute;
-  top: 14px;
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
   font-style: normal;

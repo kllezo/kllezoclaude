@@ -11,6 +11,18 @@ One brand, two experiences, one backend. Built from the *Kllezo Dual Experience 
 
 Each experience has: home, services, 9 service detail pages, work, about, contact.
 
+## Business — problem first
+
+The Business home tells visitors their problem before it sells anything, then shows Kllezo solving it:
+
+| Section | What it does | File |
+|---|---|---|
+| Hero | "You're not short of customers. You're losing them." beside a live lead-flow simulation you can switch between *Without a system* and *With Kllezo* (illustrative) | `components/business/LeakSimulator.tsx` |
+| The problem | Three disconnected vendors drawn as leaking pipes | `components/business/LeakDiagram.tsx` |
+| Diagnosis | Visitors tick the problems that sound familiar; a plan of the exact services builds beside them and carries into the enquiry form (`?service=…`) | `components/business/Diagnose.tsx` |
+| From problem to solved | Four case files: the problem in the customer's words → why it keeps happening → how we solve it → how it works → what changes (all from the service catalogue) | `components/business/ProblemFiles.tsx` |
+| Then | One-system divisions index, AI lead flow demo, method, work, why Kllezo, measured journey, CTA | `app/business/page.tsx` |
+
 ## Creative — "One day, told twice"
 
 The Creative home is a problem-first story, scrubbed by scroll (all scenes illustrative):

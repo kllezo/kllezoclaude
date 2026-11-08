@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -18,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
    ───────────────────────────────────────────────────────────────────────── */
 
 export type Kind = "ignored" | "bounce" | "unread" | "missed" | "elsewhere" | "stopped" | "enquire" | "replied" | "answered" | "booked";
-export type Moment = { m: number; kind: Kind; tag: string; t: string; s: string };
+export type Moment = { m: number; kind: Kind; tag: string; t: string; s: string; href?: string };
 
 const START = 6 * 60;
 const END = 24 * 60;
@@ -64,7 +65,19 @@ export default function DayStory({
   sky: string[];
 }) {
   const root = useRef<HTMLElement>(null);
+  const trig = useRef<ScrollTrigger | null>(null);
   const [min, setMin] = useState(START);
+
+  // Jump to a moment from the timeline.
+  const jump = (m: number) => {
+    const st = trig.current;
+    if (!st) return;
+    const p = Math.min(0.999, (m - START) / (END - START) + 0.015);
+    const y = st.start + (st.end - st.start) * p;
+    const lenis = (window as unknown as { __cxLenis?: { scrollTo(y: number, o?: object): void } }).__cxLenis;
+    if (lenis) lenis.scrollTo(y, { duration: 1.4 });
+    else window.scrollTo({ top: y, behavior: "smooth" });
+  };
 
   useLayoutEffect(() => {
     const el = root.current!;
@@ -73,7 +86,7 @@ export default function DayStory({
     let glitchT = 0;
     const mm = gsap.matchMedia();
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      ScrollTrigger.create({
+      trig.current = ScrollTrigger.create({
         trigger: el,
         pin: el.querySelector(".cx-story-pin"),
         start: "top top",
@@ -109,6 +122,7 @@ export default function DayStory({
 
   const active = moments.filter((x) => x.m <= min).length - 1;
   const cur = active >= 0 ? moments[active] : null;
+  const ended = min >= 23 * 60 + 20;
   const night = min >= 19 * 60;
 
   return (
@@ -126,11 +140,35 @@ export default function DayStory({
               <Roll value={fmt(min)} />
             </div>
             <div className="cx-story-caption" aria-live="polite">
-              {cur ? (
+              {ended ? (
+                <div key="end" className="cx-cap cx-cap-end">
+                  <span className="cx-cap-tag">{mode === "lost" ? "End of day" : "End of day"}</span>
+                  <p className="cx-cap-t">
+                    {mode === "lost" ? (
+                      <>
+                        {moments.length} customers lost.
+                        <br />
+                        <em>You never saw one of them.</em>
+                      </>
+                    ) : (
+                      <>
+                        {moments.length} customers won.
+                        <br />
+                        <em>Nobody worked late.</em>
+                      </>
+                    )}
+                  </p>
+                </div>
+              ) : cur ? (
                 <div key={cur.m} className="cx-cap">
                   <span className="cx-cap-tag">{cur.tag}</span>
                   <p className="cx-cap-t">{cur.t}</p>
                   <p className="cx-cap-s">{cur.s}</p>
+                  {cur.href && (
+                    <Link href={cur.href} className="cx-cap-link">
+                      How this system works <span aria-hidden="true">→</span>
+                    </Link>
+                  )}
                 </div>
               ) : (
                 <div className="cx-cap">
@@ -156,16 +194,25 @@ export default function DayStory({
           </div>
         </div>
 
-        <div className="cx-wrap cx-tl" aria-hidden="true">
+        <nav className="cx-wrap cx-tl" aria-label={`${title}: jump to a moment`}>
           <div className="cx-tl-line">
             <i className="cx-tl-fill" />
             {moments.map((x, i) => (
-              <span key={x.m} className="cx-tl-tick" style={{ left: `${((x.m - START) / (END - START)) * 100}%` }} data-on={i <= active ? "" : undefined}>
+              <button
+                key={x.m}
+                type="button"
+                className="cx-tl-tick"
+                style={{ left: `${((x.m - START) / (END - START)) * 100}%` }}
+                data-on={i <= active ? "" : undefined}
+                data-now={i === active ? "" : undefined}
+                onClick={() => jump(x.m)}
+                aria-label={`${x.tag}: ${x.t}`}
+              >
                 <em>{`${fmt(x.m).slice(0, 2)}:${fmt(x.m).slice(2)}`}</em>
-              </span>
+              </button>
             ))}
           </div>
-        </div>
+        </nav>
       </div>
     </section>
   );

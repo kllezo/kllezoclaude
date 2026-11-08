@@ -25,10 +25,10 @@ const LOST: Moment[] = [
   { m: 22 * 60 + 30, kind: "elsewhere", tag: "22:30 · Follow-up", t: "They book with someone else.", s: "Nobody followed up. Nobody even knew." },
 ];
 const WON: Moment[] = [
-  { m: 8 * 60 + 10, kind: "stopped", tag: "08:10 · Content Engine", t: "You post. They stop.", s: "A planned story with a hook, shot to be watched." },
-  { m: 11 * 60 + 42, kind: "enquire", tag: "11:42 · Website Experiences", t: "They land — and they enquire.", s: "One clear path from interest to a booking." },
-  { m: 13 * 60 + 5, kind: "replied", tag: "13:05 · AI Texting Agents", t: "Replied in seconds. Booked by 13:06.", s: "The agent answers, qualifies and books — on WhatsApp." },
-  { m: 19 * 60 + 48, kind: "answered", tag: "19:48 · AI Calling Agents", t: "The phone rings. The agent answers.", s: "First ring, appointment booked, summary sent to your team." },
+  { m: 8 * 60 + 10, kind: "stopped", tag: "08:10 · Content Engine", t: "You post. They stop.", s: "A planned story with a hook, shot to be watched.", href: "/creative/services/content-growth" },
+  { m: 11 * 60 + 42, kind: "enquire", tag: "11:42 · Website Experiences", t: "They land — and they enquire.", s: "One clear path from interest to a booking.", href: "/creative/services/business-website" },
+  { m: 13 * 60 + 5, kind: "replied", tag: "13:05 · AI Texting Agents", t: "Replied in seconds. Booked by 13:06.", s: "The agent answers, qualifies and books — on WhatsApp.", href: "/creative/services/ai-texting" },
+  { m: 19 * 60 + 48, kind: "answered", tag: "19:48 · AI Calling Agents", t: "The phone rings. The agent answers.", s: "First ring, appointment booked, summary sent to your team.", href: "/creative/services/ai-calling" },
   { m: 22 * 60 + 30, kind: "booked", tag: "22:30 · The whole system", t: "Tomorrow is already full.", s: "Follow-ups did the rest while you slept." },
 ];
 

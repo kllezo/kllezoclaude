@@ -1,9 +1,10 @@
 import Link from "next/link";
-import Ecosystem from "@/components/business/Ecosystem";
+import LeakSimulator from "@/components/business/LeakSimulator";
+import Diagnose from "@/components/business/Diagnose";
+import ProblemFiles from "@/components/business/ProblemFiles";
 import LeadFlow from "@/components/business/LeadFlow";
 import BrowserShowcase from "@/components/business/BrowserShowcase";
 import ConversionJourney from "@/components/business/ConversionJourney";
-import ServiceArchitecture from "@/components/business/ServiceArchitecture";
 import LeakDiagram from "@/components/business/LeakDiagram";
 import { divisions, servicesIn } from "@/content/services";
 import { publishedCaseStudies } from "@/content/work";
@@ -14,9 +15,9 @@ import s from "./home.module.css";
 export const metadata = pageMeta({
   exp: "business",
   path: "",
-  title: "Build smarter. Grow stronger.",
+  title: "You're not short of customers. You're losing them.",
   description:
-    "Kllezo builds connected growth systems for businesses: content that attracts, websites that convert and AI agents that respond, qualify, follow up and book.",
+    "Kllezo finds where your business leaks customers — attention, conversion or follow-up — and builds the connected system of content, websites and AI agents that keeps them.",
 });
 
 const how = [
@@ -43,32 +44,32 @@ export default function BusinessHome() {
   const cases = publishedCaseStudies();
   return (
     <>
-      {/* 2 · HERO */}
+      {/* HERO — the problem, named in the first line */}
       <section className={s.hero}>
-        <div className={b.wrap}>
+        <div className={`${b.wrap} ${s.heroGrid}`}>
           <div className={s.heroCopy}>
             <span className={b.eyebrow} data-arrive-item>
               Content · Websites · AI Systems
             </span>
             <h1 className={b.h1} data-arrive-item>
-              Build smarter.
+              You&apos;re not short of customers.
               <br />
-              Grow <span className={b.serif}>stronger.</span>
+              <span className={b.serif}>You&apos;re losing them.</span>
             </h1>
             <p className={b.lead} data-arrive-item>
-              Your business doesn&apos;t need another disconnected service provider. It needs a growth system that works together.
+              Somewhere between your post, your website and your reply, people who wanted to buy from you drift away. We find exactly where — and build the system that keeps them.
             </p>
             <div className={b.actions} data-arrive-item>
-              <Link href="/business/services" className={b.btn}>
-                Explore Our Systems →
-              </Link>
+              <a href="#diagnose" className={b.btn}>
+                Diagnose my business →
+              </a>
               <Link href="/business/contact" className={b.btnGhost}>
                 Book a Strategy Call
               </Link>
             </div>
           </div>
           <div className={s.heroVisual} data-arrive-item>
-            <Ecosystem />
+            <LeakSimulator />
           </div>
         </div>
       </section>
@@ -86,13 +87,47 @@ export default function BusinessHome() {
         </div>
       </section>
 
+      {/* DIAGNOSE — the visitor names their own problems */}
+      <section className={`${b.section} ${b.white}`} id="diagnose">
+        <div className={b.wrap}>
+          <div className={b.head}>
+            <div>
+              <span className={b.eyebrow}>Diagnosis · 30 seconds</span>
+              <h2 className={b.h2}>
+                Which of these <span className={b.serif}>sound familiar?</span>
+              </h2>
+            </div>
+            <p className={b.lead}>Tick everything that applies. Your plan builds itself as you go — the same way we&apos;d start on a strategy call.</p>
+          </div>
+          <div data-reveal>
+            <Diagnose />
+          </div>
+        </div>
+      </section>
+
+      {/* PROBLEM → SOLVED */}
+      <section className={b.section}>
+        <div className={b.wrap}>
+          <div className={b.head}>
+            <div>
+              <span className={b.eyebrow}>From problem to solved</span>
+              <h2 className={b.h2}>
+                We don&apos;t sell services. <span className={b.serif}>We solve problems.</span>
+              </h2>
+            </div>
+            <p className={b.lead}>Four problems we hear every week, why they keep happening, and exactly how we fix them.</p>
+          </div>
+          <ProblemFiles />
+        </div>
+      </section>
+
       {/* 4 · THREE DIVISIONS */}
       <section className={`${b.section} ${b.white}`}>
         <div className={b.wrap}>
           <div className={b.head}>
             <div>
-              <span className={b.eyebrow}>The solution · Three divisions</span>
-              <h2 className={b.h2}>Everything growth needs, built to work together.</h2>
+              <span className={b.eyebrow}>One system · Three divisions</span>
+              <h2 className={b.h2}>Every fix, built to work together.</h2>
             </div>
             <p className={b.lead}>Each division stands on its own. Together they form one system — from first impression to booked customer.</p>
           </div>
@@ -142,22 +177,6 @@ export default function BusinessHome() {
               </li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      {/* 6 · INTERACTIVE GROWTH ECOSYSTEM — service architecture + live system */}
-      <section className={`${b.section} ${b.white}`} id="systems">
-        <div className={b.wrap}>
-          <div className={b.head}>
-            <div>
-              <span className={b.eyebrow}>Service architecture</span>
-              <h2 className={b.h2}>See exactly how each service runs.</h2>
-            </div>
-            <p className={b.lead}>Pick a division, then a service, to see its workflow and deliverables.</p>
-          </div>
-          <div data-reveal>
-            <ServiceArchitecture />
-          </div>
         </div>
       </section>
 
@@ -255,7 +274,7 @@ export default function BusinessHome() {
           <div data-reveal>
             <span className={b.eyebrow}>Strategy call</span>
             <h2 className={s.ctaTitle}>
-              Let&apos;s design your <span className={b.serif}>growth system.</span>
+              Let&apos;s find your leaks — <span className={b.serif}>and close them.</span>
             </h2>
             <div className={b.actions}>
               <Link href="/business/contact" className={b.btnGold}>
