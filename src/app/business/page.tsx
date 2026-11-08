@@ -25,6 +25,12 @@ const how = [
   { t: "Measure & refine", d: "Monthly reviews of the numbers that matter, and changes made where the data points." },
 ];
 
+const leaks = [
+  { where: "Attention", t: "Content without a system", d: "Posts go out, but they aren't planned to bring the right people to you — so reach never becomes demand.", fix: "Content Creation" },
+  { where: "Conversion", t: "A website that only describes", d: "Visitors arrive, read and leave, because there's no clear path from interest to enquiry.", fix: "Website Experiences" },
+  { where: "Follow-up", t: "Leads that wait", d: "Enquiries arrive after hours and across channels, and go cold before anyone replies.", fix: "AI Communication Systems" },
+];
+
 const why = [
   { t: "One connected system", d: "Content, websites and AI built by one team, designed to hand off to each other — not three vendors guessing." },
   { t: "Creative and technical under one roof", d: "Cinematic production and engineering in the same studio, so quality doesn't drop at the hand-off." },
@@ -66,23 +72,27 @@ export default function BusinessHome() {
         </div>
       </section>
 
-      {/* 3 · VALUE PROPOSITION */}
+      {/* 3 · THE PROBLEM — where growth leaks, before any solution is offered */}
       <section className={`${b.section} ${b.tight}`}>
         <div className={b.wrap}>
+          <span className={b.eyebrow} data-reveal>
+            The problem
+          </span>
           <p className={s.statement} data-reveal>
-            Growth doesn&apos;t come from doing more. It comes from doing <span className={b.serif}>the right things.</span> We build them.
+            Most businesses buy growth in pieces — a content agency, a web developer, a chatbot. <span className={s.statementMuted}>None of them are built to work together, so growth leaks between them.</span>
           </p>
-          <div className={s.triad} data-reveal>
-            <span>
-              Content that <b>attracts.</b>
-            </span>
-            <span>
-              Websites that <b>convert.</b>
-            </span>
-            <span>
-              AI that <b>closes.</b>
-            </span>
-          </div>
+          <ol className={s.leaks}>
+            {leaks.map((l, i) => (
+              <li key={l.where} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
+                <span className={s.leakWhere}>{l.where}</span>
+                <h3 className={s.leakTitle}>{l.t}</h3>
+                <p className={b.muted}>{l.d}</p>
+                <span className={s.leakFix}>
+                  Fixed by <b>{l.fix}</b>
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -91,7 +101,7 @@ export default function BusinessHome() {
         <div className={b.wrap}>
           <div className={b.head}>
             <div>
-              <span className={b.eyebrow}>Three divisions</span>
+              <span className={b.eyebrow}>The solution · Three divisions</span>
               <h2 className={b.h2}>Everything growth needs, built to work together.</h2>
             </div>
             <p className={b.lead}>Each division stands on its own. Together they form one system — from first impression to booked customer.</p>
@@ -217,7 +227,7 @@ export default function BusinessHome() {
           <div className={s.why}>
             {why.map((w, i) => (
               <div key={w.t} className={s.whyItem} data-reveal style={{ ["--d" as string]: `${i * 0.06}s` }}>
-                <span className={s.whyMark} aria-hidden="true" />
+                <span className={s.whyNum}>0{i + 1}</span>
                 <h3 className={b.h3}>{w.t}</h3>
                 <p className={b.muted}>{w.d}</p>
               </div>

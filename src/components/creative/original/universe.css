@@ -1,0 +1,887 @@
+/* Universe overlay
+   Original Kllezo Creative stylesheet (kllezo-v3), scoped under :where(.kz-u) for the app.
+   Declarations are original; only selectors were scoped. Fixes are marked "PORT FIX". */
+/* ═══════════════════════════════════════════
+   KLLEZO Universe — Overlay Styles Only
+   No layout. No sections. Only overlay UI.
+   ═══════════════════════════════════════════ */
+
+html:has(.kz-u) {
+  --beige: #F7F3EB;
+  --green: #23453F;
+  --green-mid: #2a524a;
+  --green-glow: #1A9E8F;
+  --grey: #7D8A94;
+  --grey-light: #9ab4c4;
+  --void: #0B0D10;
+  --champagne: #BFA27A;
+  --gold: #D4A853;
+  --teal: #1A9E8F;
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+}
+
+:where(.kz-u) *, :where(.kz-u) *::before, :where(.kz-u) *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html:has(.kz-u) { overflow: hidden; height: 100%; }
+
+html:has(.kz-u) body {
+  background: var(--void);
+  cursor: none;
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+/* ── Universe Canvas ── */
+:where(.kz-u) #universe {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+/* ── Scroll Driver (vestigial — kept at 0 height to prevent native scroll) ── */
+:where(.kz-u) #scroll-driver {
+  position: relative;
+  height: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Overlay ── */
+:where(.kz-u) #overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Zone Text ── */
+:where(.kz-u) .zone-text {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.0s; /* JS controlled */
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* Hero — centered */
+:where(.kz-u) #zt-hero {
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+:where(.kz-u) .zt-logo {
+  font-family: var(--font-serif);
+  font-size: clamp(5rem, 12vw, 11rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: #FFFFFF;
+  line-height: 1;
+  text-shadow: 0 0 120px rgba(247,243,235,0.12);
+}
+
+:where(.kz-u) .zt-sub {
+  margin-top: 24px;
+  font-size: 0.72rem;
+  font-weight: 200;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+/* World text — bottom-left */
+:where(.kz-u) #zt-content {
+  bottom: 10vh; left: 7vw;
+  max-width: 480px;
+}
+
+/* Websites & Texting titles — upper left */
+:where(.kz-u) #zt-websites, :where(.kz-u) #zt-texting {
+  top: 18vh; left: 4vw;
+  bottom: auto;
+  max-width: 480px;
+}
+
+/* Calling titles — lower third of screen */
+:where(.kz-u) #zt-calling {
+  bottom: 5vh; left: 7vw;
+  max-width: 480px;
+}
+:where(.kz-u) #zt-calling .zt-title {
+  white-space: nowrap;
+}
+
+:where(.kz-u) .zt-num {
+  font-size: 0.65rem;
+  font-weight: 200;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin-bottom: 18px;
+}
+
+:where(.kz-u) .zt-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+}
+
+:where(.kz-u) .zt-body {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  font-weight: 300;
+  font-style: italic;
+  color: #FFFFFF;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+}
+
+/* Ecosystem — centered */
+:where(.kz-u) #zt-ecosystem {
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
+:where(.kz-u) .zt-ecosystem-line {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 300;
+  color: #FFFFFF;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+:where(.kz-u) .zt-ecosystem-italic {
+  font-style: italic;
+  color: #FFFFFF;
+}
+
+/* CTA — centered */
+:where(.kz-u) #zt-cta {
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+:where(.kz-u) .zt-cta-logo {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 11vw, 10rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: #FFFFFF;
+  line-height: 1;
+  margin-bottom: 28px;
+}
+
+:where(.kz-u) .zt-cta-services {
+  font-size: 0.78rem;
+  font-weight: 200;
+  letter-spacing: 0.2em;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+}
+
+:where(.kz-u) .zt-cta-tag {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  font-weight: 300;
+  font-style: italic;
+  color: #FFFFFF;
+  margin-bottom: 52px;
+}
+
+:where(.kz-u) .zt-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 44px;
+  border: 1px solid rgba(247,243,235,0.22);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  text-decoration: none;
+  cursor: none;
+  transition: background 0.45s, border-color 0.45s, color 0.45s;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  background: rgba(247,243,235,0.04);
+}
+
+:where(.kz-u) .zt-cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--beige);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+:where(.kz-u) .zt-cta-btn:hover::before { transform: scaleX(1); }
+:where(.kz-u) .zt-cta-btn:hover { color: var(--green); border-color: var(--beige); }
+:where(.kz-u) .zt-cta-btn span, :where(.kz-u) .zt-cta-btn svg { position: relative; z-index: 1; }
+
+/* ── Progress Bar ── */
+:where(.kz-u) #progress-track {
+  position: fixed;
+  right: 32px; top: 50%;
+  transform: translateY(-50%);
+  width: 1px; height: 100px;
+  background: rgba(247,243,235,0.08);
+  z-index: 20;
+  pointer-events: none;
+}
+
+:where(.kz-u) #progress-fill {
+  width: 100%;
+  height: 0%;
+  background: rgba(247,243,235,0.5);
+  transition: height 0.1s linear;
+}
+
+/* ── Custom Cursor ── */
+:where(.kz-u) #cur-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--beige);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-50%, -50%, 0);
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+
+:where(.kz-u) #cur-dot.active {
+  opacity: 1;
+}
+
+:where(.kz-u) #cur-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(247,243,235,0.35);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.4s cubic-bezier(0.16,1,0.3,1),
+              height 0.4s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.3s,
+              opacity 0.25s ease-out;
+  opacity: 0;
+}
+
+:where(.kz-u) #cur-ring.active {
+  opacity: 1;
+}
+
+html:has(.kz-u) body.hov #cur-ring { width: 54px; height: 54px; border-color: var(--beige); }
+
+/* ── Navigation ── */
+:where(.kz-u) #nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 0.8s;
+  pointer-events: none;
+}
+
+:where(.kz-u) #nav.visible { opacity: 1; }
+:where(.kz-u) #nav.bg { background: rgba(11,13,16,0.75); backdrop-filter: blur(16px); }
+
+:where(.kz-u) .nav-brand {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: #FFFFFF;
+  pointer-events: auto;
+}
+
+:where(.kz-u) .nav-context {
+  font-size: 0.68rem;
+  font-weight: 200;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  transition: opacity 0.5s;
+}
+
+:where(.kz-u) .nav-cta {
+  font-size: 0.72rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  border: 1px solid rgba(247,243,235,0.22);
+  border-radius: 20px;
+  padding: 8px 18px;
+  background: transparent;
+  transition: background 0.3s, border-color 0.3s;
+  pointer-events: auto;
+}
+
+:where(.kz-u) .nav-cta:hover { color: #FFFFFF; border-color: rgba(255,255,255,0.6); }
+
+@keyframes logoEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.04); /* premium Apple-style overshoot */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.0); /* settle to final scale */
+  }
+}
+
+:where(.kz-u) .img-logo-hero {
+  width: clamp(260px, 70vw, 900px); /* Responsive width: 70% of viewport, bounded between 260px and 900px */
+  height: auto;                     /* Automatic height calculation to preserve aspect ratio */
+  max-width: 95%;                   /* Prevent clipping on extremely narrow screens */
+  filter: drop-shadow(0 0 50px rgba(247,243,235,0.15));
+  display: block;
+  margin: 0 auto;
+  animation: logoEntrance 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+
+:where(.kz-u) .img-logo-cta {
+  height: clamp(3rem, 10vw, 7.5rem);
+  width: auto;
+  max-width: 90%;
+  filter: drop-shadow(0 0 40px rgba(247,243,235,0.12));
+  display: block;
+  margin: 0 auto;
+}
+:where(.kz-u) .img-logo-nav {
+  height: 1.25rem;
+  width: auto;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+:where(.kz-u) .zt-continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  border: 1px solid rgba(247,243,235,0.22);
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  text-decoration: none;
+  cursor: none; /* Keep custom cursor */
+  background: rgba(247,243,235,0.04);
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+  transition: background 0.3s, border-color 0.3s, opacity 0.5s;
+  opacity: 0;
+  outline: none;
+}
+:where(.kz-u) .zt-continue-btn:hover {
+  background: rgba(247,243,235,0.12);
+  border-color: rgba(247,243,235,0.5);
+}
+
+:where(.kz-u) .scroll-instruction {
+  position: fixed;
+  bottom: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 15;
+  pointer-events: none;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+/* Typography Accent Spans */
+:where(.kz-u) .accent-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+:where(.kz-u) .sans-title {
+  font-family: var(--font-sans);
+  font-size: 0.82em;
+  font-weight: 200;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Content Engine HTML Gallery Overlay ── */
+:where(.kz-u) #content-gallery-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: visible; /* Allow hovered enlarged cards to expand without clipping */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.8vh; /* reduced spacing between rows to make cards dominate */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  padding: 0.5vh 0;
+  background: transparent;
+  perspective: 1200px; /* Enable 3D space */
+  transform-style: preserve-3d;
+}
+
+:where(.kz-u) .gallery-row {
+  position: relative;
+  width: 100%;
+  height: 30vh; /* increased card size by 15-20% */
+  overflow: visible;
+  transform-style: preserve-3d;
+}
+
+:where(.kz-u) .gallery-row-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+:where(.kz-u) .gallery-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30vh; /* increased card size by 15-20% */
+  will-change: transform;
+  cursor: pointer;
+  z-index: 1;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+}
+
+:where(.kz-u) .gallery-card.dragging, :where(.kz-u) .gallery-card.returning {
+  z-index: 1000 !important;
+  cursor: grabbing !important;
+  touch-action: none;
+}
+
+:where(.kz-u) .gallery-card.dragging .gallery-card-inner,
+:where(.kz-u) .gallery-card.returning .gallery-card-inner {
+  transform: scale(0.5) !important; /* Keep base 2x layout scale to preserve resolution */
+  box-shadow: 0 40px 100px rgba(0,0,0,0.85), 0 0 45px rgba(247,243,235,0.3) !important;
+  filter: brightness(1.12) !important;
+  transition: none !important; /* Disable transitions during dragging to allow raw JS updates */
+}
+
+:where(.kz-u) .gallery-card-inner {
+  width: 200%;
+  height: 200%;
+  transform: scale(0.5);
+  transform-origin: top left;
+  border: 8px solid #0A0C10; /* Scales down to 4px visual border */
+  background: #0A0C10;
+  border-radius: 24px;       /* Scales down to 12px visual border-radius */
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75);
+  /* Exit transition: 300ms cubic-bezier(0.22, 1, 0.36, 1) */
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+              filter 300ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+:where(.kz-u) .gallery-card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  image-rendering: -webkit-optimize-contrast; /* Webkit crisp rendering */
+  image-rendering: crisp-edges;
+  filter: contrast(1.12) brightness(1.05) saturate(1.02);
+  transition: filter 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hover styles on inner card container */
+:where(.kz-u) .gallery-card:hover:not(.dragging):not(.returning) {
+  z-index: 1000; /* Raise depth ordering so it floats above everything */
+}
+:where(.kz-u) .gallery-card:hover:not(.dragging):not(.returning) .gallery-card-inner {
+  /* Enter transition: 350ms cubic-bezier(0.22, 1, 0.36, 1) */
+  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  /* Scale to 1.08x (0.5 * 1.08 = 0.54) and translate Z forward slightly */
+  transform: scale(0.54) translateZ(30px);
+  /* Subtle soft shadow */
+  box-shadow: 0 40px 90px rgba(0,0,0,0.8), 0 0 35px rgba(247,243,235,0.25);
+}
+:where(.kz-u) .gallery-card:hover:not(.dragging):not(.returning) img {
+  filter: contrast(1.18) brightness(1.12) saturate(1.06);
+}
+
+
+/* Dimming states while one card is in Inspection Mode */
+:where(.kz-u) #content-gallery-overlay.dimmed .gallery-card:not(.inspected-original) {
+  pointer-events: none !important;
+}
+
+:where(.kz-u) #content-gallery-overlay.dimmed .gallery-row {
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:where(.kz-u) .gallery-card.inspected-original {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* ── Apple Vision Pro Inspection Overlay ── */
+:where(.kz-u) #gallery-inspection-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  pointer-events: none;
+  display: block;
+  overflow: visible;
+}
+
+:where(.kz-u) #gallery-inspection-overlay.active {
+  pointer-events: auto;
+}
+
+/* Translucent backdrop — gallery stays visible behind */
+:where(.kz-u) #inspection-backdrop {
+  position: absolute;
+  inset: 0;
+  /* Pure transparent glassmorphic filter - no dark background */
+  background: transparent;
+  backdrop-filter: blur(18px) brightness(45%);
+  -webkit-backdrop-filter: blur(18px) brightness(45%);
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+:where(.kz-u) #gallery-inspection-overlay.active #inspection-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Card container — 3D perspective for depth movement */
+:where(.kz-u) #inspection-card-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+/* Inspected card — floating premium exhibit */
+:where(.kz-u) #inspection-card-container .gallery-card-inner {
+  pointer-events: auto;
+  cursor: pointer;
+  /* Premium floating shadow + warm glow + edge highlight */
+  box-shadow:
+    0 60px 140px rgba(0, 0, 0, 0.85),
+    0 25px 60px rgba(0, 0, 0, 0.6),
+    0 0 80px rgba(247, 243, 235, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Responsive inspection card sizing */
+@media (min-width: 1025px) {
+  :where(.kz-u) #inspection-card-container .gallery-card-inner {
+    max-width: 1100px;
+  }
+}
+
+@media (max-width: 1024px) {
+  :where(.kz-u) #inspection-card-container .gallery-card-inner {
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 600px) {
+  :where(.kz-u) #inspection-card-container .gallery-card-inner {
+    max-width: 94vw;
+  }
+}
+
+/* ── RESPONSIVE DESIGN (MEDIA QUERIES) ── */
+
+/* Tablets and small screens (<= 1024px) */
+@media (max-width: 1024px) {
+  :where(.kz-u) #zt-hero {
+    max-width: 80%;
+  }
+  :where(.kz-u) .zt-title {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    margin-bottom: 16px;
+  }
+  :where(.kz-u) .zt-body {
+    font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  }
+  :where(.kz-u) #zt-content, :where(.kz-u) #zt-calling {
+    left: 6vw;
+    bottom: 8vh;
+    max-width: calc(100% - 12vw);
+  }
+  :where(.kz-u) #zt-websites, :where(.kz-u) #zt-texting {
+    left: 4vw;
+    top: 15vh;
+    max-width: calc(100% - 8vw);
+  }
+  :where(.kz-u) #nav {
+    padding: 0 24px;
+  }
+}
+
+/* Mobile Devices (<= 768px) */
+@media (max-width: 768px) {
+  /* Hide nav context to prevent horizontal crowding/overlap */
+  :where(.kz-u) .nav-context {
+    display: none;
+  }
+  :where(.kz-u) #nav {
+    padding: 0 16px;
+    height: 50px;
+  }
+  :where(.kz-u) .nav-brand {
+    font-size: 0.9rem;
+    letter-spacing: 0.18em;
+  }
+  :where(.kz-u) .nav-cta {
+    font-size: 0.65rem;
+    padding: 6px 16px;
+  }
+  
+  /* Adjusted heights and gaps for the HTML sliding rows */
+  :where(.kz-u) #content-gallery-overlay {
+    gap: 2vh;
+    padding: 2vh 0;
+  }
+  
+  /* Layout adjustments for text sections */
+  :where(.kz-u) #zt-content, :where(.kz-u) #zt-calling {
+    left: 5vw;
+    bottom: 5vh;
+    max-width: calc(100% - 10vw);
+  }
+  :where(.kz-u) #zt-websites, :where(.kz-u) #zt-texting {
+    left: 5vw;
+    top: 12vh;
+    max-width: calc(100% - 10vw);
+  }
+  :where(.kz-u) #zt-calling .zt-title {
+    white-space: normal; /* wrap on mobile to prevent overflow */
+  }
+  :where(.kz-u) .zt-title {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    margin-bottom: 12px;
+  }
+  :where(.kz-u) .zt-body {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* CTA Adjustments */
+  :where(.kz-u) .zt-cta-logo {
+    font-size: clamp(3.2rem, 10vw, 5.5rem);
+    margin-bottom: 16px;
+  }
+  :where(.kz-u) .zt-cta-services {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+  :where(.kz-u) .zt-cta-tag {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+  }
+  :where(.kz-u) .zt-cta-btn {
+    padding: 10px 24px;
+    font-size: 0.68rem;
+  }
+}
+
+/* Very Small Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+  :where(.kz-u) #zt-content, :where(.kz-u) #zt-calling {
+    bottom: 4vh;
+  }
+  :where(.kz-u) #zt-websites, :where(.kz-u) #zt-texting {
+    top: 10vh;
+  }
+  :where(.kz-u) .zt-title {
+    font-size: 1.65rem;
+    margin-bottom: 10px;
+  }
+  :where(.kz-u) .zt-body {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+  :where(.kz-u) .zt-sub {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    margin-top: 16px;
+  }
+}
+
+/* Landscape/Short Screen Adjustments (e.g. mobile rotated, height <= 600px) */
+@media (max-height: 600px) {
+  :where(.kz-u) #zt-hero {
+    transform: translate(-50%, -45%);
+  }
+  :where(.kz-u) .img-logo-hero {
+    height: 18vh !important; /* Scale with height rather than width on landscape to prevent clipping */
+    width: auto !important;  /* Allow width to scale naturally to maintain aspect ratio */
+  }
+  :where(.kz-u) .zt-sub {
+    margin-top: 10px;
+    font-size: 0.6rem;
+  }
+  :where(.kz-u) #zt-content, :where(.kz-u) #zt-calling {
+    bottom: 3vh;
+    left: 4vw;
+  }
+  :where(.kz-u) #zt-websites, :where(.kz-u) #zt-texting {
+    top: 10vh;
+    left: 4vw;
+  }
+  :where(.kz-u) .zt-title {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+  :where(.kz-u) .zt-body {
+    font-size: 0.85rem;
+    line-height: 1.35;
+  }
+  /* CTA tweaks to fit screen height */
+  :where(.kz-u) .zt-cta-logo {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+  :where(.kz-u) .zt-cta-services {
+    font-size: 0.6rem;
+    margin-bottom: 6px;
+  }
+  :where(.kz-u) .zt-cta-tag {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   GLOBAL SOLID PURE WHITE TYPOGRAPHY ENFORCEMENT
+   ───────────────────────────────────────────────────────── */
+:where(.kz-u) *, :where(.kz-u) *::before, :where(.kz-u) *::after {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-shadow: none !important;
+}
+
+/* Force pure white and no filters or blend modes on all text elements */
+:where(.kz-u) h1, :where(.kz-u) h2, :where(.kz-u) h3, :where(.kz-u) h4, :where(.kz-u) h5, :where(.kz-u) h6, :where(.kz-u) p, :where(.kz-u) span, :where(.kz-u) a, :where(.kz-u) button, :where(.kz-u) label, :where(.kz-u) li, :where(.kz-u) input, :where(.kz-u) textarea, :where(.kz-u) select, :where(.kz-u) .nav-brand, :where(.kz-u) .nav-context, :where(.kz-u) .nav-cta {
+  color: #FFFFFF !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+/* Enforce pure white placeholders */
+:where(.kz-u) ::placeholder {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+:where(.kz-u) ::-webkit-input-placeholder {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+:where(.kz-u) ::-moz-placeholder {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+:where(.kz-u) :-ms-input-placeholder {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+
+
+/* ═══════════════════════════════════════════
+   PORT ADDITIONS — dual-experience integration
+   (were inline styles in the original index.html)
+   ═══════════════════════════════════════════ */
+:where(.kz-u) .nav-brand { text-decoration: none; }
+:where(.kz-u) .nav-actions { display: flex; gap: 10px; align-items: center; }
+:where(.kz-u) .nav-cta { text-decoration: none; }
+:where(.kz-u) .nav-cta-gold { background: rgba(212,168,83,0.15); border-color: rgba(212,168,83,0.4); }
+@media (hover: none) {
+  :where(.kz-u) #cur-dot, :where(.kz-u) #cur-ring { display: none; }
+}
+/* PORT FIX: the nav fades in after the hero, but its links kept pointer-events
+   while invisible, so invisible buttons sat over the hero. */
+:where(.kz-u) #nav:not(.visible) .nav-brand,
+:where(.kz-u) #nav:not(.visible) .nav-cta { pointer-events: none; }
+:where(.kz-u) .nav-cta { white-space: nowrap; }
+:where(.kz-u) .nav-switch-icon { display: none; }
+@media (max-width: 600px) {
+  /* The original nav carried two buttons on phones; the experience switch collapses to an icon. */
+  :where(.kz-u) .nav-actions { gap: 6px; }
+  :where(.kz-u) .nav-cta { padding: 6px 12px; }
+  :where(.kz-u) .nav-switch { padding: 6px 10px; }
+  :where(.kz-u) .nav-switch-label { display: none; }
+  :where(.kz-u) .nav-switch-icon { display: inline; font-size: 0.85rem; line-height: 1; }
+}

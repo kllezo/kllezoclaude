@@ -97,7 +97,7 @@ export default function Entry() {
   return (
     <main ref={root} id="main" className={`entry ${s.entry}`} data-leaving={leaving ?? undefined}>
       <div ref={logo} className={s.logo}>
-        <Logo size={30} />
+        <Logo size={34} tone="beige" />
       </div>
 
       <div className={s.intro}>

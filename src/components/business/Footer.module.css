@@ -1,5 +1,5 @@
 .footer {
-  background: var(--k-dark);
+  background: var(--k-green);
   color: var(--k-beige);
   padding: clamp(56px, 8vw, 96px) 0 28px;
 }

@@ -24,51 +24,81 @@
 
 .ps {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(32px, 6vw, 96px);
+  align-items: end;
 }
 .problems {
   margin-top: 28px;
   display: grid;
-  gap: 10px;
+  border-top: 1px solid var(--k-line-strong);
 }
 .problems li {
-  padding: 16px 18px 16px 48px;
-  border-radius: 14px;
-  background: var(--k-beige);
-  position: relative;
-  font-size: 16px;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--k-line);
+  font-size: 17px;
+  line-height: 1.45;
 }
 .problems li::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  width: 16px;
-  height: 16px;
-  margin-top: -8px;
-  border-radius: 50%;
-  border: 1.5px solid #b4483b;
-  background: linear-gradient(45deg, transparent 45%, #b4483b 45% 55%, transparent 55%);
+  content: "×";
+  font-size: 18px;
+  line-height: 1;
+  color: #a2563e;
+}
+.why {
+  padding: clamp(24px, 3vw, 36px);
+  border-left: 2px solid var(--k-gold);
+  background: var(--k-beige);
+  border-radius: 0 14px 14px 0;
+}
+.whyLabel {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--k-grey);
+}
+.whyText {
+  margin-top: 14px;
+  font-size: clamp(18px, 1.6vw, 21px);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--k-dark);
+  text-wrap: pretty;
+}
+
+.solution {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+.solution .h2,
+.solution h2 {
+  margin-top: 18px;
 }
 .variants {
-  margin-top: 24px;
+  margin-top: 28px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 .variants > div {
-  padding: 16px 18px;
-  border-radius: 14px;
-  border: 1px solid rgba(9, 69, 62, 0.12);
+  padding: 18px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--k-line);
+  background: var(--k-white);
 }
 .variants b {
   color: var(--k-green);
 }
 .variants ul {
-  margin-top: 6px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 14px;
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 18px;
 }
 .variants li {
   font-size: 14px;
@@ -79,8 +109,9 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: rgba(9, 69, 62, 0.1);
-  border-radius: 20px;
+  background: var(--k-line);
+  border: 1px solid var(--k-line);
+  border-radius: 14px;
   overflow: hidden;
 }
 .deliv li {
@@ -97,52 +128,75 @@
   color: var(--k-gold);
 }
 
+/* How it works: a single timeline along a rule, not five identical boxes. */
 .steps {
   list-style: none;
   padding: 0;
-  margin: clamp(32px, 4vw, 56px) 0 0;
+  margin: clamp(36px, 5vw, 64px) 0 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  border-top: 1px solid rgba(251, 245, 233, 0.22);
 }
 .steps li {
-  padding: 22px;
-  border-radius: 18px;
-  background: rgba(251, 245, 233, 0.06);
-  box-shadow: inset 0 0 0 1px rgba(251, 245, 233, 0.1);
+  position: relative;
+  padding: 26px 24px 0 0;
   display: grid;
   gap: 8px;
   align-content: start;
 }
+.steps li::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--k-gold);
+  box-shadow: 0 0 0 4px var(--k-green);
+}
 .stepN {
   font-family: var(--f-mono);
   font-size: 11px;
-  color: var(--k-gold);
+  color: var(--k-gold-soft);
 }
 .steps h3 {
   font-size: 18px;
 }
 .steps p {
-  font-size: 14px;
-  line-height: 1.5;
-  color: rgba(251, 245, 233, 0.7);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(251, 245, 233, 0.72);
 }
 
 .out {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 0.9fr 1.1fr;
   gap: clamp(32px, 6vw, 96px);
   align-items: start;
 }
-.demo {
-  margin-top: 28px;
+.outNote {
+  font-size: 16px;
 }
 .outcomes {
-  margin-top: 28px;
-  gap: 16px;
+  display: grid;
+  border-top: 1px solid var(--k-line-strong);
 }
 .outcomes li {
-  font-size: 17px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--k-line);
+  font-size: clamp(17px, 1.5vw, 19px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.outcomes span {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--k-gold);
 }
 
 .faqWrap {
@@ -190,7 +244,7 @@
 .cta {
   background: var(--k-green);
   color: var(--k-beige);
-  border-radius: 28px;
+  border-radius: 16px;
   padding: clamp(28px, 5vw, 64px);
   display: flex;
   align-items: center;
@@ -225,12 +279,18 @@
 @media (max-width: 960px) {
   .heroGrid,
   .ps,
+  .solution,
   .out,
   .faqWrap {
     grid-template-columns: 1fr;
   }
   .steps {
     grid-template-columns: 1fr 1fr;
+    row-gap: 32px;
+    border-top: 0;
+  }
+  .steps li {
+    border-top: 1px solid rgba(251, 245, 233, 0.22);
   }
   .deliv,
   .relList {
@@ -240,7 +300,21 @@
 @media (max-width: 560px) {
   .steps,
   .deliv,
-  .relList {
+  .relList,
+  .variants ul {
     grid-template-columns: 1fr;
+  }
+  .steps {
+    border-top: 0;
+    border-left: 1px solid rgba(251, 245, 233, 0.22);
+    row-gap: 26px;
+  }
+  .steps li {
+    padding: 0 0 0 24px;
+    border-top: 0;
+  }
+  .steps li::before {
+    top: 6px;
+    left: -5px;
   }
 }

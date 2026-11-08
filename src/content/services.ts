@@ -43,6 +43,8 @@ export interface Service {
   summary: string;
   deliverables: string[];
   problems: string[];
+  /** Why the usual way of solving these problems falls short — the bridge from problem to solution. */
+  whyItFails: string;
   outcomes: string[];
   workflow: WorkflowStep[];
   faqs: Faq[];
@@ -118,6 +120,8 @@ export const services: Service[] = [
       "Content depends on whoever has time that week",
       "No idea which content actually drives business",
     ],
+    whyItFails:
+      "Most content is made week to week by whoever has time. Without research, pillars or a review loop there is nothing to learn from, so the same mistakes repeat and reach never turns into demand.",
     outcomes: [
       "A documented strategy and pillars your team can follow",
       "A predictable monthly calendar, planned in advance",
@@ -163,6 +167,8 @@ export const services: Service[] = [
       "No time to plan, record and edit content",
       "A profile that looks inconsistent across platforms",
     ],
+    whyItFails:
+      "Founders and experts tend to post when inspiration strikes, in a voice that shifts from post to post. Without a defined position and a steady cadence, the audience never learns what you stand for.",
     outcomes: [
       "A clear positioning statement and story you can use everywhere",
       "A consistent visual and verbal identity",
@@ -209,6 +215,8 @@ export const services: Service[] = [
       "Footage that exists but was never shaped into a story",
       "Production partners who shoot but don't direct",
     ],
+    whyItFails:
+      "One-off shoots are planned around the camera, not the outcome. Footage is captured without a script or a distribution plan, so an expensive production ends up as a single post.",
     outcomes: [
       "A film with a clear concept and creative direction",
       "Cut-downs and formats for every platform you need",
@@ -253,6 +261,8 @@ export const services: Service[] = [
       "Polished ads that don't feel native to the feed",
       "Product benefits that aren't shown clearly",
     ],
+    whyItFails:
+      "Ads usually run on one or two creatives until they fatigue. Without a pipeline of new hooks and formats to test, costs creep up and nobody can say which message is working.",
     outcomes: [
       "A steady pipeline of testable ad creatives",
       "Hook and format variations built for structured testing",
@@ -300,6 +310,8 @@ export const services: Service[] = [
       "Slow pages, especially on mobile",
       "No visibility into what visitors actually do",
     ],
+    whyItFails:
+      "Many websites are built as brochures: they describe the business but give visitors no clear path to act. Templates make them quick to launch and hard to improve.",
     outcomes: [
       "A custom site that reflects the quality of your business",
       "Clear journeys from landing to enquiry",
@@ -348,6 +360,8 @@ export const services: Service[] = [
       "Orders, stock and shipping managed in separate places",
       "No clear view of what sells and why",
     ],
+    whyItFails:
+      "Stores are often launched on a theme and left alone. Slow pages, thin product information and a long checkout quietly lose buyers who were ready to purchase.",
     outcomes: [
       "A branded storefront built around your products",
       "A streamlined cart and checkout flow",
@@ -392,6 +406,8 @@ export const services: Service[] = [
       "Leads lost between the form and the follow-up",
       "No reliable way to attribute enquiries to campaigns",
     ],
+    whyItFails:
+      "Paid traffic is often sent to a homepage that tries to speak to everyone. Without a focused page, a qualifying form and instant follow-up, clicks become bounces instead of conversations.",
     outcomes: [
       "Landing pages built around one clear action",
       "Qualification built into the form itself",
@@ -470,6 +486,8 @@ export const services: Service[] = [
       "The team answering the same questions all day",
       "Bookings handled manually back and forth",
     ],
+    whyItFails:
+      "Generic chatbots answer FAQs but can't qualify, book or hand over properly, and shared inboxes get checked when someone has time. Leads who message after hours simply move on.",
     outcomes: [
       "Instant responses, any time of day",
       "Leads qualified before they reach your team",
@@ -535,6 +553,8 @@ export const services: Service[] = [
       "Leads that never receive a follow-up call",
       "No-shows because nobody sent a reminder",
     ],
+    whyItFails:
+      "Calls go to voicemail outside office hours, and staff spend their day on routine questions. Hiring more people is expensive, and rigid phone menus frustrate callers instead of helping them.",
     outcomes: [
       "Every inbound call answered",
       "Callers qualified and routed to the right person",

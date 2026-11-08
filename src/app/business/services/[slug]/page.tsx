@@ -64,7 +64,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/busi
         </div>
       </section>
 
-      {/* 2 · Problem  ·  3 · Solution */}
+      {/* 2 · The problem  →  why the usual approach falls short */}
       <section className={`${b.section} ${b.white}`}>
         <div className={`${b.wrap} ${s.ps}`}>
           <div data-reveal>
@@ -76,10 +76,22 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/busi
               ))}
             </ul>
           </div>
-          <div data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            <span className={b.eyebrow}>Our solution</span>
+          <aside className={s.why} data-reveal style={{ ["--d" as string]: "0.1s" }}>
+            <span className={s.whyLabel}>Why it keeps happening</span>
+            <p className={s.whyText}>{sv.whyItFails}</p>
+          </aside>
+        </div>
+      </section>
+
+      {/* 3 · The Kllezo solution */}
+      <section className={b.section}>
+        <div className={`${b.wrap} ${s.solution}`}>
+          <div data-reveal>
+            <span className={b.eyebrow}>The Kllezo solution</span>
             <h2 className={b.h2}>{sv.tagline}</h2>
-            <p className={b.lead}>{sv.summary}</p>
+          </div>
+          <div data-reveal style={{ ["--d" as string]: "0.1s" }}>
+            <p className={b.lead}>{div.businessLine}</p>
             {sv.variants && (
               <div className={s.variants}>
                 {sv.variants.map((v) => (
@@ -98,7 +110,26 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/busi
         </div>
       </section>
 
-      {/* 4 · Deliverables */}
+      {/* 4 · How the system works */}
+      <section className={`${b.section} ${b.green}`} id="how">
+        <div className={b.wrap}>
+          <span className={b.eyebrow}>How it works</span>
+          <h2 className={b.h2}>
+            A clear process, <span className={b.serif}>no guesswork.</span>
+          </h2>
+          <ol className={s.steps}>
+            {sv.workflow.map((w, i) => (
+              <li key={w.title} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
+                <span className={s.stepN}>0{i + 1}</span>
+                <h3>{w.title}</h3>
+                <p>{w.detail}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 5 · Deliverables */}
       <section className={b.section}>
         <div className={b.wrap}>
           <div className={b.head}>
@@ -118,49 +149,27 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/busi
         </div>
       </section>
 
-      {/* 5 · How it works */}
-      <section className={`${b.section} ${b.green}`} id="how">
-        <div className={b.wrap}>
-          <span className={b.eyebrow}>How it works</span>
-          <h2 className={b.h2}>
-            A clear process, <span className={b.serif}>no guesswork.</span>
-          </h2>
-          <ol className={s.steps}>
-            {sv.workflow.map((w, i) => (
-              <li key={w.title} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
-                <span className={s.stepN}>0{i + 1}</span>
-                <h3>{w.title}</h3>
-                <p>{w.detail}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* 6 · Visual demonstration  ·  7 · Expected outcomes */}
-      <section className={b.section}>
+      {/* 6 · The outcome */}
+      <section className={`${b.section} ${b.white}`}>
         <div className={`${b.wrap} ${s.out}`}>
           <div data-reveal>
-            <span className={b.eyebrow}>In practice</span>
-            <h2 className={b.h2}>What it looks like.</h2>
-            <div className={s.demo}>
-              <ServiceDemo kind={sv.demo} />
-            </div>
-          </div>
-          <div data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            <span className={b.eyebrow}>Expected outcomes</span>
+            <span className={b.eyebrow}>The outcome</span>
             <h2 className={b.h2}>What changes.</h2>
-            <ul className={`${b.checks} ${s.outcomes}`}>
-              {sv.outcomes.map((o) => (
-                <li key={o}>{o}</li>
-              ))}
-            </ul>
+            <p className={`${b.lead} ${s.outNote}`}>The results we measure are agreed with you before work starts and reported monthly.</p>
           </div>
+          <ul className={s.outcomes} data-reveal style={{ ["--d" as string]: "0.1s" }}>
+            {sv.outcomes.map((o, i) => (
+              <li key={o}>
+                <span>{String(i + 1).padStart(2, "0")}</span>
+                {o}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* 8 · FAQs */}
-      <section className={`${b.section} ${b.white}`}>
+      {/* 7 · FAQs */}
+      <section className={b.section}>
         <div className={`${b.wrap} ${s.faqWrap}`}>
           <div>
             <span className={b.eyebrow}>FAQs</span>
@@ -177,8 +186,8 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/busi
         </div>
       </section>
 
-      {/* 9 · Enquiry CTA */}
-      <section className={b.section}>
+      {/* 8 · Enquiry CTA */}
+      <section className={`${b.section} ${b.white}`}>
         <div className={b.wrap}>
           <div className={s.cta} data-reveal>
             <div>

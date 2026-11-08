@@ -29,7 +29,7 @@
 .form {
   background: var(--f-bg);
   color: var(--f-fg);
-  border-radius: 20px;
+  border-radius: 16px;
   padding: clamp(20px, 3.4vw, 44px);
   display: grid;
   gap: 20px;

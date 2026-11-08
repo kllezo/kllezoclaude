@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className={s.footer}>
       <div className={s.inner}>
         <div className={s.brand}>
-          <Logo size={30} />
+          <Logo size={34} tone="beige" />
           <p className={s.pos}>{site.positioning}</p>
           <p className={s.tag}>{site.tagline}</p>
         </div>

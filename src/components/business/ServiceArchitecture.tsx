@@ -66,13 +66,13 @@ export default function ServiceArchitecture({ initial = "content" as DivisionId 
             ))}
           </ol>
           <span className={s.label}>Deliverables</span>
-          <div className={s.deliv}>
+          <ul className={s.deliv}>
             {sv.deliverables.map((d, i) => (
-              <span key={d} style={{ ["--i" as string]: i }}>
+              <li key={d} style={{ ["--i" as string]: i }}>
                 {d}
-              </span>
+              </li>
             ))}
-          </div>
+          </ul>
           <div className={s.links}>
             <Link href={`/business/services/${sv.slug}`} className={s.more}>
               Explore {sv.name} →

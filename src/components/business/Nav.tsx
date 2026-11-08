@@ -44,7 +44,7 @@ export default function Nav() {
     <header className={s.nav} data-scrolled={scrolled || undefined} data-open={open || undefined}>
       <div className={s.inner}>
         <Link href="/business" className={s.logo} aria-label="Kllezo Business home">
-          <Logo size={28} />
+          <Logo size={30} priority />
         </Link>
 
         <nav className={s.links} aria-label="Primary">

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KLLEZO — Services Ecosystem</title>
+  <meta name="description" content="Cinematic content, custom high-converting web experiences, human-grade conversational AI agents." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="services.css" />
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div id="cur-dot"></div>
+  <div id="cur-ring"></div>
+
+  <!-- Header -->
+  <header>
+    <a href="index.html" class="brand">KLLEZO</a>
+    <a href="index.html" class="back-btn" id="header-back-btn">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="transform: rotate(180deg);"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Back To Universe</span>
+    </a>
+  </header>
+
+  <!-- Background Ambient Glow -->
+  <div class="bg-glow-container">
+    <div class="hero-glow" id="main-glow"></div>
+  </div>
+
+  <!-- MAIN CONTAINER FOR PRODUCT EXPLORER -->
+  <main id="explorer-root">
+
+    <!-- LANDING STATE VIEW -->
+    <div id="landing-view" class="view-section active">
+      <div class="landing-hero">
+        <div class="hero-subtitle">Choose Your Solution</div>
+        <h1 class="hero-title">The Digital Ecosystem Built to Grow Businesses.</h1>
+        <p class="hero-desc">Select a system below to explore our architectural content engines, web experiences, and conversational intelligence.</p>
+      </div>
+
+      <!-- FOUR PREMIUM FLOATING ORBS -->
+      <div class="orbs-grid-container">
+        <div class="orbs-grid" id="orbs-grid">
+
+          <!-- Orb 1: Content Systems -->
+          <div class="orb-card" data-category="content">
+            <div class="orb-visual-wrapper">
+              <div class="orb-light-glow"></div>
+              <img src="assets/content creation  orb.png" alt="Content Systems" class="orb-img" />
+            </div>
+            <div class="orb-info">
+              <h3 class="orb-title">Content Systems</h3>
+              <p class="orb-sub">Cinematic storytelling &amp; authority engine</p>
+              <p class="orb-hover-desc">"Build authority through strategic content."</p>
+            </div>
+          </div>
+
+          <!-- Orb 2: Website Experiences -->
+          <div class="orb-card" data-category="websites">
+            <div class="orb-visual-wrapper">
+              <div class="orb-light-glow"></div>
+              <img src="assets/websites orb.png" alt="Website Experiences" class="orb-img" />
+            </div>
+            <div class="orb-info">
+              <h3 class="orb-title">Website Experiences</h3>
+              <p class="orb-sub">High-converting WebGL flagships</p>
+              <p class="orb-hover-desc">"Websites engineered to convert."</p>
+            </div>
+          </div>
+
+          <!-- Orb 3: AI Texting Agents -->
+          <div class="orb-card" data-category="texting">
+            <div class="orb-visual-wrapper">
+              <div class="orb-light-glow"></div>
+              <img src="assets/texting orb.png" alt="AI Texting Agents" class="orb-img" />
+            </div>
+            <div class="orb-info">
+              <h3 class="orb-title">AI Texting Agents</h3>
+              <p class="orb-sub">24/7 Omnichannel sales dialogue</p>
+              <p class="orb-hover-desc">"Conversations that qualify and book."</p>
+            </div>
+          </div>
+
+          <!-- Orb 4: AI Calling Agents -->
+          <div class="orb-card" data-category="calling">
+            <div class="orb-visual-wrapper">
+              <div class="orb-light-glow"></div>
+              <img src="assets/calling orb.png" alt="AI Calling Agents" class="orb-img" />
+            </div>
+            <div class="orb-info">
+              <h3 class="orb-title">AI Calling Agents</h3>
+              <p class="orb-sub">Human-grade autonomous voice models</p>
+              <p class="orb-hover-desc">"AI voice agents that answer and close."</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="services.js"></script>
+
+  <!-- SCRIPT FOR PRODUCT EXPLORER INTERACTIONS & ANIMATIONS -->
+  <script>
+    // Hash-based redirect for homepage navigation compatibility
+    const hash = window.location.hash;
+    if (hash) {
+      let redirectUrl = '';
+      if (hash === '#content') redirectUrl = 'services/content-systems.html';
+      else if (hash === '#websites') redirectUrl = 'services/website-experiences.html';
+      else if (hash === '#texting') redirectUrl = 'services/ai-texting-agents.html';
+      else if (hash === '#calling') redirectUrl = 'services/ai-calling-agents.html';
+      if (redirectUrl) {
+        window.location.replace(redirectUrl);
+      }
+    }
+
+    // Product Explorer Single-Page Navigation Logic
+    const landingView = document.getElementById('landing-view');
+    const orbCards = document.querySelectorAll('.orb-card');
+    let isTransitioning = false;
+
+    orbCards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        const categoryKey = card.getAttribute('data-category');
+        let targetUrl = '';
+        if (categoryKey === 'content') targetUrl = 'services/content-systems.html';
+        else if (categoryKey === 'websites') targetUrl = 'services/website-experiences.html';
+        else if (categoryKey === 'texting') targetUrl = 'services/ai-texting-agents.html';
+        else if (categoryKey === 'calling') targetUrl = 'services/ai-calling-agents.html';
+
+        // Step 1: Add dimming and transition classes to landing view
+        landingView.classList.add('in-transition');
+        card.classList.add('selected-orb');
+
+        orbCards.forEach(otherCard => {
+          if (otherCard !== card) {
+            otherCard.classList.add('faded-orb');
+          }
+        });
+
+        // Step 2: After 450ms transition, navigate to target page
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 450);
+      });
+    });
+  </script>
+</body>
+</html>

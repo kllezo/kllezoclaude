@@ -14,7 +14,7 @@
   display: inline-flex;
   gap: 8px;
   padding: 10px 16px;
-  border-radius: 99px;
+  border-radius: 8px;
   background: var(--k-white);
   box-shadow: 0 0 0 1px rgba(9, 69, 62, 0.1);
   font-size: 14.5px;
@@ -44,7 +44,7 @@
 }
 .item {
   background: var(--k-beige);
-  border-radius: 22px;
+  border-radius: 16px;
   box-shadow: 0 0 0 1px rgba(9, 69, 62, 0.08);
   scroll-margin-top: 90px;
   transition: box-shadow 0.3s;
@@ -218,7 +218,7 @@
 .deliv span {
   font-size: 13.5px;
   padding: 6px 12px;
-  border-radius: 99px;
+  border-radius: 8px;
   border: 1px solid rgba(9, 69, 62, 0.15);
   background: rgba(255, 253, 248, 0.6);
 }

@@ -1,24 +1,18 @@
 import type { Viewport } from "next";
-import Nav from "@/components/creative/Nav";
-import Footer from "@/components/creative/Footer";
-import SmoothScroll from "@/components/creative/SmoothScroll";
 import Arrival from "@/components/shared/Arrival";
-import Reveal from "@/components/shared/Reveal";
 import WhatsAppFloat from "@/components/shared/WhatsAppFloat";
-import c from "@/components/creative/c.module.css";
 
-export const viewport: Viewport = { themeColor: "#0B0B0B" };
+/* The Creative experience is the original Kllezo website (kllezo-v3), restored.
+   Its pages bring their own original headers, so this layout only adds the
+   shared pieces: the arrival hand-off and the WhatsApp contact. */
+export const viewport: Viewport = { themeColor: "#050608" };
 
 export default function CreativeLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`exp-creative ${c.exp}`}>
-      <Nav />
-      <main id="main">{children}</main>
-      <Footer />
+    <div className="exp-creative">
+      <div id="main">{children}</div>
       <WhatsAppFloat exp="creative" />
-      <SmoothScroll />
       <Arrival exp="creative" />
-      <Reveal />
     </div>
   );
 }

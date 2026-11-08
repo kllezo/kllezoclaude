@@ -9,7 +9,7 @@ export default function NotFound() {
       style={{ minHeight: "100svh", display: "grid", placeItems: "center", textAlign: "center", padding: 24, background: "#0B0B0B", color: "#FBF5E9" }}
     >
       <div style={{ display: "grid", gap: 20, justifyItems: "center" }}>
-        <Logo size={30} />
+        <Logo size={34} tone="beige" />
         <h1 style={{ fontFamily: "var(--f-serif)", fontWeight: 400, fontSize: "clamp(40px, 7vw, 88px)", lineHeight: 1 }}>
           This frame <em style={{ color: "#C8A25A" }}>doesn&apos;t exist.</em>
         </h1>

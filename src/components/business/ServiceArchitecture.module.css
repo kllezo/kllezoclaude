@@ -1,9 +1,7 @@
 .arch {
   background: var(--k-white);
-  border-radius: 28px;
-  box-shadow:
-    0 0 0 1px rgba(9, 69, 62, 0.08),
-    0 40px 80px -60px rgba(9, 69, 62, 0.5);
+  border-radius: 16px;
+  border: 1px solid var(--k-line);
   overflow: hidden;
 }
 
@@ -144,66 +142,71 @@
 .flow {
   list-style: none;
   padding: 0;
-  margin: 0 0 10px;
+  margin: 0 0 14px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
   counter-reset: step;
+  border-top: 1px solid var(--k-line);
 }
+/* Workflow as a numbered timeline: one readable row per stage. */
 .flow li {
   position: relative;
   display: grid;
-  gap: 4px;
-  align-content: start;
-  padding: 12px 10px 10px;
-  border-radius: 12px;
-  background: var(--k-beige);
+  grid-template-columns: 32px minmax(110px, 0.32fr) 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--k-line);
   counter-increment: step;
-  animation: stepIn 0.5s var(--ease-out) both;
-  animation-delay: calc(var(--i) * 0.07s);
+  animation: stepIn 0.45s var(--ease-out) both;
+  animation-delay: calc(var(--i) * 0.05s);
 }
 .flow li::before {
   content: "0" counter(step);
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--k-gold);
 }
-.flow li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: -6px;
-  top: 18px;
-  width: 6px;
-  height: 1px;
-  background: var(--k-green);
-}
 .flow b {
-  font-size: 13.5px;
+  font-size: 14.5px;
+  font-weight: 600;
 }
 .flow span {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--k-grey);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 @keyframes stepIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
 }
 .deliv {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
 }
-.deliv span {
-  font-size: 13px;
-  padding: 6px 12px;
-  border-radius: 99px;
-  border: 1px solid rgba(9, 69, 62, 0.14);
+.deliv li {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  padding: 7px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--k-line);
   animation: stepIn 0.4s var(--ease-out) both;
-  animation-delay: calc(var(--i) * 0.03s);
+  animation-delay: calc(var(--i) * 0.025s);
+}
+.deliv li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--k-green);
+  transform: translateY(-1px);
 }
 .links {
   display: flex;
@@ -232,16 +235,6 @@
     border-right: 0;
     border-bottom: 1px solid rgba(9, 69, 62, 0.08);
   }
-  .flow {
-    grid-template-columns: 1fr;
-  }
-  .flow li {
-    grid-template-columns: 28px 120px 1fr;
-    align-items: baseline;
-  }
-  .flow li:not(:last-child)::after {
-    display: none;
-  }
 }
 @media (max-width: 520px) {
   .tab {
@@ -250,8 +243,12 @@
   }
   .flow li {
     grid-template-columns: 28px 1fr;
+    gap: 2px 10px;
   }
   .flow span {
     grid-column: 2;
+  }
+  .deliv {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,8 +1,8 @@
 .journey {
   background: var(--k-white);
-  border-radius: 28px;
+  border-radius: 16px;
   padding: clamp(20px, 3vw, 40px);
-  box-shadow: 0 0 0 1px rgba(9, 69, 62, 0.08);
+  border: 1px solid var(--k-line);
 }
 .track {
   position: relative;
