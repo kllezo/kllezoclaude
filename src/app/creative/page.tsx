@@ -1,10 +1,16 @@
 import Link from "next/link";
 import MoltenGold from "@/components/creative/kit/MoltenGold";
 import Lines from "@/components/creative/kit/Lines";
-import Chapters from "@/components/creative/home/Chapters";
+import Loader from "@/components/creative/kit/Loader";
+import Tapes from "@/components/creative/home/Tapes";
+import ScrollStopper from "@/components/creative/home/ScrollStopper";
+import SiteBuilder from "@/components/creative/home/SiteBuilder";
+import NightCall from "@/components/creative/home/NightCall";
+import Flood from "@/components/creative/home/Flood";
+import DayClock from "@/components/creative/home/DayClock";
+import Constellation from "@/components/creative/home/Constellation";
 import Reel from "@/components/creative/home/Reel";
 import Film from "@/components/creative/home/Film";
-import Method from "@/components/creative/home/Method";
 import { videos } from "@/content/creativeMedia";
 import { pageMeta } from "@/lib/seo";
 
@@ -19,7 +25,9 @@ export const metadata = pageMeta({
 export default function CreativeHome() {
   return (
     <>
-      {/* HERO — molten gold, live */}
+      <Loader />
+
+      {/* HERO — molten gold, live; press and hold to heat it */}
       <section className="cx-hero">
         <MoltenGold className="cx-hero-canvas" />
         <div className="cx-wrap cx-hero-inner">
@@ -29,6 +37,9 @@ export default function CreativeHome() {
           <Lines as="h1" className="cx-hero-title" delay={0.1} lines={["We make brands", <em key="i">impossible</em>, "to ignore."]} />
           <div className="cx-hero-foot">
             <p data-cx-fade="0.6">Stories people stop for, websites they stay in, and a voice that answers at 2 a.m. — designed and run as one system.</p>
+            <p className="cx-hero-hint" data-cx-fade="0.7" aria-hidden="true">
+              <i /> Press and hold to melt the gold
+            </p>
             <a href="#belief" className="cx-scroll" data-cx-fade="0.8">
               <span>Scroll</span>
               <i aria-hidden="true" />
@@ -37,9 +48,11 @@ export default function CreativeHome() {
         </div>
       </section>
 
+      <Tapes />
+
       {/* BELIEF */}
       <section id="belief" className="cx-belief cx-wrap">
-        <p className="cx-kicker">(01) Belief</p>
+        <p className="cx-kicker">Belief</p>
         <p className="cx-statement" data-cx-words>
           Attention is earned before it is converted. We build the whole journey — <em>the story</em> people stop for, <em>the website</em> they stay in, <em>the voice</em> that answers when you can&apos;t — and we build it as one system.
         </p>
@@ -51,20 +64,21 @@ export default function CreativeHome() {
         </div>
       </section>
 
-      {/* THE FOUR SYSTEMS — horizontal journey */}
-      <div className="cx-wrap cx-chapters-head">
-        <p className="cx-kicker">(02) The systems</p>
-      </div>
-      <Chapters />
+      {/* THE FOUR SYSTEMS — each one a toy you can play with */}
+      <ScrollStopper />
+      <SiteBuilder />
+      <NightCall />
+      <Flood />
 
-      {/* STUDIO FRAMES */}
+      {/* A DAY OF THE SYSTEM */}
+      <DayClock />
+
+      {/* ONE STUDIO */}
+      <Constellation />
+
+      {/* STUDIO FRAMES + FILM FINALE */}
       <Reel />
-
-      {/* FILM */}
       <Film src={videos.studio2} />
-
-      {/* THE SYSTEM */}
-      <Method />
     </>
   );
 }

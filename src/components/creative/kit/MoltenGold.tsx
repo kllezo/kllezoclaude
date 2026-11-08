@@ -20,6 +20,8 @@ uniform vec2 uRes;
 uniform float uTime;
 uniform vec2 uMouse;
 uniform float uIntensity;
+uniform vec2 uPoint;   // pointer, in pixels
+uniform float uPress;  // 0..1, eased while held
 
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p){
@@ -43,6 +45,12 @@ float field(vec2 p){
 void main(){
   vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
   vec2 p = uv * 1.35 + uMouse * 0.12 + vec2(0.6, 0.0);
+  // Under the pointer the metal heats: a swirl that deepens while you press.
+  vec2 pu = (uPoint - 0.5 * uRes) / uRes.y;
+  vec2 dv = uv - pu;
+  float near = exp(-dot(dv, dv) * 14.0);
+  float ang = near * (0.35 + 2.2 * uPress);
+  p = mat2(cos(ang), -sin(ang), sin(ang), cos(ang)) * (p - pu * 1.35) + pu * 1.35;
   float e = 0.004;
   float h = field(p);
   float hx = field(p + vec2(e, 0.0));
@@ -56,7 +64,7 @@ void main(){
   float rim = pow(1.0 - max(n.z, 0.0), 2.0);
 
   // Ribbons: only the ridges of the field are metal; the rest falls into shadow.
-  float ribbon = smoothstep(0.50, 0.72, h);
+  float ribbon = smoothstep(0.50 - near * (0.08 + 0.22 * uPress), 0.72, h);
   vec3 ink = vec3(0.027, 0.039, 0.035);
   vec3 deep = vec3(0.22, 0.15, 0.06);
   vec3 gold = vec3(0.784, 0.635, 0.353);
@@ -117,6 +125,8 @@ export default function MoltenGold({ className, intensity = 1 }: { className?: s
     const uTime = gl.getUniformLocation(prog, "uTime");
     const uMouse = gl.getUniformLocation(prog, "uMouse");
     const uIntensity = gl.getUniformLocation(prog, "uIntensity");
+    const uPoint = gl.getUniformLocation(prog, "uPoint");
+    const uPress = gl.getUniformLocation(prog, "uPress");
 
     const small = window.matchMedia("(max-width: 760px), (pointer: coarse)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -135,12 +145,27 @@ export default function MoltenGold({ className, intensity = 1 }: { className?: s
     ro.observe(canvas);
     resize();
 
-    const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+    const mouse = { x: 0, y: 0, tx: 0, ty: 0, px: -9999, py: -9999, tpx: -9999, tpy: -9999, press: 0, held: false };
     const onMove = (e: PointerEvent) => {
       mouse.tx = (e.clientX / window.innerWidth - 0.5) * 2;
       mouse.ty = -(e.clientY / window.innerHeight - 0.5) * 2;
+      const r = canvas.getBoundingClientRect();
+      mouse.tpx = (e.clientX - r.left) * (canvas.width / Math.max(1, r.width));
+      mouse.tpy = (r.bottom - e.clientY) * (canvas.height / Math.max(1, r.height));
+      if (mouse.px < -999) {
+        mouse.px = mouse.tpx;
+        mouse.py = mouse.tpy;
+      }
     };
+    const onDown = (e: PointerEvent) => {
+      onMove(e);
+      mouse.held = true;
+    };
+    const onUp = () => (mouse.held = false);
     window.addEventListener("pointermove", onMove, { passive: true });
+    const pressTarget = host.parentElement ?? host;
+    pressTarget.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointerup", onUp);
 
     let visible = true;
     const io = new IntersectionObserver(([en]) => {
@@ -161,10 +186,16 @@ export default function MoltenGold({ className, intensity = 1 }: { className?: s
       const k = 1 - Math.pow(0.04, dt);
       mouse.x += (mouse.tx - mouse.x) * k;
       mouse.y += (mouse.ty - mouse.y) * k;
+      const kp = 1 - Math.pow(0.002, dt);
+      mouse.px += (mouse.tpx - mouse.px) * kp;
+      mouse.py += (mouse.tpy - mouse.py) * kp;
+      mouse.press += ((mouse.held ? 1 : 0) - mouse.press) * (1 - Math.pow(mouse.held ? 0.2 : 0.05, dt));
       gl!.uniform2f(uRes, canvas.width, canvas.height);
       gl!.uniform1f(uTime, t);
       gl!.uniform2f(uMouse, mouse.x, mouse.y);
       gl!.uniform1f(uIntensity, intensity);
+      gl!.uniform2f(uPoint, mouse.px, mouse.py);
+      gl!.uniform1f(uPress, mouse.press);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
       if (!shown) {
         shown = true;
@@ -186,6 +217,8 @@ export default function MoltenGold({ className, intensity = 1 }: { className?: s
       ro.disconnect();
       io.disconnect();
       window.removeEventListener("pointermove", onMove);
+      pressTarget.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointerup", onUp);
       document.removeEventListener("visibilitychange", onVis);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
       canvas.remove();

@@ -58,7 +58,7 @@ export default function Reel() {
   return (
     <section ref={root} className="cx-reel" aria-label="Frames from the studio">
       <div className="cx-wrap cx-reel-head">
-        <p className="cx-kicker">(03) From the studio</p>
+        <p className="cx-kicker">From the studio</p>
         <p className="cx-reel-note" data-cx-fade>
           Systems we design, shoot and run. <em>Every frame here was made in-house.</em>
         </p>

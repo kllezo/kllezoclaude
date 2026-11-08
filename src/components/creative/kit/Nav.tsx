@@ -8,6 +8,7 @@ import gsap from "gsap";
 import ExperienceSwitch from "@/components/shared/ExperienceSwitch";
 import { divisions, servicesIn } from "@/content/services";
 import { site } from "@/content/site";
+import { sound } from "./sfx";
 
 const PAGES = [
   { href: "/creative", label: "Home" },
@@ -25,6 +26,15 @@ export default function Nav() {
   const [hidden, setHidden] = useState(false);
   const [solid, setSolid] = useState(false);
   const menu = useRef<HTMLDivElement>(null);
+  const [audio, setAudio] = useState(false);
+
+  useEffect(() => {
+    const off = sound.subscribe(setAudio);
+    if (sound.restore()) sound.set(true);
+    return () => {
+      off();
+    };
+  }, []);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -71,6 +81,15 @@ export default function Nav() {
           <Image src="/brand/kllezo-mark-beige.webp" alt="Kllezo" width={128} height={36} priority unoptimized />
         </Link>
         <div className="cx-nav-right">
+          <button type="button" className="cx-sound" aria-pressed={audio} onClick={() => sound.set(!audio)} aria-label={audio ? "Turn sound off" : "Turn sound on"}>
+            <span className="cx-sound-bars" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="cx-hide-sm">{audio ? "Sound on" : "Sound off"}</span>
+          </button>
           <ExperienceSwitch current="creative" className="cx-nav-link cx-hide-sm">
             Business view
           </ExperienceSwitch>
