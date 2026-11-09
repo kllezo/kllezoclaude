@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { sfx } from "@/components/creative/kit/sfx";
+import Sky from "@/components/creative/kit/Sky";
 
 /* The opening: the visitor's own clock, live — and while they read, the things a
    business misses quietly pile up in the corner. Problem first, before a word
@@ -48,7 +49,9 @@ export default function LiveHero() {
 
   return (
     <section className="cx-live" aria-labelledby="live-h">
-      <div className="cx-live-grain" aria-hidden="true" />
+      {/* The sky outside the visitor's window, right now. */}
+      {now && <Sky minute={now.getHours() * 60 + now.getMinutes()} className="is-hero" />}
+      <div className="cx-story-scrim" aria-hidden="true" />
       <div className="cx-wrap cx-live-inner">
         <p className="cx-kicker" data-cx-fade="0.1">
           <span className="cx-rec" aria-hidden="true" /> Live — your time

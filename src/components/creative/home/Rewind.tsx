@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { sfx } from "@/components/creative/kit/sfx";
+import Sky from "@/components/creative/kit/Sky";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,6 +49,7 @@ export default function Rewind() {
   return (
     <section ref={root} className="cx-rewind" aria-label="Rewind the day">
       <div className="cx-rw-pin">
+        <Sky minute={m} className="is-rewind" />
         <div className="cx-rw-scan" aria-hidden="true" />
         <div className="cx-rw-inner">
           <p className="cx-rw-label">

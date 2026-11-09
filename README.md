@@ -19,11 +19,12 @@ The Business home tells visitors their problem before it sells anything, then sh
 |---|---|---|
 | Hero | "You're not short of customers. You're losing them." beside a live lead-flow simulation you can switch between *Without a system* and *With Kllezo* (illustrative) | `components/business/LeakSimulator.tsx` |
 | The problem | Three disconnected vendors drawn as leaking pipes | `components/business/LeakDiagram.tsx` |
-| Diagnosis | Visitors tick the problems that sound familiar; a plan of the exact services builds beside them and carries into the enquiry form (`?service=…`) | `components/business/Diagnose.tsx` |
+| Diagnosis (just before the CTA) | Visitors tick the problems that sound familiar; a plan of the exact services builds beside them and carries into the enquiry form (`?service=…`) | `components/business/Diagnose.tsx` |
 | Problem → solved | Pick a problem; drag a before/after line across a live interface mock-up (content graph, website, inbox, call log), with the fix in four short steps | `components/business/SolutionSwitcher.tsx` |
-| Method | Four stages that light up in order on a track | `components/business/MethodSteps.tsx` |
+| AI lead flow | Every channel through one AI layer, live | `components/business/LeadFlow.tsx` |
+| Work | Real studio website builds that scroll the full page on hover | `components/business/SiteShowcase.tsx` |
 | Why Kllezo | The usual setup vs Kllezo, row by row (✕ / ✓) | `components/business/VsTable.tsx` |
-| Also | Divisions index, AI lead-flow demo, work, measured journey, CTA | `app/business/page.tsx` |
+| CTA | "Let's find your leaks" with the four-stage method as an animated track | `components/business/MethodSteps.tsx` |
 
 ## Creative — "One day, told twice"
 
@@ -39,7 +40,7 @@ The Creative home is a problem-first story, scrubbed by scroll (all scenes illus
 | Four systems | Each problem, struck through, next to the system behind it | `home/Systems.tsx` |
 | Finale | Live liquid-gold shader behind "Let's run your day." | `kit/MoltenGold.tsx` |
 
-The moments are defined in `app/creative/page.tsx`. Shared: motion system (`kit/Motion.tsx`, Lenis + GSAP ScrollTrigger), optional synthesized sound (`kit/sfx.ts`, off by default), nav, cursor, footer; styles scoped to `.cx` in `kit/creative.css`. Reduced motion shows the end state of each act without scroll scrubbing.
+Every scene plays under a realistic sky (`kit/Sky.tsx`) that follows the story clock — dawn, blue midday, golden hour, sunset behind a city skyline, dusk, stars and lit windows; the hero shows the visitor's own sky right now. A dock (`home/StoryDock.tsx`) keeps "Fix my day / Start a project" on screen through the whole story. The moments are defined in `app/creative/page.tsx`. Shared: motion system (`kit/Motion.tsx`, Lenis + GSAP ScrollTrigger), optional synthesized sound (`kit/sfx.ts`, off by default), nav, cursor, footer; styles scoped to `.cx` in `kit/creative.css`. Reduced motion shows the end state of each act without scroll scrubbing.
 
 ## Run it
 

@@ -13,7 +13,7 @@ const STEPS = [
   { icon: IconChart, t: "Refine", d: "Monthly, by the numbers", when: "Every month" },
 ];
 
-export default function MethodSteps() {
+export default function MethodSteps({ tone = "light" }: { tone?: "light" | "dark" }) {
   const ref = useRef<HTMLOListElement>(null);
   const [lit, setLit] = useState(-1);
 
@@ -40,7 +40,7 @@ export default function MethodSteps() {
   }, []);
 
   return (
-    <ol ref={ref} className={s.track} style={{ ["--lit" as string]: Math.max(0, lit) / (STEPS.length - 1) }}>
+    <ol ref={ref} className={`${s.track} ${tone === "dark" ? s.dark : ""}`} style={{ ["--lit" as string]: Math.max(0, lit) / (STEPS.length - 1) }}>
       <i className={s.line} aria-hidden="true" />
       {STEPS.map((st, i) => {
         const Icon = st.icon;

@@ -96,3 +96,30 @@
     margin: 0;
   }
 }
+
+/* On the green CTA band */
+.dark::before {
+  background: rgba(251, 245, 233, 0.18);
+}
+.dark .line {
+  background: var(--k-gold);
+}
+.dark .dot {
+  background: transparent;
+  border-color: rgba(251, 245, 233, 0.25);
+  color: rgba(251, 245, 233, 0.5);
+}
+.dark .step[data-on] .dot {
+  background: var(--k-gold);
+  border-color: var(--k-gold);
+  color: var(--k-dark);
+}
+.dark .step b {
+  color: var(--k-beige);
+}
+.dark .d {
+  color: rgba(251, 245, 233, 0.62);
+}
+.dark .step small {
+  color: var(--k-gold-soft);
+}

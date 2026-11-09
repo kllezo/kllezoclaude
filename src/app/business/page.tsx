@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
-import { calling, studioFrames, websites } from "@/content/creativeMedia";
 import { IconBolt, IconCalendar, IconChart, IconLayers } from "@/components/business/icons";
 import LeakSimulator from "@/components/business/LeakSimulator";
 import Diagnose from "@/components/business/Diagnose";
@@ -9,9 +7,7 @@ import VsTable from "@/components/business/VsTable";
 import MethodSteps from "@/components/business/MethodSteps";
 import LeadFlow from "@/components/business/LeadFlow";
 import SiteShowcase from "@/components/business/SiteShowcase";
-import ConversionJourney from "@/components/business/ConversionJourney";
 import LeakDiagram from "@/components/business/LeakDiagram";
-import { divisions, servicesIn } from "@/content/services";
 import { publishedCaseStudies } from "@/content/work";
 import { pageMeta } from "@/lib/seo";
 import b from "@/components/business/b.module.css";
@@ -30,9 +26,6 @@ const leaks = [
   { vendor: "Web developer", where: "Conversion", t: "A website that only describes", d: "Visitors read, then leave.", fix: "Website Experiences" },
   { vendor: "Chatbot", where: "Follow-up", t: "Leads that wait", d: "Enquiries go cold before anyone replies.", fix: "AI Communication Systems" },
 ];
-
-// The division rows show real Kllezo work, not icons.
-const DIV_MEDIA = { content: studioFrames[0], websites: websites[0], ai: calling[2] } as const;
 
 const PROOF = [
   { icon: IconLayers, t: "Content, web & AI", d: "One team, one plan" },
@@ -106,28 +99,10 @@ export default function BusinessHome() {
         </div>
       </section>
 
-      {/* DIAGNOSE — the visitor names their own problems */}
-      <section className={`${b.section} ${b.white}`} id="diagnose">
-        <div className={b.wrap}>
-          <div className={b.head}>
-            <div>
-              <span className={b.eyebrow}>Diagnosis · 30 seconds</span>
-              <h2 className={b.h2}>
-                Which of these <span className={b.serif}>sound familiar?</span>
-              </h2>
-            </div>
-            <p className={b.lead}>Tick what applies. Your plan builds itself.</p>
-          </div>
-          <div data-reveal>
-            <Diagnose />
-          </div>
-        </div>
-      </section>
-
       {/* PROBLEM → SOLVED */}
       <section className={b.section}>
         <div className={b.wrap}>
-          <div className={b.head}>
+          <div className={b.headCenter}>
             <div>
               <span className={b.eyebrow}>From problem to solved</span>
               <h2 className={b.h2}>
@@ -138,62 +113,6 @@ export default function BusinessHome() {
           </div>
           <div data-reveal>
             <SolutionSwitcher />
-          </div>
-        </div>
-      </section>
-
-      {/* 4 · THREE DIVISIONS */}
-      <section className={`${b.section} ${b.white}`}>
-        <div className={b.wrap}>
-          <div className={b.head}>
-            <div>
-              <span className={b.eyebrow}>One system · Three divisions</span>
-              <h2 className={b.h2}>Every fix, built to work together.</h2>
-            </div>
-            <p className={b.lead}>Use one, or connect all three.</p>
-          </div>
-          {/* The answer to the broken pipes above: one continuous line through all three. */}
-          <ol className={s.divisions}>
-            {divisions.map((d, i) => (
-              <li key={d.id} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
-                <Link href={`/business/services#${d.id}`} className={s.division}>
-                  <span className={s.dIndex}>{d.index}</span>
-                  <span className={s.dHead}>
-                    <span className={s.dName}>{d.name}</span>
-                    <span className={s.dPos}>{d.positioning}</span>
-                  </span>
-                  <span className={s.dList}>
-                    {servicesIn(d.id).map((sv) => (
-                      <span key={sv.slug}>{sv.name}</span>
-                    ))}
-                  </span>
-                  <span className={s.dThumb} aria-hidden="true">
-                    <Image src={DIV_MEDIA[d.id].src} alt="" width={DIV_MEDIA[d.id].w} height={DIV_MEDIA[d.id].h} sizes="220px" unoptimized />
-                  </span>
-                  <span className={s.dMore} aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* 5 · HOW KLLEZO WORKS */}
-      <section className={`${b.section} ${b.tight}`}>
-        <div className={b.wrap}>
-          <div className={b.head}>
-            <div>
-              <span className={b.eyebrow}>How Kllezo works</span>
-              <h2 className={b.h2}>
-                A method, <span className={b.serif}>not a menu.</span>
-              </h2>
-            </div>
-            <p className={b.lead}>Same four stages, every time. No surprises.</p>
-          </div>
-          <div data-reveal>
-            <MethodSteps />
           </div>
         </div>
       </section>
@@ -218,7 +137,7 @@ export default function BusinessHome() {
       {/* 7 · FEATURED WORK */}
       <section className={b.section}>
         <div className={b.wrap}>
-          <div className={b.head}>
+          <div className={b.headInline}>
             <div>
               <span className={b.eyebrow}>Featured work</span>
               <h2 className={b.h2}>Websites engineered to convert.</h2>
@@ -252,7 +171,7 @@ export default function BusinessHome() {
       {/* 8 · WHY KLLEZO */}
       <section className={`${b.section} ${b.white}`}>
         <div className={b.wrap}>
-          <div className={b.head}>
+          <div className={b.headCenter}>
             <div>
               <span className={b.eyebrow}>Why Kllezo</span>
               <h2 className={b.h2}>
@@ -264,30 +183,34 @@ export default function BusinessHome() {
         </div>
       </section>
 
-      {/* 9 · RESULTS & MEASURABLE OUTCOMES */}
-      <section className={b.section}>
+      {/* DIAGNOSE — the visitor names their own problems */}
+      <section className={`${b.section} ${b.white}`} id="diagnose">
         <div className={b.wrap}>
-          <div className={b.head}>
+          <div className={b.headCenter}>
             <div>
-              <span className={b.eyebrow}>Results &amp; measurable outcomes</span>
-              <h2 className={b.h2}>From visitor to customer — measured at every step.</h2>
+              <span className={b.eyebrow}>Your turn · 30 seconds</span>
+              <h2 className={b.h2}>
+                Which of these <span className={b.serif}>sound familiar?</span>
+              </h2>
             </div>
-            <p className={b.lead}>We agree the numbers up front and report them monthly.</p>
+            <p className={b.lead}>Tick what applies. Your plan builds itself.</p>
           </div>
           <div data-reveal>
-            <ConversionJourney />
+            <Diagnose />
           </div>
         </div>
       </section>
 
-      {/* 10 · FINAL CTA */}
+      {/* FINAL CTA — what happens next, as four steps */}
       <section className={s.cta}>
-        <div className={`${b.wrap} ${s.ctaGrid}`}>
-          <div data-reveal>
-            <span className={b.eyebrow}>Strategy call</span>
-            <h2 className={s.ctaTitle}>
-              Let&apos;s find your leaks — <span className={b.serif}>and close them.</span>
-            </h2>
+        <div className={b.wrap}>
+          <div className={s.ctaTop} data-reveal>
+            <div>
+              <span className={b.eyebrow}>Strategy call</span>
+              <h2 className={s.ctaTitle}>
+                Let&apos;s find your leaks — <span className={b.serif}>and close them.</span>
+              </h2>
+            </div>
             <div className={b.actions}>
               <Link href="/business/contact" className={b.btnGold}>
                 Book a Strategy Call →
@@ -297,26 +220,10 @@ export default function BusinessHome() {
               </Link>
             </div>
           </div>
-          <ol className={s.ctaSteps} data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            <li>
-              <span>01</span>
-              <p>
-                <b>A focused conversation.</b> Where growth is leaking today, in attention, conversion or follow-up.
-              </p>
-            </li>
-            <li>
-              <span>02</span>
-              <p>
-                <b>A recommended system.</b> Which services fit, how they connect and what we&apos;d build first.
-              </p>
-            </li>
-            <li>
-              <span>03</span>
-              <p>
-                <b>No obligation.</b> You leave with a clear plan whether or not we work together.
-              </p>
-            </li>
-          </ol>
+          <div className={s.ctaSteps} data-reveal>
+            <p className={s.ctaNext}>What happens next</p>
+            <MethodSteps tone="dark" />
+          </div>
         </div>
       </section>
     </>

@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { studioFrames, websites } from "@/content/creativeMedia";
 import { sfx } from "@/components/creative/kit/sfx";
+import Sky from "@/components/creative/kit/Sky";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -123,13 +124,12 @@ export default function DayStory({
   const active = moments.filter((x) => x.m <= min).length - 1;
   const cur = active >= 0 ? moments[active] : null;
   const ended = min >= 23 * 60 + 20;
-  const night = min >= 19 * 60;
 
   return (
     <section ref={root} id={id} className="cx-story" data-mode={mode} aria-labelledby={`${id}-h`}>
       <div className="cx-story-pin">
-        <div className="cx-story-noise" aria-hidden="true" />
-        <div className="cx-story-orb" data-night={night ? "" : undefined} aria-hidden="true" />
+        <Sky minute={min} className={mode === "lost" ? "is-muted" : ""} />
+        <div className="cx-story-scrim" aria-hidden="true" />
 
         <div className="cx-wrap cx-story-grid">
           <div className="cx-story-left">
@@ -158,6 +158,15 @@ export default function DayStory({
                       </>
                     )}
                   </p>
+                  {mode === "lost" ? (
+                    <a href="#act-2" className="cx-cap-cta">
+                      See the same day, fixed ↓
+                    </a>
+                  ) : (
+                    <Link href="/creative/contact" className="cx-cap-cta is-gold">
+                      Start a project →
+                    </Link>
+                  )}
                 </div>
               ) : cur ? (
                 <div key={cur.m} className="cx-cap">

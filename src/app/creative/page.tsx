@@ -6,6 +6,7 @@ import DayStory, { type Moment } from "@/components/creative/home/DayStory";
 import Rewind from "@/components/creative/home/Rewind";
 import Compare from "@/components/creative/home/Compare";
 import Systems from "@/components/creative/home/Systems";
+import StoryDock from "@/components/creative/home/StoryDock";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
@@ -39,6 +40,7 @@ export default function CreativeHome() {
   return (
     <>
       <LiveHero />
+      <StoryDock />
 
       <DayStory id="act-1" mode="lost" act="Act I" title="A day without a system" moments={LOST} counterLabel="customers lost today" sky={COLD} />
 
