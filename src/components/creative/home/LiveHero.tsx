@@ -77,10 +77,15 @@ export default function LiveHero() {
       </div>
 
       <ol className="cx-pile" aria-label="Notifications piling up">
-        {pile.map((key) => {
+        {pile.map((key, i) => {
           const item = PILE[key % PILE.length];
           return (
-            <li key={key} className="cx-note">
+            <li
+              key={key}
+              className="cx-note"
+              data-new={i === 0 ? "" : undefined}
+              style={{ ["--i" as string]: i, ["--o" as string]: [1, 0.92, 0.75, 0.45][i] ?? 0 }}
+            >
               <i aria-hidden="true">{item.icon}</i>
               <div>
                 <b>{item.t}</b>

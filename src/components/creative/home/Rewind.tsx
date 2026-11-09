@@ -64,7 +64,7 @@ export default function Rewind() {
           <p className="cx-rw-line">
             Same business. Same day. Same customers.
             <br />
-            <em>Now run it with a system.</em>
+            <em>Now run it with Kllezo systems.</em>
           </p>
         </div>
       </div>

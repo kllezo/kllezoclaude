@@ -13,9 +13,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────────────────────────────────────
    The day, told twice. Scroll runs the clock from 06:00 to midnight.
-   Act I ("lost"): one ordinary business without a system — each moment a
+   First ("lost"): one ordinary business without a system — each moment a
    customer slips away, the screen glitches and the counter climbs.
-   Act II ("won"): the same moments, the same times — each one caught by the
+   Then ("won"): the same moments, the same times — each one caught by the
    Kllezo system that fixes it. Scenes are illustrative.
    ───────────────────────────────────────────────────────────────────────── */
 
@@ -51,7 +51,6 @@ function Roll({ value }: { value: string }) {
 export default function DayStory({
   id,
   mode,
-  act,
   title,
   moments,
   counterLabel,
@@ -59,7 +58,6 @@ export default function DayStory({
 }: {
   id: string;
   mode: "lost" | "won";
-  act: string;
   title: React.ReactNode;
   moments: Moment[];
   counterLabel: string;
@@ -133,9 +131,9 @@ export default function DayStory({
 
         <div className="cx-wrap cx-story-grid">
           <div className="cx-story-left">
-            <p className="cx-kicker">
-              <span className="cx-gold">{act}</span> — <span id={`${id}-h`}>{title}</span>
-            </p>
+            <h2 id={`${id}-h`} className="sr-only">
+              {title}
+            </h2>
             <div className="cx-story-clock">
               <Roll value={fmt(min)} />
             </div>
@@ -379,7 +377,7 @@ function Artifact({ kind }: { kind: Kind }) {
               <span>Ringing…</span>
               <span className="is-red">Missed call</span>
             </p>
-            <p className="cx-a-call-vm">No voicemail left</p>
+            <p className="cx-a-call-vm">Rang out · they tried the next number</p>
           </div>
           <span className="cx-a-tag">After hours</span>
         </Phone>

@@ -8,8 +8,8 @@ import { useEffect, useRef, useState } from "react";
 const ROWS = [
   { at: "08:10", lost: "Post scrolled past", won: "Post stopped the scroll", by: "Content" },
   { at: "11:42", lost: "Visitor left in seconds", won: "Visitor sent an enquiry", by: "Website" },
-  { at: "13:05", lost: "DM unread until tomorrow", won: "Replied in seconds, booked", by: "AI Texting" },
-  { at: "19:48", lost: "Missed call, no voicemail", won: "Answered, appointment booked", by: "AI Calling" },
+  { at: "14:45", lost: "DM unread until tomorrow", won: "Replied in seconds, booked", by: "AI Texting" },
+  { at: "18:20", lost: "Missed call, rang out", won: "Answered, appointment booked", by: "AI Calling" },
   { at: "22:30", lost: "Booked with someone else", won: "Booked with you", by: "Follow-up" },
 ];
 

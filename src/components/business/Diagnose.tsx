@@ -38,7 +38,7 @@ export default function Diagnose() {
     picked.length === 0
       ? { t: "Tick what sounds familiar.", d: "Your plan builds itself here as you go." }
       : divisionsHit >= 2
-        ? { t: "This is a system problem.", d: "Your leaks sit in more than one place — which is exactly why separate vendors haven't fixed them. We'd build these as one connected system." }
+        ? { t: "Start with step 1.", d: "Fix the biggest leak first. The rest are ready when you are — and they're built to connect, so each one makes the last work harder." }
         : { t: "A focused fix.", d: "Your leak sits in one place. Start here, measure it, then decide what's next." };
 
   const toggle = (id: string) => {

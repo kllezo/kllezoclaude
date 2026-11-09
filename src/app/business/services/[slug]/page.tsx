@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ServiceDemo from "@/components/shared/ServiceDemo";
 import JsonLd from "@/components/shared/JsonLd";
-import { divisionById, serviceBySlug, services, servicesIn } from "@/content/services";
+import { divisionById, serviceBySlug, services } from "@/content/services";
+import { pairings } from "@/content/pairings";
 import { breadcrumbLd, faqLd, pageMeta, serviceLd } from "@/lib/seo";
 import b from "@/components/business/b.module.css";
 import s from "./detail.module.css";
@@ -25,7 +26,8 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/busi
   const sv = serviceBySlug(slug);
   if (!sv) notFound();
   const div = divisionById(sv.division);
-  const related = servicesIn(sv.division).filter((x) => x.slug !== sv.slug);
+  // Upgrade path: the services that make this one work harder.
+  const pairs = (pairings[sv.slug] ?? []).map((p) => ({ sv: serviceBySlug(p.slug)!, why: p.why }));
 
   return (
     <>
@@ -198,15 +200,15 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/busi
               Start an enquiry →
             </Link>
           </div>
-          {related.length > 0 && (
+          {pairs.length > 0 && (
             <div className={s.related}>
-              <span className={b.eyebrow}>Also in {div.name}</span>
+              <span className={b.eyebrow}>Start here · add later</span>
               <div className={s.relList}>
-                {related.map((r) => (
+                {pairs.map(({ sv: r, why }) => (
                   <Link key={r.slug} href={`/business/services/${r.slug}`} className={`${b.card} ${b.cardLink}`}>
-                    <span className={b.tag}>{r.code}</span>
+                    <span className={b.tag}>Pairs well · {r.code}</span>
                     <h3 className={b.h3}>{r.name}</h3>
-                    <p className={b.muted}>{r.tagline}</p>
+                    <p className={b.muted}>{why}</p>
                   </Link>
                 ))}
               </div>

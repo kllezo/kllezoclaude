@@ -13,12 +13,15 @@ const ROWS = [
 export default function Systems() {
   return (
     <section className="cx-systems cx-wrap" aria-labelledby="sys-h">
-      <p className="cx-kicker">What changed the day</p>
+      <p className="cx-kicker">Start with one</p>
       <h2 id="sys-h" className="cx-display-md" data-cx-fade>
-        Four systems.
+        Fix one leak.
         <br />
-        <em>One studio.</em>
+        <em>Add the rest when you&apos;re ready.</em>
       </h2>
+      <p className="cx-sys-note" data-cx-fade="0.1">
+        Most clients start with a single service. Each one is built to connect to the next — so whenever you add another, the whole day gets better.
+      </p>
       <ol className="cx-sys">
         {ROWS.map((r, i) => (
           <li key={r.name} data-cx-fade={i * 0.06}>

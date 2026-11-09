@@ -17,19 +17,19 @@ export const metadata = pageMeta({
     "Watch one ordinary business day without a system — and the same day with Kllezo's content, websites and AI agents catching every customer.",
 });
 
-// One ordinary day (illustrative). Act I: what slips away. Act II: the same moments, caught.
+// One ordinary day (illustrative): first what slips away, then the same moments caught.
 const LOST: Moment[] = [
   { m: 8 * 60 + 10, kind: "ignored", tag: "08:10 · Content", t: "You post. Everyone scrolls past.", s: "No plan, no hook — the feed doesn't stop for it." },
   { m: 11 * 60 + 42, kind: "bounce", tag: "11:42 · Website", t: "Someone finds your site. Gone in six seconds.", s: "It describes the business. It never asks for anything." },
-  { m: 13 * 60 + 5, kind: "unread", tag: "13:05 · Messages", t: "An enquiry lands in your DMs.", s: "Nobody sees it until tomorrow." },
-  { m: 19 * 60 + 48, kind: "missed", tag: "19:48 · Calls", t: "A customer calls after hours.", s: "Voicemail. They don't leave one." },
+  { m: 14 * 60 + 45, kind: "unread", tag: "14:45 · Messages", t: "An enquiry lands in your DMs.", s: "Nobody sees it until tomorrow." },
+  { m: 18 * 60 + 20, kind: "missed", tag: "18:20 · Calls", t: "A customer calls after hours.", s: "It rings out. They call the next name on Google." },
   { m: 22 * 60 + 30, kind: "elsewhere", tag: "22:30 · Follow-up", t: "They book with someone else.", s: "Nobody followed up. Nobody even knew." },
 ];
 const WON: Moment[] = [
   { m: 8 * 60 + 10, kind: "stopped", tag: "08:10 · Content Engine", t: "You post. They stop.", s: "A planned story with a hook, shot to be watched.", href: "/creative/services/content-growth" },
   { m: 11 * 60 + 42, kind: "enquire", tag: "11:42 · Website Experiences", t: "They land — and they enquire.", s: "One clear path from interest to a booking.", href: "/creative/services/business-website" },
-  { m: 13 * 60 + 5, kind: "replied", tag: "13:05 · AI Texting Agents", t: "Replied in seconds. Booked by 13:06.", s: "The agent answers, qualifies and books — on WhatsApp.", href: "/creative/services/ai-texting" },
-  { m: 19 * 60 + 48, kind: "answered", tag: "19:48 · AI Calling Agents", t: "The phone rings. The agent answers.", s: "First ring, appointment booked, summary sent to your team.", href: "/creative/services/ai-calling" },
+  { m: 14 * 60 + 45, kind: "replied", tag: "14:45 · AI Texting Agents", t: "Replied in seconds. Booked by 14:46.", s: "The agent answers, qualifies and books — on WhatsApp.", href: "/creative/services/ai-texting" },
+  { m: 18 * 60 + 20, kind: "answered", tag: "18:20 · AI Calling Agents", t: "The phone rings. The agent answers.", s: "First ring, appointment booked, summary sent to your team.", href: "/creative/services/ai-calling" },
   { m: 22 * 60 + 30, kind: "booked", tag: "22:30 · The whole system", t: "Tomorrow is already full.", s: "Follow-ups did the rest while you slept." },
 ];
 
@@ -42,11 +42,11 @@ export default function CreativeHome() {
       <LiveHero />
       <StoryDock />
 
-      <DayStory id="act-1" mode="lost" act="Act I" title="A day without a system" moments={LOST} counterLabel="customers lost today" sky={COLD} />
+      <DayStory id="act-1" mode="lost" title="A day without a system" moments={LOST} counterLabel="customers lost today" sky={COLD} />
 
       <Rewind />
 
-      <DayStory id="act-2" mode="won" act="Act II" title="The same day, with Kllezo" moments={WON} counterLabel="customers won today" sky={WARM} />
+      <DayStory id="act-2" mode="won" title="The same day, with Kllezo" moments={WON} counterLabel="customers won today" sky={WARM} />
 
       <Compare />
 
