@@ -54,14 +54,12 @@ export default function DayStory({
   title,
   moments,
   counterLabel,
-  sky,
 }: {
   id: string;
   mode: "lost" | "won";
   title: React.ReactNode;
   moments: Moment[];
   counterLabel: string;
-  sky: string[];
 }) {
   const root = useRef<HTMLElement>(null);
   const trig = useRef<ScrollTrigger | null>(null);
@@ -80,7 +78,6 @@ export default function DayStory({
 
   useLayoutEffect(() => {
     const el = root.current!;
-    const paint = gsap.utils.interpolate(sky);
     let last = -1;
     let glitchT = 0;
     const mm = gsap.matchMedia();
@@ -94,7 +91,6 @@ export default function DayStory({
         onUpdate: (st) => {
           const m = START + (END - START) * st.progress;
           setMin(m);
-          el.style.setProperty("--sky", paint(st.progress));
           el.style.setProperty("--p", st.progress.toFixed(4));
           const idx = moments.filter((x) => x.m <= m).length - 1;
           if (idx !== last) {
@@ -117,7 +113,7 @@ export default function DayStory({
       window.clearTimeout(glitchT);
       mm.revert();
     };
-  }, [moments, mode, sky]);
+  }, [moments, mode]);
 
   const active = moments.filter((x) => x.m <= min).length - 1;
   const cur = active >= 0 ? moments[active] : null;
@@ -161,7 +157,7 @@ export default function DayStory({
                       See the same day, fixed ↓
                     </a>
                   ) : (
-                    <Link href="/creative/contact" className="cx-cap-cta is-gold">
+                    <Link href="/contact" className="cx-cap-cta is-gold">
                       Start a project →
                     </Link>
                   )}

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Logo from "@/components/shared/Logo";
-import ExperienceSwitch from "@/components/shared/ExperienceSwitch";
 import { divisions, services } from "@/content/services";
 import { site } from "@/content/site";
 import s from "./Footer.module.css";
@@ -20,7 +19,7 @@ export default function Footer() {
             {services
               .filter((sv) => sv.division === d.id)
               .map((sv) => (
-                <Link key={sv.slug} href={`/business/services/${sv.slug}`}>
+                <Link key={sv.slug} href={`/services/${sv.slug}`}>
                   {sv.name}
                 </Link>
               ))}
@@ -28,21 +27,18 @@ export default function Footer() {
         ))}
         <div className={s.col}>
           <span className={s.head}>Company</span>
-          <Link href="/business/services">All services</Link>
-          <Link href="/business/work">Work</Link>
-          <Link href="/business/about">About</Link>
-          <Link href="/business/contact">Strategy call</Link>
+          <Link href="/services">All services</Link>
+          <Link href="/growth">Growth System</Link>
+          <Link href="/work">Work</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact">Strategy call</Link>
           <a href={`mailto:${site.email}`}>{site.email}</a>
         </div>
       </div>
       <div className={s.bottom}>
         <span>© {new Date().getFullYear()} Kllezo. {site.closing}</span>
         <span className={s.exp}>
-          You&apos;re in the Business experience ·{" "}
-          <ExperienceSwitch current="business" className={s.switch}>
-            Switch to Creative
-          </ExperienceSwitch>{" "}
-          · <Link href="/?choose">Choose again</Link>
+          <Link href="/growth">Growth System</Link> · <Link href="/contact">Book a strategy call</Link>
         </span>
       </div>
     </footer>

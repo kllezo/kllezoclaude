@@ -83,7 +83,7 @@ export default function Diagnose() {
             <li key={sv.slug} className={s.step} style={{ ["--i" as string]: i }}>
               <span className={s.stepN}>Step {i + 1}</span>
               <div>
-                <Link href={`/business/services/${sv.slug}`} className={s.stepName}>
+                <Link href={`/services/${sv.slug}`} className={s.stepName}>
                   {sv.name}
                 </Link>
                 <span className={s.stepDiv}>{divisionById(sv.division).name}</span>
@@ -102,7 +102,7 @@ export default function Diagnose() {
 
         <div className={s.planFoot}>
           <Link
-            href={plan.length ? `/business/contact?service=${plan.map((p) => p.slug).join(",")}` : "/business/contact"}
+            href={plan.length ? `/contact?service=${plan.map((p) => p.slug).join(",")}` : "/contact"}
             className={s.cta}
             aria-disabled={!plan.length}
             onClick={() => track("diagnose_cta", { services: plan.map((p) => p.slug).join(",") })}

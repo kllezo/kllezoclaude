@@ -5,6 +5,16 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   devIndicators: false,
   images: { formats: ["image/avif", "image/webp"] },
+  // One site now: old experience URLs land on their equivalent page.
+  // (/creative/assets/* are real files and stay where they are.)
+  async redirects() {
+    return [
+      { source: "/creative", destination: "/", permanent: true },
+      { source: "/business", destination: "/", permanent: true },
+      { source: "/creative/:path((?!assets/).*)", destination: "/:path", permanent: true },
+      { source: "/business/:path*", destination: "/:path*", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

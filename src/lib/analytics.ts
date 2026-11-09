@@ -12,7 +12,6 @@ declare global {
 
 export function track(event: string, params: Params = {}) {
   if (typeof window === "undefined") return;
-  const experience = window.location.pathname.startsWith("/creative") ? "creative" : window.location.pathname.startsWith("/business") ? "business" : "entry";
-  window.gtag?.("event", event, { experience, ...params });
-  if (process.env.NODE_ENV !== "production") console.debug("[track]", event, { experience, ...params });
+  window.gtag?.("event", event, { page: window.location.pathname, ...params });
+  if (process.env.NODE_ENV !== "production") console.debug("[track]", event, params);
 }

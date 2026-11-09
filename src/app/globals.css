@@ -1,7 +1,6 @@
 /* ============================================================
    Kllezo — global tokens shared by both experiences.
-   Experience-specific styling lives in CSS modules next to
-   each experience's components.
+   Page styling lives in CSS modules next to each component.
    ============================================================ */
 
 :root {
@@ -41,8 +40,7 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-html:has(.exp-creative) body,
-html:has(.entry) body {
+html:has(.cx) body {
   background: var(--k-dark);
   color: var(--k-beige);
 }

@@ -1,46 +1,31 @@
-# Kllezo — Dual Experience Website
+# Kllezo — website
 
-One brand, two experiences, one backend. Built from the *Kllezo Dual Experience PRD* (Nov 2026).
+One site. It opens on the problem, shows the services that fix it (each sold on its own), offers the managed **Kllezo Growth System** as the upgrade, and closes on why Kllezo.
 
 | URL | What it is |
 |---|---|
-| `/` | Experience selection — "Two ways to experience growth." Returning visitors are redirected to their remembered experience; `/?choose` always shows the selector. |
-| `/creative/…` | The Creative experience, "Molten": dark, editorial and cinematic — a live liquid-gold WebGL hero, a pinned horizontal journey through the four systems, and editorial service pages. |
-| `/business/…` | The Business experience: beige / forest green, SaaS-grade, interactive system visualisations. |
-| `/services/<slug>`, `/work`, `/about`, `/contact` | Shared URLs. `src/proxy.ts` rewrites them into the visitor's remembered experience (default Business). Pages declare the experience URL as canonical. |
+| `/` | Homepage: the problem as one day told twice under a live sky → sunrise → services (hire any one) → Growth System ladder → why Kllezo → real work → "not sure where to start?" diagnosis → CTA |
+| `/services`, `/services/<slug>` | Every service on its own page; each ends with "Start here · add later" pairings (`src/content/pairings.ts`) |
+| `/growth` | The Kllezo Growth System — managed growth, every month (the upsell) |
+| `/work`, `/about`, `/contact` | Work, studio and the shared enquiry form |
 
-Each experience has: home, services, 9 service detail pages, work, about, contact.
+Old `/creative/…` and `/business/…` URLs redirect permanently to their equivalent (see `next.config.ts`). `/creative/assets/*` are image files and stay put.
 
-## Business — problem first
+## Homepage pieces
 
-The Business home tells visitors their problem before it sells anything, then shows Kllezo solving it:
+| Section | File |
+|---|---|
+| Live hero (visitor's own clock and sky; macOS-style notifications) | `components/creative/home/LiveHero.tsx` |
+| The day without a system / with Kllezo (scroll-scrubbed clock, scenes, LOST/WON) | `components/creative/home/DayStory.tsx` |
+| Rewind between the two days | `components/creative/home/Rewind.tsx` |
+| Realistic sky (dawn → midday → sunset → stars, city skyline) | `components/creative/kit/Sky.tsx` |
+| CTA dock that rides along the story | `components/creative/home/StoryDock.tsx` |
+| Services bento (each service hireable on its own) | `components/home/ServiceBento.tsx` |
+| Growth System ladder (one service → connected → managed) | `components/home/PlanLadder.tsx` |
+| Nav goes transparent over the dark story | `components/home/NavTone.tsx` + `components/business/Nav.tsx` |
+| Scroll motion (Lenis + GSAP) | `components/creative/kit/Motion.tsx` |
 
-| Section | What it does | File |
-|---|---|---|
-| Hero | "You're not short of customers. You're losing them." beside a live lead-flow simulation you can switch between *Without a system* and *With Kllezo* (illustrative) | `components/business/LeakSimulator.tsx` |
-| The problem | Three disconnected vendors drawn as leaking pipes | `components/business/LeakDiagram.tsx` |
-| Diagnosis (just before the CTA) | Visitors tick the problems that sound familiar; a plan of the exact services builds beside them and carries into the enquiry form (`?service=…`) | `components/business/Diagnose.tsx` |
-| Problem → solved | Pick a problem; drag a before/after line across a live interface mock-up (content graph, website, inbox, call log), with the fix in four short steps | `components/business/SolutionSwitcher.tsx` |
-| AI lead flow | Every channel through one AI layer, live | `components/business/LeadFlow.tsx` |
-| Work | Real studio website builds that scroll the full page on hover | `components/business/SiteShowcase.tsx` |
-| Why Kllezo | The usual setup vs Kllezo, row by row (✕ / ✓) | `components/business/VsTable.tsx` |
-| CTA | "Let's find your leaks" with the four-stage method as an animated track | `components/business/MethodSteps.tsx` |
-
-## Creative — "One day, told twice"
-
-The Creative home is a problem-first story, scrubbed by scroll (all scenes illustrative):
-
-| Section | What happens | File |
-|---|---|---|
-| Live hero | The visitor's own clock, live, while missed calls and unread messages pile up in the corner | `components/creative/home/LiveHero.tsx` |
-| Act I — a day without a system | Scroll runs the clock 06:00 → midnight; at each moment a customer slips away (post ignored, visitor bounces, DM unread, call missed, booked elsewhere) — the screen glitches, a LOST stamp lands, the counter climbs | `home/DayStory.tsx` (`mode="lost"`) |
-| Rewind | The tape spins the clock back through scan lines; cold turns to gold | `home/Rewind.tsx` |
-| Act II — the same day, with Kllezo | The same moments, the same times, each caught by the system that fixes it | `home/DayStory.tsx` (`mode="won"`) |
-| The verdict | Drag a divider between both days | `home/Compare.tsx` |
-| Four systems | Each problem, struck through, next to the system behind it | `home/Systems.tsx` |
-| Finale | Live liquid-gold shader behind "Let's run your day." | `kit/MoltenGold.tsx` |
-
-Every scene plays under a realistic sky (`kit/Sky.tsx`) that follows the story clock — dawn, blue midday, golden hour, sunset behind a city skyline, dusk, stars and lit windows; the hero shows the visitor's own sky right now. A dock (`home/StoryDock.tsx`) keeps "Fix my day / Start a project" on screen through the whole story. The moments are defined in `app/creative/page.tsx`. Shared: motion system (`kit/Motion.tsx`, Lenis + GSAP ScrollTrigger), optional synthesized sound (`kit/sfx.ts`, off by default), nav, cursor, footer; styles scoped to `.cx` in `kit/creative.css`. Reduced motion shows the end state of each act without scroll scrubbing.
+The day, notifications and scenes are illustrative and marked as such in code.
 
 ## Run it
 
@@ -56,15 +41,13 @@ Without Supabase credentials, enquiries in development are appended to `.data/en
 
 - **Single source of truth** — `src/content/services.ts` holds every division and service (deliverables, problems, outcomes, workflow, FAQs, demo type). Navigation, both service catalogues, detail pages, the enquiry form, sitemap and structured data all render from it.
 - **Shared backend** — `POST /api/enquiries` (validation, honeypot, rate limit) → Supabase `enquiries` table via REST → Resend email to `KLLEZO_NOTIFY_EMAIL`. Schema: `supabase/migrations/0001_enquiries_and_case_studies.sql` (includes a `status` column for lead management).
-- **Experience memory** — cookie `kllezo_experience` (1 year), set by the selector, by the switch links, and by visiting either experience directly. Every page has a visible switch that keeps you on the equivalent page.
-- **Transitions** — the selector expands the chosen panel into a full-screen cover and flies the logo to the nav; the experience layout (`components/shared/Arrival.tsx`) picks up the hand-off and reveals the page (gold-line letterbox for Creative, tile lift for Business).
-- **Analytics** — `src/lib/analytics.ts` sends GA4 events tagged with the experience: `experience_selected`, `experience_switched`, `ecosystem_module`, `enquiry_started`, `enquiry_submitted`, `whatsapp_click`.
-- **SEO** — per-page titles/descriptions/Open Graph, canonical URLs per experience, `sitemap.xml` listing both experiences, `robots.txt`, JSON-LD (Organization, Service, FAQPage, BreadcrumbList), generated OG image.
+- **Analytics** — `src/lib/analytics.ts` sends GA4 events tagged with the page: `enquiry_started`, `enquiry_submitted`, `whatsapp_click`, `diagnose_symptom`, `diagnose_cta`, `dock_cta`.
+- **SEO** — per-page titles/descriptions/Open Graph and canonical URLs, `sitemap.xml`, `robots.txt`, JSON-LD (Organization, Service, FAQPage, BreadcrumbList), generated OG image.
 
 ## Content still needed from Kllezo
 
 - **Case studies** — `src/content/work.ts` (or the `case_studies` table) is empty on purpose. The Work pages show an honest "being documented" state until approved case studies with verified results are added. Never add unverified figures — each result requires a `source`.
-- **Illustrative story** — the day, notifications and scenes on the Creative home are illustrative (labelled as such in code), not client data.
+- **Illustrative story** — the day, notifications and scenes on the homepage are illustrative (labelled as such in code), not client data.
 - **Logo** — `public/brand/` holds the official green mark (from the brand logo files) and a beige version for dark surfaces, trimmed of the tagline for small sizes.
 - **Contact details** — WhatsApp number and email via env vars. WhatsApp CTAs stay hidden until `NEXT_PUBLIC_WHATSAPP_NUMBER` is set.
 - **Copy review** — the "reply within one business day" promise, budget ranges (₹) and industry list in `src/content/site.ts`.

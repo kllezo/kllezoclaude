@@ -12,12 +12,12 @@ const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variab
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: "Kllezo — Two ways to experience growth",
+  title: "Kllezo — Content, websites & AI agents that win you customers",
   description: site.description,
   applicationName: "Kllezo",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Kllezo — Two ways to experience growth",
+    title: "Kllezo — Content, websites & AI agents that win you customers",
     description: site.tagline,
     url: "/",
     siteName: site.name,

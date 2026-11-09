@@ -64,7 +64,7 @@ export default function StoryDock() {
           {c.skip} ↓
         </a>
       )}
-      <Link href="/creative/contact" className="cx-dock-cta" onClick={() => track("dock_cta", { phase })}>
+      <Link href="/contact" className="cx-dock-cta" onClick={() => track("dock_cta", { phase })}>
         {c.cta} →
       </Link>
     </div>

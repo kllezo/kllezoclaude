@@ -292,3 +292,47 @@
     inset: 64px 0 0;
   }
 }
+
+/* Homepage: the bar sits over the night sky — transparent, light type. */
+:global(html[data-nav-home]) .nav {
+  margin-bottom: -72px;
+}
+.logoDark {
+  display: none;
+}
+.nav[data-dark] {
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.nav[data-dark][data-scrolled] {
+  background: rgba(7, 10, 14, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav[data-dark] .logoLight {
+  display: none;
+}
+.nav[data-dark] .logoDark {
+  display: block;
+}
+.nav[data-dark] .link {
+  color: rgba(251, 245, 233, 0.86);
+}
+.nav[data-dark] .link:hover,
+.nav[data-dark] .link[data-active] {
+  background: rgba(251, 245, 233, 0.1);
+  color: var(--k-beige);
+}
+.nav[data-dark] .cta {
+  background: var(--k-gold);
+  color: var(--k-dark);
+}
+.nav[data-dark] .burger {
+  background: rgba(251, 245, 233, 0.12);
+  color: var(--k-beige);
+}
+.nav[data-dark] .burger i {
+  background: var(--k-beige);
+}

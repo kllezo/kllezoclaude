@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { site, type Experience } from "@/content/site";
+import { site } from "@/content/site";
 import type { Service } from "@/content/services";
 
-const label: Record<Experience, string> = { creative: "Creative", business: "Business" };
-
-/** Per-page metadata with an experience-specific canonical URL. */
-export function pageMeta(opts: { exp: Experience; path: string; title: string; description: string }): Metadata {
-  const canonical = `/${opts.exp}${opts.path}`;
-  const title = `${opts.title} — Kllezo ${label[opts.exp]}`;
+/** Per-page metadata with a canonical URL. */
+export function pageMeta(opts: { path: string; title: string; description: string }): Metadata {
+  const canonical = opts.path || "/";
+  const title = opts.path ? `${opts.title} — Kllezo` : `Kllezo — ${opts.title}`;
   return {
     title,
     description: opts.description,
@@ -37,13 +35,13 @@ export const organizationLd = () => ({
   knowsAbout: ["Content creation", "Video production", "Website development", "E-commerce", "AI chat agents", "AI voice agents"],
 });
 
-export const serviceLd = (s: Service, exp: Experience) => ({
+export const serviceLd = (s: Service) => ({
   "@context": "https://schema.org",
   "@type": "Service",
   name: s.name,
   description: s.summary,
   serviceType: s.name,
-  url: `${site.url}/${exp}/services/${s.slug}`,
+  url: `${site.url}/services/${s.slug}`,
   provider: { "@id": `${site.url}/#org` },
   hasOfferCatalog: {
     "@type": "OfferCatalog",

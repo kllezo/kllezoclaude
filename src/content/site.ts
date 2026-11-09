@@ -2,7 +2,6 @@
 
 export type Experience = "creative" | "business";
 
-export const EXPERIENCE_COOKIE = "kllezo_experience";
 
 export const site = {
   name: "Kllezo",
@@ -51,4 +50,3 @@ export const sharedPages = [
   { slug: "contact", label: "Contact" },
 ] as const;
 
-export const base = (exp: Experience) => `/${exp}`;
