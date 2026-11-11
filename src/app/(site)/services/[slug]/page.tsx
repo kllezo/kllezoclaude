@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ServiceDemo from "@/components/shared/ServiceDemo";
-import StoryCycler from "@/components/services/StoryCycler";
-import StepJourney from "@/components/services/StepJourney";
-import TickList from "@/components/services/TickList";
+import ScrollStory from "@/components/services/ScrollStory";
 import VariantTabs from "@/components/services/VariantTabs";
 import JsonLd from "@/components/shared/JsonLd";
 import { divisionById, serviceBySlug, services } from "@/content/services";
 import { pairings } from "@/content/pairings";
 import { motion } from "@/content/motion";
+import { whatsappLink } from "@/content/site";
 import { breadcrumbLd, faqLd, pageMeta, serviceLd } from "@/lib/seo";
 import b from "@/components/business/b.module.css";
 import s from "./detail.module.css";
@@ -34,6 +33,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
   // Upgrade path: the services that make this one work harder.
   const pairs = (pairings[sv.slug] ?? []).map((p) => ({ sv: serviceBySlug(p.slug)!, why: p.why }));
   const mo = motion[sv.slug];
+  const wa = whatsappLink(`Hi Kllezo, I'd like to talk about ${sv.name}.`);
 
   return (
     <>
@@ -72,72 +72,74 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
         </div>
       </section>
 
-      {/* 2 · The problem — one animation per problem, played in turn */}
+      {/* 2 · Their problem — scroll through it, one screen per problem */}
+      <ScrollStory
+        eyebrow="The problem"
+        title="Sound familiar?"
+        tone="bad"
+        theme="white"
+        beats={mo.problems.map(([label, v, alt], i) => ({ label, v, alt, body: sv.problems[i] }))}
+      />
+
+      {/* 3 · Our solution — the same business, with Kllezo */}
+      <ScrollStory
+        eyebrow="Our solution"
+        title={
+          <>
+            Here&apos;s what <em>changes.</em>
+          </>
+        }
+        tone="good"
+        theme="light"
+        beats={mo.outcomes.map(([label, v, alt], i) => ({ label, v, alt, body: sv.outcomes[i] }))}
+      />
+
+      {/* 4 · How exactly we fix it */}
+      <ScrollStory
+        id="how"
+        eyebrow="How we fix it"
+        title={
+          <>
+            Step by step, <em>no guesswork.</em>
+          </>
+        }
+        tone="good"
+        theme="dark"
+        kind="steps"
+        beats={sv.workflow.map((st, i) => {
+          const m = mo.steps[i];
+          const [v, alt] = Array.isArray(m) ? m : [m, undefined];
+          return { label: st.title, body: st.detail, v, alt };
+        })}
+      />
+
+      {/* 5 · What you get */}
       <section className={`${b.section} ${b.white}`}>
         <div className={b.wrap}>
-          <div className={s.secHead} data-reveal>
-            <span className={b.eyebrow}>The problem</span>
-            <h2 className={b.h2}>Sound familiar?</h2>
+          <div className={s.getHead}>
+            <span className={b.eyebrow}>What you get</span>
+            <h2 className={b.h2}>
+              Everything included. <span className={b.serif}>Nothing to manage.</span>
+            </h2>
           </div>
-          <StoryCycler beats={mo.problems} full={sv.problems} tone="bad" />
-        </div>
-      </section>
-
-      {/* 3 · The Kllezo solution */}
-      <section className={b.section}>
-        <div className={`${b.wrap} ${s.solution}`}>
-          <div data-reveal>
-            <span className={b.eyebrow}>The Kllezo solution</span>
-            <h2 className={b.h2}>{sv.tagline}</h2>
-          </div>
-          <div data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            <p className={b.lead}>{div.businessLine}</p>
-            {sv.variants && (
-              <div className={s.variants}>
-                <VariantTabs variants={sv.variants} />
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* 4 · How the system works */}
-      <section className={`${b.section} ${b.green}`} id="how">
-        <div className={b.wrap}>
-          <span className={b.eyebrow}>How it works</span>
-          <h2 className={b.h2}>
-            A clear process, <span className={b.serif}>no guesswork.</span>
-          </h2>
-          <StepJourney steps={sv.workflow} motion={mo.steps} />
-        </div>
-      </section>
-
-      {/* 5 · Deliverables */}
-      <section className={b.section}>
-        <div className={b.wrap}>
-          <div className={b.head}>
-            <div>
-              <span className={b.eyebrow}>Deliverables</span>
-              <h2 className={b.h2}>What you receive.</h2>
-              <p className={b.lead}>{sv.deliverables.length} deliverables, all included.</p>
+          <ul className={s.get}>
+            {sv.deliverables.map((x, i) => (
+              <li key={x} data-reveal style={{ ["--d" as string]: `${(i % 4) * 0.05}s` }}>
+                <span className={s.getN}>{String(i + 1).padStart(2, "0")}</span>
+                <span>{x}</span>
+              </li>
+            ))}
+          </ul>
+          {sv.variants && (
+            <div className={s.getVariants} data-reveal>
+              <p className={s.getVarLabel}>Choose what fits</p>
+              <VariantTabs variants={sv.variants} />
             </div>
-          </div>
-          <TickList items={sv.deliverables} />
+          )}
         </div>
       </section>
 
-      {/* 6 · The outcome — the same, from the other side */}
-      <section className={`${b.section} ${b.white}`}>
-        <div className={b.wrap}>
-          <div className={s.secHead} data-reveal>
-            <span className={b.eyebrow}>The outcome</span>
-            <h2 className={b.h2}>What changes.</h2>
-          </div>
-          <StoryCycler beats={mo.outcomes} full={sv.outcomes} tone="good" flip />
-        </div>
-      </section>
-
-      {/* 7 · FAQs */}
+      {/* 6 · FAQs */}
       <section className={b.section}>
         <div className={`${b.wrap} ${s.faqWrap}`}>
           <div>
@@ -155,25 +157,43 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
         </div>
       </section>
 
-      {/* 8 · Enquiry CTA */}
-      <section className={`${b.section} ${b.white}`}>
+      {/* 7 · The call to action */}
+      <section className={s.ctaSec}>
         <div className={b.wrap}>
-          <div className={s.cta} data-reveal>
-            <div>
-              <h2 className={b.h2}>Ready to talk about {sv.name.toLowerCase()}?</h2>
-              <p className={b.lead}>Tell us about your business and we&apos;ll come back with a clear recommendation.</p>
+          <div className={s.ctaBox}>
+            <div className={s.ctaText}>
+              <span className={s.ctaEyebrow}>Let&apos;s fix it</span>
+              <h2 className={s.ctaH}>
+                Stop losing customers. <em>Start this month.</em>
+              </h2>
+              <p className={s.ctaP}>Book a free strategy call. You&apos;ll leave with a clear plan for {sv.name} — whether you work with us or not.</p>
+              <div className={s.ctaBtns}>
+                <Link href={`/contact?service=${sv.slug}`} className={s.ctaPrimary}>
+                  Book a free strategy call →
+                </Link>
+                {wa && (
+                  <a href={wa} className={s.ctaSecondary} target="_blank" rel="noopener noreferrer">
+                    Message us on WhatsApp
+                  </a>
+                )}
+              </div>
             </div>
-            <Link href={`/contact?service=${sv.slug}`} className={b.btnGold}>
-              Start an enquiry →
-            </Link>
+            <ul className={s.ctaList}>
+              {["A free 30-minute call", "A clear plan and price before you commit", "Start with one service, add more later"].map((x) => (
+                <li key={x}>
+                  <i aria-hidden="true">✓</i>
+                  {x}
+                </li>
+              ))}
+            </ul>
           </div>
           {pairs.length > 0 && (
             <div className={s.related}>
-              <span className={b.eyebrow}>Start here · add later</span>
+              <span className={b.eyebrow}>Works even better with</span>
               <div className={s.relList}>
                 {pairs.map(({ sv: r, why }) => (
                   <Link key={r.slug} href={`/services/${r.slug}`} className={`${b.card} ${b.cardLink}`}>
-                    <span className={b.tag}>Pairs well · {r.code}</span>
+                    <span className={b.tag}>{r.code}</span>
                     <h3 className={b.h3}>{r.name}</h3>
                     <p className={b.muted}>{why}</p>
                   </Link>

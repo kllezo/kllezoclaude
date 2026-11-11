@@ -8,18 +8,20 @@
 
 export type Vkind =
   // problems
-  | "unread" | "cold" | "repeat" | "pingpong" | "missed" | "noShow" | "busy" | "flatViews" | "scatter" | "blind"
-  | "drain" | "fewVariants" | "scrollPast" | "confused" | "dated" | "bounce" | "slow" | "ghost" | "writerBlock"
-  | "mismatch" | "clones" | "countdown" | "pile" | "shaky" | "cartDrop" | "silos" | "leak" | "junkLeads"
-  | "lostLead" | "tangle"
+  | "igFlat" | "igMess" | "lockOverdue" | "noData" | "googleMissing" | "notesBlank" | "calBusy" | "profilesMismatch"
+  | "ytClones" | "launchCountdown" | "filesPile" | "shakyCam" | "adsFatigue" | "adsOne" | "feedSkip" | "adConfused"
+  | "siteBounce" | "safariSlow" | "storeGeneric" | "checkoutDrop" | "silosApps" | "adsSpend" | "inboxJunk" | "formVoid"
+  | "sheetMess" | "waUnread" | "waCold" | "waRepeat" | "waPingPong" | "iosMissed" | "callQueue" | "callbackList" | "calNoShow"
   // outcomes
-  | "instantReply" | "followUp" | "booked" | "answered" | "plan" | "statement" | "match" | "calFill" | "cadence"
-  | "report" | "library" | "batch" | "idea" | "formats" | "grade" | "everywhere" | "pipeline" | "variants"
-  | "native" | "demo" | "premium" | "journey" | "fast" | "checkoutGo" | "connected" | "oneAction" | "filter"
-  | "route" | "track"
+  | "docStrategy" | "calendarReal" | "igGood" | "dashEngage" | "linkedin" | "profilesMatch" | "podcastReal" | "youtubeReal"
+  | "storyboard" | "formatsReal" | "timelineReal" | "everywhere" | "thumbLab" | "adsVariants" | "ugcNative" | "demoReel"
+  | "siteReal" | "siteEnquiry" | "lighthouse" | "dashCampaign" | "storeReal" | "checkoutGood" | "connectedApps"
+  | "landingReal" | "qualifyForm" | "waLead" | "funnelTracked" | "waInstant" | "waQualify" | "waFollow" | "waBooked"
+  | "callAnswered" | "callTranscript" | "outboundCalls" | "callBooked"
   // steps
-  | "scan" | "pillars" | "record" | "optimise" | "palette" | "brainstorm" | "script" | "hooks" | "sitemap"
-  | "wireframe" | "code" | "launch" | "catalogue" | "account" | "target" | "flow" | "train" | "test" | "voice";
+  | "researchBoard" | "pillars" | "hooksDoc" | "cameraReal" | "target" | "palette" | "brainstorm" | "scriptReal"
+  | "gradeReal" | "deliverFiles" | "sitemap" | "figmaReal" | "code" | "deployLive" | "catalogue" | "account" | "abTest"
+  | "flow" | "train" | "testRun" | "convoLog" | "voice";
 
 export type Alt = "calls" | "chat";
 /** [short label, animation, variant] */
@@ -35,137 +37,137 @@ export interface ServiceMotion {
 export const motion: Record<string, ServiceMotion> = {
   "content-growth": {
     problems: [
-      ["Posting, but no reach", "flatViews"],
-      ["No strategy behind it", "scatter"],
-      ["Whoever has time that week", "busy"],
-      ["What actually works?", "blind"],
+      ["You post, but nobody sees it", "igFlat"],
+      ["There's no plan behind it", "igMess"],
+      ["It only happens when someone has time", "lockOverdue"],
+      ["Nobody knows what actually works", "noData"],
     ],
     outcomes: [
-      ["A plan your team can follow", "plan"],
-      ["A calendar set in advance", "calFill"],
-      ["Video on a steady beat", "cadence"],
-      ["Reports that steer the next month", "report"],
+      ["A strategy your team can follow", "docStrategy"],
+      ["A month planned before it starts", "calendarReal"],
+      ["Content that goes out like clockwork", "igGood"],
+      ["Reports that show what's working", "dashEngage"],
     ],
-    steps: ["scan", "pillars", "hooks", "record", "optimise"],
+    steps: ["researchBoard", "pillars", "hooksDoc", "cameraReal", "dashCampaign"],
   },
   "personal-brand": {
     problems: [
-      ["Expertise nobody sees", "ghost"],
-      ["Not sure what to say", "writerBlock"],
-      ["No time to make content", "busy"],
-      ["Looks different everywhere", "mismatch"],
+      ["You're the expert. Nobody can find you.", "googleMissing"],
+      ["You don't know what to say", "notesBlank"],
+      ["Content always loses to the calendar", "calBusy"],
+      ["Every profile looks like someone else", "profilesMismatch"],
     ],
     outcomes: [
-      ["A story you can tell anywhere", "statement"],
-      ["One look, one voice", "match"],
-      ["Record once, post all month", "batch"],
-      ["A library of your content", "library"],
+      ["A story people remember", "linkedin"],
+      ["One look, one voice, everywhere", "profilesMatch"],
+      ["One session, a month of content", "podcastReal"],
+      ["A library that works while you don't", "youtubeReal"],
     ],
-    steps: ["target", "palette", "brainstorm", "record", "everywhere"],
+    steps: ["target", "palette", "brainstorm", "scriptReal", "everywhere"],
   },
   "video-production": {
     problems: [
-      ["Looks like every competitor", "clones"],
-      ["A launch that needs a film", "countdown"],
-      ["Footage, but no story", "pile"],
-      ["They shoot, nobody directs", "shaky"],
+      ["Your video looks like everyone else's", "ytClones"],
+      ["Launch is close. There's no film.", "launchCountdown"],
+      ["Hours of footage. No story.", "filesPile"],
+      ["They shoot. Nobody directs.", "shakyCam"],
     ],
     outcomes: [
-      ["One clear idea", "idea"],
-      ["Every format you need", "formats"],
-      ["Sound, motion & colour done", "grade"],
-      ["Use it everywhere", "everywhere"],
+      ["One clear idea, told well", "storyboard"],
+      ["Every format you need", "formatsReal"],
+      ["Sound, motion and colour, finished", "timelineReal"],
+      ["Assets that work everywhere", "everywhere"],
     ],
-    steps: ["brainstorm", "script", "record", "grade", "formats"],
+    steps: ["brainstorm", "scriptReal", "cameraReal", "gradeReal", "deliverFiles"],
   },
   "ugc-ad-creatives": {
     problems: [
-      ["Ads that die in a week", "drain"],
-      ["Too few versions to test", "fewVariants"],
-      ["Too polished for the feed", "scrollPast"],
-      ["The benefit isn't obvious", "confused"],
+      ["Your ads die within a week", "adsFatigue"],
+      ["One ad, nothing to test it against", "adsOne"],
+      ["Too polished. Scrolled past.", "feedSkip"],
+      ["Nobody gets what it does", "adConfused"],
     ],
     outcomes: [
-      ["A steady creative pipeline", "pipeline"],
-      ["Hooks built for testing", "variants"],
-      ["Native, scroll-stopping", "native"],
-      ["Value shown in seconds", "demo"],
+      ["Fresh creatives, every cycle", "thumbLab"],
+      ["Hooks built to be tested", "adsVariants"],
+      ["Feels native. Stops the scroll.", "ugcNative"],
+      ["The value lands in seconds", "demoReel"],
     ],
-    steps: ["hooks", "script", "record", "variants", "optimise"],
+    steps: ["hooksDoc", "scriptReal", "cameraReal", "adsVariants", "dashCampaign"],
   },
   "business-website": {
     problems: [
-      ["Dated, template look", "dated"],
-      ["Visitors leave silently", "bounce"],
-      ["Slow on mobile", "slow"],
-      ["No idea what visitors do", "blind"],
+      ["They can't even find you", "googleMissing"],
+      ["The few who do, leave", "siteBounce"],
+      ["It's slow on their phone", "safariSlow"],
+      ["You can't see any of it happening", "noData"],
     ],
     outcomes: [
-      ["A site as good as your business", "premium"],
-      ["A clear path to enquiry", "journey"],
-      ["Fast on every device", "fast"],
-      ["See what's working", "report"],
+      ["A site as good as your business", "siteReal"],
+      ["A clear path to enquire", "siteEnquiry"],
+      ["Fast on every device", "lighthouse"],
+      ["Every visit, measured", "dashCampaign"],
     ],
-    steps: ["scan", "sitemap", "wireframe", "code", "launch"],
+    steps: ["researchBoard", "sitemap", "figmaReal", "code", "deployLive"],
   },
   ecommerce: {
     problems: [
-      ["Generic next to your products", "clones"],
-      ["Carts abandoned at payment", "cartDrop"],
-      ["Orders, stock & shipping apart", "silos"],
-      ["What sells, and why?", "blind"],
+      ["Your store looks like a template", "storeGeneric"],
+      ["Carts die at checkout", "checkoutDrop"],
+      ["Orders, stock and shipping don't talk", "silosApps"],
+      ["You don't know what sells, or why", "noData"],
     ],
     outcomes: [
-      ["A store built around your products", "premium"],
-      ["A smooth checkout", "checkoutGo"],
-      ["Everything connected", "connected"],
-      ["The whole journey measured", "report"],
+      ["A store built around your products", "storeReal"],
+      ["Checkout in one tap", "checkoutGood"],
+      ["Everything connected", "connectedApps"],
+      ["The whole journey, measured", "dashCampaign"],
     ],
-    steps: ["catalogue", "checkoutGo", "connected", "account", "launch"],
+    steps: ["catalogue", "checkoutGood", "connectedApps", "account", "deployLive"],
   },
   "lead-generation": {
     problems: [
-      ["Clicks, but no enquiries", "leak"],
-      ["Leads that aren't ready", "junkLeads"],
-      ["Lost after the form", "lostLead"],
-      ["Which campaign worked?", "tangle"],
+      ["You pay for clicks, not customers", "adsSpend"],
+      ["The leads you get aren't ready", "inboxJunk"],
+      ["Leads die in the inbox", "formVoid"],
+      ["Nobody knows which ad worked", "sheetMess"],
     ],
     outcomes: [
-      ["One page, one action", "oneAction"],
-      ["Qualified at the form", "filter"],
-      ["Routed instantly", "route"],
-      ["Tracked from click to enquiry", "track"],
+      ["One page, one clear action", "landingReal"],
+      ["Qualified before they reach you", "qualifyForm"],
+      ["On your WhatsApp in seconds", "waLead"],
+      ["Every enquiry traced to its ad", "funnelTracked"],
     ],
-    steps: ["target", "wireframe", "filter", "route", "optimise"],
+    steps: ["target", "landingReal", "qualifyForm", "waLead", "abTest"],
   },
   "ai-texting": {
     problems: [
-      ["Replies hours late", "unread"],
-      ["Leads go cold", "cold"],
-      ["Same questions all day", "repeat"],
-      ["Booking ping-pong", "pingpong"],
+      ["Messages wait hours for a reply", "waUnread"],
+      ["Leads go cold while you're busy", "waCold"],
+      ["The same questions, all day", "waRepeat"],
+      ["Booking takes ten messages", "waPingPong"],
     ],
     outcomes: [
-      ["Instant replies, 24/7", "instantReply"],
-      ["Qualified before your team", "filter"],
-      ["Follow-ups that never forget", "followUp"],
-      ["Booked & reminded", "booked"],
+      ["Instant replies, even at 2am", "waInstant"],
+      ["Qualified before your team steps in", "waQualify"],
+      ["Follow-ups that never forget", "waFollow"],
+      ["Booked, confirmed and reminded", "waBooked"],
     ],
-    steps: ["flow", "train", ["connected", "chat"], "test", "optimise"],
+    steps: ["flow", "train", ["connectedApps", "chat"], "testRun", "convoLog"],
   },
   "ai-calling": {
     problems: [
-      ["Missed after hours", "missed"],
-      ["Staff stuck on routine calls", "busy", "calls"],
-      ["Leads never called back", "cold", "calls"],
-      ["No-shows, no reminder", "noShow"],
+      ["After hours, every call is missed", "iosMissed"],
+      ["Your team is stuck on routine calls", "callQueue"],
+      ["Call-backs that never happen", "callbackList"],
+      ["No reminder, so they don't show", "calNoShow"],
     ],
     outcomes: [
-      ["Every call answered", "answered"],
-      ["Routed to the right person", "route", "calls"],
-      ["Follow-up calls on time", "followUp", "calls"],
-      ["Reminded before every visit", "booked"],
+      ["Every call answered, day or night", "callAnswered"],
+      ["Sent to the right person", "callTranscript"],
+      ["Follow-up calls, right on time", "outboundCalls"],
+      ["Reminded, so they show up", "callBooked"],
     ],
-    steps: ["script", "voice", ["connected", "calls"], "test", "optimise"],
+    steps: [["hooksDoc", "calls"], "voice", ["connectedApps", "calls"], "testRun", "convoLog"],
   },
 };

@@ -1,6 +1,5 @@
 import Link from "next/link";
-import ServiceDemo from "@/components/shared/ServiceDemo";
-import ServicePanel from "@/components/services/ServicePanel";
+import ServicePanel, { ServicePreview } from "@/components/services/ServicePanel";
 import JsonLd from "@/components/shared/JsonLd";
 import { divisions, servicesIn } from "@/content/services";
 import { breadcrumbLd, pageMeta } from "@/lib/seo";
@@ -71,7 +70,7 @@ export default function BusinessServices() {
                         <ServicePanel sv={sv} />
                       </div>
                       <div className={s.right}>
-                        <ServiceDemo kind={sv.demo} />
+                        <ServicePreview sv={sv} />
                       </div>
                     </div>
                     <div className={b.actions}>

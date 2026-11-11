@@ -305,7 +305,7 @@ export const services: Service[] = [
       "Deployment and launch",
     ],
     problems: [
-      "A website that looks dated or like a template",
+      "Customers can't find you online — and the few who do never become customers",
       "Visitors arrive but don't get in touch",
       "Slow pages, especially on mobile",
       "No visibility into what visitors actually do",

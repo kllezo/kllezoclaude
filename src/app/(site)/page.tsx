@@ -26,7 +26,7 @@ export const metadata = pageMeta({
 // One ordinary day (illustrative): first what slips away, then the same moments caught.
 const LOST: Moment[] = [
   { m: 8 * 60 + 10, kind: "ignored", tag: "08:10 · Content", t: "You post. Everyone scrolls past.", s: "No plan, no hook — the feed doesn't stop for it." },
-  { m: 11 * 60 + 42, kind: "bounce", tag: "11:42 · Website", t: "Someone finds your site. Gone in six seconds.", s: "It describes the business. It never asks for anything." },
+  { m: 11 * 60 + 42, kind: "bounce", tag: "11:42 · Website", t: "They can't even find your website.", s: "And the few who do never become customers. You're losing them all." },
   { m: 14 * 60 + 45, kind: "unread", tag: "14:45 · Messages", t: "An enquiry lands in your DMs.", s: "Nobody sees it until tomorrow." },
   { m: 18 * 60 + 20, kind: "missed", tag: "18:20 · Calls", t: "A customer calls after hours.", s: "It rings out. They call the next name on Google." },
   { m: 22 * 60 + 30, kind: "elsewhere", tag: "22:30 · Follow-up", t: "They book with someone else.", s: "Nobody followed up. Nobody even knew." },

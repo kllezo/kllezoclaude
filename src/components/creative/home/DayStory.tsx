@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
@@ -24,6 +24,42 @@ export type Moment = { m: number; kind: Kind; tag: string; t: string; s: string;
 
 const START = 6 * 60;
 const END = 24 * 60;
+
+/* Speed bumps: scroll doesn't map to time linearly. Around each moment
+   (roughly ±15 minutes) the clock slows right down so the scene holds on
+   screen, and it moves quickly through the quiet stretches between. */
+const BUMP = 11; // how much slower time runs at a moment
+const SPREAD = 9; // minutes; the bump fades out by about ±15
+function timeMap(moments: Moment[]) {
+  const n = END - START;
+  const cum = new Float64Array(n + 1);
+  for (let i = 1; i <= n; i++) {
+    const m = START + i - 0.5;
+    const near = moments.reduce((a, x) => Math.min(a, Math.abs(x.m + 6 - m)), Infinity);
+    cum[i] = cum[i - 1] + 1 + BUMP * Math.exp(-((near / SPREAD) ** 2));
+  }
+  const total = cum[n];
+  return {
+    /** scroll progress (0–1) → minute of the day */
+    toMin(p: number) {
+      const target = Math.min(1, Math.max(0, p)) * total;
+      let lo = 0;
+      let hi = n;
+      while (hi - lo > 1) {
+        const mid = (lo + hi) >> 1;
+        if (cum[mid] < target) lo = mid;
+        else hi = mid;
+      }
+      const f = (target - cum[lo]) / Math.max(1e-6, cum[hi] - cum[lo]);
+      return START + lo + Math.min(1, Math.max(0, f));
+    },
+    /** minute of the day → scroll progress */
+    toP(m: number) {
+      const i = Math.min(n, Math.max(0, Math.round(m - START)));
+      return cum[i] / total;
+    },
+  };
+}
 
 const fmt = (m: number) => {
   const mm = Math.min(m, 24 * 60 - 1);
@@ -64,12 +100,13 @@ export default function DayStory({
   const root = useRef<HTMLElement>(null);
   const trig = useRef<ScrollTrigger | null>(null);
   const [min, setMin] = useState(START);
+  const map = useMemo(() => timeMap(moments), [moments]);
 
   // Jump to a moment from the timeline.
   const jump = (m: number) => {
     const st = trig.current;
     if (!st) return;
-    const p = Math.min(0.999, (m - START) / (END - START) + 0.015);
+    const p = Math.min(0.999, map.toP(m + 6));
     const y = st.start + (st.end - st.start) * p;
     const lenis = (window as unknown as { __cxLenis?: { scrollTo(y: number, o?: object): void } }).__cxLenis;
     if (lenis) lenis.scrollTo(y, { duration: 1.4 });
@@ -86,12 +123,12 @@ export default function DayStory({
         trigger: el,
         pin: el.querySelector(".cx-story-pin"),
         start: "top top",
-        end: `+=${moments.length * 85 + 60}%`,
+        end: `+=${moments.length * 125 + 80}%`,
         scrub: 0.4,
         onUpdate: (st) => {
-          const m = START + (END - START) * st.progress;
+          const m = map.toMin(st.progress);
           setMin(m);
-          el.style.setProperty("--p", st.progress.toFixed(4));
+          el.style.setProperty("--p", ((m - START) / (END - START)).toFixed(4));
           const idx = moments.filter((x) => x.m <= m).length - 1;
           if (idx !== last) {
             if (idx > last && idx >= 0 && st.isActive) {
@@ -113,7 +150,7 @@ export default function DayStory({
       window.clearTimeout(glitchT);
       mm.revert();
     };
-  }, [moments, mode]);
+  }, [moments, mode, map]);
 
   const active = moments.filter((x) => x.m <= min).length - 1;
   const cur = active >= 0 ? moments[active] : null;
@@ -288,19 +325,26 @@ function Artifact({ kind }: { kind: Kind }) {
             <i />
             <i />
             <i />
-            <span>your-business.com</span>
+            <span>google.com/search?q=best+near+me</span>
           </div>
           <div className="cx-a-site-plain">
-            <p className="cx-a-plain-h">Welcome to our website</p>
-            {Array.from({ length: 7 }, (_, i) => (
-              <span key={i} style={{ width: `${92 - ((i * 13) % 40)}%` }} />
+            <p className="cx-a-plain-h">best near me</p>
+            {["Competitor A · ★★★★★", "Competitor B · ★★★★☆", "Competitor C · ★★★★☆"].map((r) => (
+              <p key={r} className="cx-a-plain-link" style={{ textDecoration: "none", opacity: 0.85 }}>
+                {r}
+              </p>
             ))}
-            <p className="cx-a-plain-link">Contact us</p>
+            {Array.from({ length: 3 }, (_, i) => (
+              <span key={i} style={{ width: `${88 - i * 14}%` }} />
+            ))}
+            <p className="cx-a-plain-link" style={{ opacity: 0.35 }}>
+              your-business.com · page 4
+            </p>
           </div>
           <svg className="cx-a-cursor cx-a-cursor-leave" width="20" height="24" viewBox="0 0 18 22">
             <path d="M1 1l15 11-7 1-3 7z" fill="#fff" stroke="#070a09" strokeWidth="1.2" />
           </svg>
-          <span className="cx-a-tag">Left after 6 seconds</span>
+          <span className="cx-a-tag">Not found · 0 customers</span>
         </div>
       );
     case "enquire":
