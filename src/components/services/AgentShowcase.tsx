@@ -35,27 +35,46 @@ export default function AgentShowcase({ agents, variants }: { agents: Agent[]; v
   }, [i, inView, auto, agents.length]);
 
   const a = agents[i];
+  // Agents of different kinds (inbound / outbound calls) sit in their own groups.
+  const groups: [string, { g: Agent; k: number }[]][] = [];
+  agents.forEach((g, k) => {
+    const hit = groups.find(([kind]) => kind === g.kind);
+    if (hit) hit[1].push({ g, k });
+    else groups.push([g.kind, [{ g, k }]]);
+  });
   const points = variants.find((v) => v.name === a.variant)?.points ?? [];
 
   return (
     <div ref={root} className={s.wrap}>
-      <div className={s.tabs} role="tablist" aria-label="Agents">
-        {agents.map((g, k) => (
-          <button
-            key={g.tab}
-            type="button"
-            role="tab"
-            aria-selected={k === i}
-            onClick={() => {
-              setI(k);
-              setAuto(false);
-            }}
-            className={s.tab}
-          >
-            <b>{g.tab}</b>
-            <small>{g.kind}</small>
-            <i data-run={k === i && inView && auto ? "" : undefined} data-full={k === i && !auto ? "" : undefined} style={{ ["--dur" as string]: `${DUR}ms` }} />
-          </button>
+      <div className={groups.length > 1 ? s.groups : undefined} role="tablist" aria-label="Agents">
+        {groups.map(([kind, list]) => (
+          <div key={kind} className={s.group}>
+            {groups.length > 1 && (
+              <span className={s.groupLabel}>
+                <i data-dir={kind.toLowerCase().startsWith("in") ? "in" : "out"} aria-hidden="true" />
+                {kind}
+              </span>
+            )}
+            <div className={s.tabs}>
+              {list.map(({ g, k }) => (
+                <button
+                  key={g.tab}
+                  type="button"
+                  role="tab"
+                  aria-selected={k === i}
+                  onClick={() => {
+                    setI(k);
+                    setAuto(false);
+                  }}
+                  className={s.tab}
+                >
+                  <b>{g.tab}</b>
+                  {groups.length === 1 && <small>{g.kind}</small>}
+                  <i data-run={k === i && inView && auto ? "" : undefined} data-full={k === i && !auto ? "" : undefined} style={{ ["--dur" as string]: `${DUR}ms` }} />
+                </button>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
       <div className={s.body}>

@@ -188,8 +188,8 @@ export const motion: Record<string, ServiceMotion> = {
     steps: [["hooksDoc", "calls"], "voice", ["connectedApps", "calls"], "testRun", "convoLog"],
     agents: [
       { tab: "Customer support", kind: "Inbound calls", variant: "Inbound AI Voice Agent", v: "callSupport", line: "Picks up every call, day or night, and answers the everyday questions your team keeps getting." },
-      { tab: "Sales", kind: "Outbound calls", variant: "Outbound AI Voice Agent", v: "callSales", line: "Calls new leads within minutes, qualifies them and books the next step." },
       { tab: "Appointment booking", kind: "Inbound calls", variant: "Inbound AI Voice Agent", v: "callBookIn", line: "Checks your calendar live and books callers in, then texts them a confirmation." },
+      { tab: "Sales follow-up", kind: "Outbound calls", variant: "Outbound AI Voice Agent", v: "callSales", line: "Calls new leads within minutes, qualifies them and books the next step." },
       { tab: "Reminders", kind: "Outbound calls", variant: "Outbound AI Voice Agent", v: "callRemind", line: "Calls the day before to confirm, and reschedules on the spot if plans changed." },
     ],
   },
