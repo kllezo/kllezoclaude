@@ -77,9 +77,33 @@ export default function ScrollStory({
     return () => cancelAnimationFrame(raf);
   }, [inView, paused, n]);
 
-  // Pause only while the pointer is on the line itself or on the screen.
-  const hold = () => setPaused(true);
-  const release = () => setPaused(false);
+  // Pause only while the pointer is exactly on the line's text or on the
+  // screen. Tracked from the pointer itself, so leaving the window (or the
+  // pointer jumping off the page) always lets it run again.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const onMove = (e: PointerEvent) => {
+      const hit = e.target instanceof Element && el.contains(e.target) && !!e.target.closest("[data-hold]");
+      setPaused(hit);
+    };
+    const onOut = (e: MouseEvent) => {
+      if (!e.relatedTarget) setPaused(false);
+    };
+    const off = () => setPaused(false);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("mouseout", onOut);
+    document.documentElement.addEventListener("mouseleave", off);
+    window.addEventListener("blur", off);
+    window.addEventListener("scroll", off, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("mouseout", onOut);
+      document.documentElement.removeEventListener("mouseleave", off);
+      window.removeEventListener("blur", off);
+      window.removeEventListener("scroll", off);
+    };
+  }, []);
 
   const go = (k: number) => {
     elapsed.current = 0;
@@ -100,7 +124,7 @@ export default function ScrollStory({
           <div className={s.text}>
             <span className={s.eyebrow}>{eyebrow}</span>
             <h2 className={s.title}>{title}</h2>
-            <div className={s.beats} aria-live="polite" onMouseEnter={hold} onMouseLeave={release}>
+            <div className={s.beats} aria-live="polite">
               {beats.map((b, k) => (
                 <div key={b.label} className={s.beat} data-state={k === i ? "on" : k < i ? "prev" : "next"} aria-hidden={k !== i}>
                   <span className={`${s.num} ${tone === "bad" ? s.numBad : s.numGood}`}>
@@ -109,8 +133,12 @@ export default function ScrollStory({
                       {String(k + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
                     </small>
                   </span>
-                  <h3>{b.label}</h3>
-                  <p>{b.body}</p>
+                  <h3>
+                    <span data-hold="">{b.label}</span>
+                  </h3>
+                  <p>
+                    <span data-hold="">{b.body}</span>
+                  </p>
                 </div>
               ))}
             </div>
@@ -127,10 +155,10 @@ export default function ScrollStory({
             </span>
             {footer}
           </div>
-          <div className={s.stage} onMouseEnter={hold} onMouseLeave={release}>
+          <div className={s.stage}>
             {cur.v &&
               (seen ? (
-                <div key={i} className={s.screen}>
+                <div key={i} className={s.screen} data-hold="">
                   <Vignette v={cur.v} alt={cur.alt} tone={tone} />
                 </div>
               ) : (
