@@ -15,9 +15,17 @@ import s from "./ScrollStory.module.css";
 const DUR = 5200;
 
 /** One Kllezo wing, cut from the brand mark (a mask, so it takes the text colour). */
-const Wing = () => <span className={s.wing} aria-hidden="true" />;
+const Wing = ({ side = "r" }: { side?: "l" | "r" }) => <span className={`${s.wing} ${side === "l" ? s.wingL : ""}`} aria-hidden="true" />;
+/** Both wings, facing each other like the Kllezo mark. */
+const Wings = () => (
+  <span className={s.wings} aria-hidden="true">
+    <Wing side="l" />
+    <Wing />
+  </span>
+);
 
-export type StoryBeat = { label: string; body: string; v?: Vkind; alt?: Alt };
+/** `was`: the problem this line fixes, shown crossed out above it. */
+export type StoryBeat = { label: string; body: string; v?: Vkind; alt?: Alt; was?: string };
 
 export default function ScrollStory({
   id,
@@ -141,8 +149,9 @@ export default function ScrollStory({
                   <li key={b.label} data-state={k < i ? "done" : k === i ? "on" : "todo"}>
                     <button type="button" aria-current={k === i} onClick={() => go(k)}>
                       <span className={s.listHead}>
-                        <Wing />
+                        <Wing side="l" />
                         <b data-hold="">{b.label}</b>
+                        <Wing />
                       </span>
                       <span className={s.listBody}>
                         <span>
@@ -165,6 +174,12 @@ export default function ScrollStory({
                           {String(k + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
                         </small>
                       </span>
+                      {b.was && (
+                        <span className={s.was}>
+                          <s>{b.was}</s>
+                          <i aria-hidden="true">→</i>
+                        </span>
+                      )}
                       <h3>
                         <span data-hold="">{b.label}</span>
                       </h3>
@@ -179,7 +194,7 @@ export default function ScrollStory({
                     <Fragment key={b.label}>
                       {k > 0 && (
                         <button type="button" className={s.wingBtn} aria-label={`Skip to ${b.label}`} onClick={() => go(k)} data-state={k <= i ? "done" : "todo"}>
-                          <Wing />
+                          <Wings />
                         </button>
                       )}
                       <button type="button" role="tab" aria-selected={k === i} aria-label={b.label} onClick={() => go(k)} data-state={k < i ? "done" : k === i ? "on" : "todo"}>

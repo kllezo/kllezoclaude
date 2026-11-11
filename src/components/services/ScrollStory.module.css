@@ -460,3 +460,41 @@
     margin-top: 9px;
   }
 }
+
+/* left wing: the other end of the mark */
+.wingL {
+  width: 0.59em;
+  -webkit-mask-position: left center;
+  mask-position: left center;
+}
+.wings {
+  display: inline-flex;
+  gap: 0.12em;
+}
+.bar .wingBtn {
+  width: 34px;
+  font-size: 15px;
+}
+
+/* the problem a solution fixes, crossed out */
+.was {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--k-grey);
+}
+.was s {
+  text-decoration-color: #b4482f;
+  text-decoration-thickness: 1.5px;
+}
+.was i {
+  font-style: normal;
+  color: var(--k-gold);
+  font-weight: 700;
+}
+@media (max-width: 860px) {
+  .was {
+    font-size: 12.5px;
+  }
+}

@@ -93,7 +93,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
         }
         tone="good"
         theme="light"
-        beats={mo.outcomes.map(([label, v, alt], i) => ({ label, v, alt, body: sv.outcomes[i] }))}
+        beats={mo.outcomes.map(([label, v, alt], i) => ({ label, v, alt, body: sv.outcomes[i], was: mo.problems[i]?.[0] }))}
       />
 
       {/* 4 · How exactly we fix it */}
