@@ -273,3 +273,190 @@
     animation: none;
   }
 }
+
+/* ── Kllezo wing (masked from the brand mark, takes currentColor) ── */
+.wing {
+  display: inline-block;
+  flex: none;
+  width: 0.52em;
+  height: 1em;
+  background: currentColor;
+  -webkit-mask: url(/brand/kllezo-mark-green.webp) right center / auto 100% no-repeat;
+  mask: url(/brand/kllezo-mark-green.webp) right center / auto 100% no-repeat;
+}
+
+/* wings between the bar segments: skip points */
+.bar {
+  align-items: center;
+}
+.bar .wingBtn {
+  flex: none;
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: 22px;
+  height: 24px;
+  padding: 0;
+  font-size: 17px;
+  color: rgba(9, 69, 62, 0.28);
+  transition:
+    color 0.3s,
+    transform 0.3s var(--ease-out);
+}
+.dark .bar .wingBtn {
+  color: rgba(251, 245, 233, 0.3);
+}
+.bar .wingBtn[data-state="done"] {
+  color: var(--k-gold);
+}
+.bar .wingBtn:hover {
+  transform: scale(1.25);
+  color: var(--k-gold);
+}
+.bar button:not(.wingBtn) {
+  align-self: start;
+}
+
+.next {
+  font-size: 13px;
+  color: var(--k-grey);
+}
+.next b {
+  font-weight: 600;
+  color: var(--k-dark);
+}
+.dark .next {
+  color: rgba(251, 245, 233, 0.6);
+}
+.dark .next b {
+  color: var(--k-beige);
+}
+
+/* the "hover to pause" note */
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--k-grey);
+  opacity: 0.7;
+}
+.hint::before {
+  content: "";
+  width: 7px;
+  height: 9px;
+  border-inline: 2px solid currentColor;
+  box-sizing: border-box;
+}
+.hint[data-paused] {
+  color: var(--k-gold);
+  opacity: 1;
+}
+.dark .hint {
+  color: rgba(251, 245, 233, 0.6);
+}
+
+/* ── list layout: all lines at once ── */
+.list {
+  display: grid;
+  gap: 4px;
+  margin: clamp(6px, 1.5vw, 16px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.list button {
+  display: grid;
+  width: 100%;
+  padding: 12px 0 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.listHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(19px, 1.9vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.listHead b {
+  font-weight: 650;
+  color: rgba(17, 17, 17, 0.3);
+  transition: color 0.4s;
+}
+.listHead .wing {
+  color: rgba(9, 69, 62, 0.22);
+  transition: color 0.4s;
+}
+.list li[data-state="on"] .listHead b {
+  color: var(--k-dark);
+}
+.list li[data-state="on"] .listHead .wing,
+.list li[data-state="done"] .listHead .wing {
+  color: var(--k-gold);
+}
+.list li[data-state="done"] .listHead b {
+  color: rgba(17, 17, 17, 0.5);
+}
+.list button:hover .listHead b {
+  color: rgba(17, 17, 17, 0.75);
+}
+.listBody {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--ease-out);
+}
+.listBody > span {
+  overflow: hidden;
+  padding-left: calc(0.52em * 1.6 + 12px);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--k-grey);
+}
+.list li[data-state="on"] .listBody {
+  grid-template-rows: 1fr;
+}
+.list li[data-state="on"] .listBody > span {
+  padding-top: 6px;
+}
+.listBar {
+  position: relative;
+  display: block;
+  height: 3px;
+  margin-top: 12px;
+  border-radius: 3px;
+  background: rgba(9, 69, 62, 0.1);
+  overflow: hidden;
+}
+.listBar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--k-gold);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.list li[data-state="done"] .listBar::after {
+  transform: scaleX(1);
+}
+.list li[data-state="on"] .listBar::after {
+  transform: scaleX(var(--local, 0));
+}
+@media (max-width: 860px) {
+  .listHead {
+    font-size: 17px;
+  }
+  .listBody > span {
+    font-size: 13.5px;
+  }
+  .list button {
+    padding-top: 9px;
+  }
+  .listBar {
+    margin-top: 9px;
+  }
+}

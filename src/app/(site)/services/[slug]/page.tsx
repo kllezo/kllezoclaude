@@ -79,6 +79,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
         title="Sound familiar?"
         tone="bad"
         theme="white"
+        layout="list"
         beats={mo.problems.map(([label, v, alt], i) => ({ label, v, alt, body: sv.problems[i] }))}
       />
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import Vignette, { type Tone } from "./Vignette";
 import type { Alt, Vkind } from "@/content/motion";
 import s from "./ScrollStory.module.css";
@@ -14,6 +14,9 @@ import s from "./ScrollStory.module.css";
 
 const DUR = 5200;
 
+/** One Kllezo wing, cut from the brand mark (a mask, so it takes the text colour). */
+const Wing = () => <span className={s.wing} aria-hidden="true" />;
+
 export type StoryBeat = { label: string; body: string; v?: Vkind; alt?: Alt };
 
 export default function ScrollStory({
@@ -24,6 +27,7 @@ export default function ScrollStory({
   tone,
   theme = "light",
   kind = "list",
+  layout = "roll",
   footer,
 }: {
   id?: string;
@@ -33,10 +37,13 @@ export default function ScrollStory({
   tone: Tone;
   theme?: "light" | "white" | "dark";
   kind?: "list" | "steps";
+  /** "roll": one big line at a time. "list": every line visible, the playing one lit. */
+  layout?: "roll" | "list";
   footer?: ReactNode;
 }) {
   const root = useRef<HTMLElement>(null);
   const bar = useRef<HTMLDivElement>(null);
+  const list = useRef<HTMLOListElement>(null);
   const [i, setI] = useState(0);
   const [seen, setSeen] = useState(false);
   const [inView, setInView] = useState(false);
@@ -70,7 +77,9 @@ export default function ScrollStory({
         elapsed.current = 0;
         setI((k) => (k + 1) % n);
       }
-      bar.current?.style.setProperty("--local", (elapsed.current / DUR).toFixed(3));
+      const f = (elapsed.current / DUR).toFixed(3);
+      bar.current?.style.setProperty("--local", f);
+      list.current?.style.setProperty("--local", f);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -108,6 +117,7 @@ export default function ScrollStory({
   const go = (k: number) => {
     elapsed.current = 0;
     bar.current?.style.setProperty("--local", "0");
+    list.current?.style.setProperty("--local", "0");
     setI(k);
   };
 
@@ -124,34 +134,68 @@ export default function ScrollStory({
           <div className={s.text}>
             <span className={s.eyebrow}>{eyebrow}</span>
             <h2 className={s.title}>{title}</h2>
-            <div className={s.beats} aria-live="polite">
-              {beats.map((b, k) => (
-                <div key={b.label} className={s.beat} data-state={k === i ? "on" : k < i ? "prev" : "next"} aria-hidden={k !== i}>
-                  <span className={`${s.num} ${tone === "bad" ? s.numBad : s.numGood}`}>
-                    {kind === "steps" ? `Step ${k + 1}` : tone === "bad" ? "✕" : "✓"}
-                    <small>
-                      {String(k + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
-                    </small>
-                  </span>
-                  <h3>
-                    <span data-hold="">{b.label}</span>
-                  </h3>
-                  <p>
-                    <span data-hold="">{b.body}</span>
-                  </p>
+            {layout === "list" ? (
+              /* Everything at once: every line visible, the playing one darkens and fills its bar. */
+              <ol ref={list} className={s.list} aria-label="Jump to">
+                {beats.map((b, k) => (
+                  <li key={b.label} data-state={k < i ? "done" : k === i ? "on" : "todo"}>
+                    <button type="button" aria-current={k === i} onClick={() => go(k)}>
+                      <span className={s.listHead}>
+                        <Wing />
+                        <b data-hold="">{b.label}</b>
+                      </span>
+                      <span className={s.listBody}>
+                        <span>
+                          <span data-hold="">{b.body}</span>
+                        </span>
+                      </span>
+                      <i className={s.listBar} />
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <>
+                <div className={s.beats} aria-live="polite">
+                  {beats.map((b, k) => (
+                    <div key={b.label} className={s.beat} data-state={k === i ? "on" : k < i ? "prev" : "next"} aria-hidden={k !== i}>
+                      <span className={`${s.num} ${tone === "bad" ? s.numBad : s.numGood}`}>
+                        {kind === "steps" ? `Step ${k + 1}` : tone === "bad" ? "✕" : "✓"}
+                        <small>
+                          {String(k + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
+                        </small>
+                      </span>
+                      <h3>
+                        <span data-hold="">{b.label}</span>
+                      </h3>
+                      <p>
+                        <span data-hold="">{b.body}</span>
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div ref={bar} className={s.bar} role="tablist" aria-label="Jump to">
-              {beats.map((b, k) => (
-                <button key={b.label} type="button" role="tab" aria-selected={k === i} aria-label={b.label} onClick={() => go(k)} data-state={k < i ? "done" : k === i ? "on" : "todo"}>
-                  <i />
-                  {kind === "steps" && <span>{b.label}</span>}
-                </button>
-              ))}
-            </div>
-            <span className={s.hint}>
-              {kind === "steps" ? "Next step" : "Next"}: <b>{beats[(i + 1) % n].label}</b>
+                <div ref={bar} className={s.bar} role="tablist" aria-label="Jump to">
+                  {beats.map((b, k) => (
+                    <Fragment key={b.label}>
+                      {k > 0 && (
+                        <button type="button" className={s.wingBtn} aria-label={`Skip to ${b.label}`} onClick={() => go(k)} data-state={k <= i ? "done" : "todo"}>
+                          <Wing />
+                        </button>
+                      )}
+                      <button type="button" role="tab" aria-selected={k === i} aria-label={b.label} onClick={() => go(k)} data-state={k < i ? "done" : k === i ? "on" : "todo"}>
+                        <i />
+                        {kind === "steps" && <span>{b.label}</span>}
+                      </button>
+                    </Fragment>
+                  ))}
+                </div>
+                <span className={s.next}>
+                  {kind === "steps" ? "Next step" : "Next"}: <b>{beats[(i + 1) % n].label}</b>
+                </span>
+              </>
+            )}
+            <span className={s.hint} data-paused={paused ? "" : undefined}>
+              {paused ? "Paused" : "Hover the text or screen to pause"}
             </span>
             {footer}
           </div>
