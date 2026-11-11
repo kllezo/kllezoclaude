@@ -6,11 +6,13 @@ import type { Alt, Vkind } from "@/content/motion";
 import s from "./ScrollStory.module.css";
 
 /* ─────────────────────────────────────────────────────────────────────────
-   A pinned, scroll-driven story. The section holds still while you scroll;
-   each stretch of scroll is one beat — its headline, its sentence and its
-   screen change together, and the bar under the text fills as you go.
-   Nothing needs clicking (the bar's segments jump to a beat if you want).
+   A rolling headline. No pinning, no extra scrolling: the section is one
+   screen tall. While it's on screen the headline rolls to the next beat
+   every few seconds and the screen beside it follows; the bars show how
+   long until the next one. Hovering pauses it, tapping a bar jumps to it.
    ───────────────────────────────────────────────────────────────────────── */
+
+const DUR = 5200;
 
 export type StoryBeat = { label: string; body: string; v?: Vkind; alt?: Alt };
 
@@ -37,50 +39,60 @@ export default function ScrollStory({
   const bar = useRef<HTMLDivElement>(null);
   const [i, setI] = useState(0);
   const [seen, setSeen] = useState(false);
-  const [moved, setMoved] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [paused, setPaused] = useState(false);
   const n = beats.length;
 
   useEffect(() => {
     const el = root.current;
     if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        setInView(e.isIntersecting);
+        if (e.isIntersecting) setSeen(true);
+      },
+      { threshold: 0.45 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // The clock: runs only while the section is on screen and not hovered.
+  const elapsed = useRef(0);
+  useEffect(() => {
+    if (!inView || paused || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
-    const update = () => {
-      raf = 0;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = Math.max(1, el.offsetHeight - vh);
-      const p = Math.min(1, Math.max(0, -r.top / total));
-      const f = Math.min(n - 1e-4, p * n);
-      const idx = Math.floor(f);
-      setI(idx);
-      if (r.top < vh * 0.55) setSeen(true);
-      setMoved(p > 0.015);
-      bar.current?.style.setProperty("--local", (f - idx).toFixed(3));
+    let last = performance.now();
+    const tick = (now: number) => {
+      elapsed.current += now - last;
+      last = now;
+      if (elapsed.current >= DUR) {
+        elapsed.current = 0;
+        setI((k) => (k + 1) % n);
+      }
+      bar.current?.style.setProperty("--local", (elapsed.current / DUR).toFixed(3));
+      raf = requestAnimationFrame(tick);
     };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [n]);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, paused, n]);
 
   const go = (k: number) => {
-    const el = root.current;
-    if (!el) return;
-    const total = el.offsetHeight - window.innerHeight;
-    const top = el.getBoundingClientRect().top + window.scrollY + ((k + 0.08) / n) * total;
-    window.scrollTo({ top, behavior: "smooth" });
+    elapsed.current = 0;
+    bar.current?.style.setProperty("--local", "0");
+    setI(k);
   };
 
   const cur = beats[i];
   return (
-    <section ref={root} id={id} className={`${s.story} ${s[theme]}`} style={{ ["--n" as string]: n }} aria-label={typeof title === "string" ? title : eyebrow}>
+    <section
+      ref={root}
+      id={id}
+      className={`${s.story} ${s[theme]}`}
+      aria-label={typeof title === "string" ? title : eyebrow}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div className={s.pin}>
         <div className={s.grid}>
           <div className={s.text}>
@@ -88,7 +100,7 @@ export default function ScrollStory({
             <h2 className={s.title}>{title}</h2>
             <div className={s.beats} aria-live="polite">
               {beats.map((b, k) => (
-                <div key={b.label} className={s.beat} data-on={k === i ? "" : undefined} aria-hidden={k !== i}>
+                <div key={b.label} className={s.beat} data-state={k === i ? "on" : k < i ? "prev" : "next"} aria-hidden={k !== i}>
                   <span className={`${s.num} ${tone === "bad" ? s.numBad : s.numGood}`}>
                     {kind === "steps" ? `Step ${k + 1}` : tone === "bad" ? "✕" : "✓"}
                     <small>
@@ -108,8 +120,8 @@ export default function ScrollStory({
                 </button>
               ))}
             </div>
-            <span className={s.hint} data-hide={moved ? "" : undefined}>
-              <i /> Scroll to see {kind === "steps" ? "each step" : "each one"}
+            <span className={s.hint}>
+              {kind === "steps" ? "Next step" : "Next"}: <b>{beats[(i + 1) % n].label}</b>
             </span>
             {footer}
           </div>

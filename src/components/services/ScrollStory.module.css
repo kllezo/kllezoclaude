@@ -1,8 +1,6 @@
 .story {
-  --nav: 72px;
   position: relative;
-  height: calc(var(--n) * 78vh + 100vh);
-  height: calc(var(--n) * 78svh + 100svh);
+  padding-block: clamp(64px, 8vw, 120px);
 }
 .light {
   background: var(--k-beige);
@@ -17,13 +15,8 @@
   color: var(--k-beige);
 }
 .pin {
-  position: sticky;
-  top: var(--nav);
-  height: calc(100vh - var(--nav));
-  height: calc(100svh - var(--nav));
   display: grid;
   align-items: center;
-  overflow: hidden;
 }
 .grid {
   width: 100%;
@@ -74,6 +67,8 @@
 .beats {
   display: grid;
   margin-top: clamp(4px, 1.5vw, 18px);
+  overflow: hidden;
+  padding-bottom: 4px;
 }
 .beat {
   grid-area: 1 / 1;
@@ -81,13 +76,16 @@
   align-content: start;
   gap: 10px;
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(70%);
   transition:
     opacity 0.45s var(--ease-out),
-    transform 0.6s var(--ease-out);
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
   pointer-events: none;
 }
-.beat[data-on] {
+.beat[data-state="prev"] {
+  transform: translateY(-70%);
+}
+.beat[data-state="on"] {
   opacity: 1;
   transform: none;
   pointer-events: auto;
@@ -185,44 +183,18 @@
   opacity: 1;
 }
 .hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 13px;
   color: var(--k-grey);
-  transition: opacity 0.4s;
+}
+.hint b {
+  font-weight: 600;
+  color: var(--k-dark);
 }
 .dark .hint {
   color: rgba(251, 245, 233, 0.6);
 }
-.hint i {
-  position: relative;
-  width: 16px;
-  height: 24px;
-  border-radius: 10px;
-  border: 1.5px solid currentColor;
-}
-.hint i::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 5px;
-  width: 3px;
-  height: 5px;
-  margin-left: -1.5px;
-  border-radius: 2px;
-  background: currentColor;
-  animation: wheel 1.4s ease-in-out infinite;
-}
-@keyframes wheel {
-  60% {
-    transform: translateY(6px);
-    opacity: 0;
-  }
-}
-.hint[data-hide] {
-  opacity: 0;
+.dark .hint b {
+  color: var(--k-beige);
 }
 .stage {
   position: relative;
@@ -250,8 +222,7 @@
 
 @media (max-width: 860px) {
   .story {
-    --nav: 64px;
-    height: calc(var(--n) * 70svh + 100svh);
+    padding-block: 56px;
   }
   .grid {
     grid-template-columns: 1fr;
@@ -264,8 +235,17 @@
   .title {
     font-size: clamp(22px, 6vw, 30px);
   }
+  /* phones: heading, then the screen, then the rolling line */
+  .text {
+    display: contents;
+  }
+  .eyebrow,
+  .title {
+    order: -2;
+  }
   .stage {
     order: -1;
+    margin-block: 6px 4px;
   }
   .beat {
     gap: 4px;
@@ -283,14 +263,6 @@
     padding: 6px 0;
   }
   .bar span {
-    display: none;
-  }
-  .hint {
-    display: none;
-  }
-}
-@media (max-width: 860px) and (max-height: 760px) {
-  .title {
     display: none;
   }
 }
