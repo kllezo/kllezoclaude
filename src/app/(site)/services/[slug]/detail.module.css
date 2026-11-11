@@ -324,3 +324,40 @@
 .variants {
   display: block !important;
 }
+
+.ps {
+  align-items: center;
+}
+.whyMore {
+  margin-top: 18px;
+  border-left: 2px solid var(--k-gold);
+  padding: 4px 0 4px 16px;
+}
+.whyMore summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--k-grey);
+  list-style: none;
+}
+.whyMore summary::after {
+  content: " +";
+  color: var(--k-gold);
+}
+.whyMore[open] summary::after {
+  content: " –";
+}
+.whyMore p {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--k-dark);
+}
+.outScene {
+  margin-top: 26px;
+}
+.outNote {
+  margin-top: 16px;
+  font-size: 13.5px;
+  color: var(--k-grey);
+}

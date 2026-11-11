@@ -2,8 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ServiceDemo from "@/components/shared/ServiceDemo";
 import ProblemCycler from "@/components/services/ProblemCycler";
-import WordReveal from "@/components/services/WordReveal";
-import WorkflowPlayer from "@/components/services/WorkflowPlayer";
+import Scene from "@/components/services/Scene";
+import StepJourney from "@/components/services/StepJourney";
 import TickList from "@/components/services/TickList";
 import VariantTabs from "@/components/services/VariantTabs";
 import JsonLd from "@/components/shared/JsonLd";
@@ -78,11 +78,14 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
             <span className={b.eyebrow}>The problem</span>
             <h2 className={b.h2}>Sound familiar?</h2>
             <ProblemCycler items={sv.problems} />
+            <details className={s.whyMore}>
+              <summary>Why it keeps happening</summary>
+              <p>{sv.whyItFails}</p>
+            </details>
           </div>
-          <aside className={s.why} data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            <span className={s.whyLabel}>Why it keeps happening</span>
-            <WordReveal text={sv.whyItFails} className={s.whyText} />
-          </aside>
+          <div data-reveal style={{ ["--d" as string]: "0.1s" }}>
+            <Scene kind={sv.demo} state="before" />
+          </div>
         </div>
       </section>
 
@@ -111,9 +114,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
           <h2 className={b.h2}>
             A clear process, <span className={b.serif}>no guesswork.</span>
           </h2>
-          <div className={s.player}>
-            <WorkflowPlayer steps={sv.workflow} />
-          </div>
+          <StepJourney steps={sv.workflow} />
         </div>
       </section>
 
@@ -137,9 +138,14 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
           <div data-reveal>
             <span className={b.eyebrow}>The outcome</span>
             <h2 className={b.h2}>What changes.</h2>
-            <p className={`${b.lead} ${s.outNote}`}>The results we measure are agreed with you before work starts and reported monthly.</p>
+            <div className={s.outScene}>
+              <Scene kind={sv.demo} state="after" />
+            </div>
           </div>
-          <TickList items={sv.outcomes} variant="outcome" />
+          <div>
+            <TickList items={sv.outcomes} variant="outcome" />
+            <p className={s.outNote}>Results are agreed with you before work starts and reported monthly.</p>
+          </div>
         </div>
       </section>
 
