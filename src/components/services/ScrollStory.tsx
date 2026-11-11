@@ -77,6 +77,10 @@ export default function ScrollStory({
     return () => cancelAnimationFrame(raf);
   }, [inView, paused, n]);
 
+  // Pause only while the pointer is on the line itself or on the screen.
+  const hold = () => setPaused(true);
+  const release = () => setPaused(false);
+
   const go = (k: number) => {
     elapsed.current = 0;
     bar.current?.style.setProperty("--local", "0");
@@ -90,15 +94,13 @@ export default function ScrollStory({
       id={id}
       className={`${s.story} ${s[theme]}`}
       aria-label={typeof title === "string" ? title : eyebrow}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
     >
       <div className={s.pin}>
         <div className={s.grid}>
           <div className={s.text}>
             <span className={s.eyebrow}>{eyebrow}</span>
             <h2 className={s.title}>{title}</h2>
-            <div className={s.beats} aria-live="polite">
+            <div className={s.beats} aria-live="polite" onMouseEnter={hold} onMouseLeave={release}>
               {beats.map((b, k) => (
                 <div key={b.label} className={s.beat} data-state={k === i ? "on" : k < i ? "prev" : "next"} aria-hidden={k !== i}>
                   <span className={`${s.num} ${tone === "bad" ? s.numBad : s.numGood}`}>
@@ -125,7 +127,7 @@ export default function ScrollStory({
             </span>
             {footer}
           </div>
-          <div className={s.stage}>
+          <div className={s.stage} onMouseEnter={hold} onMouseLeave={release}>
             {cur.v &&
               (seen ? (
                 <div key={i} className={s.screen}>
