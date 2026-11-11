@@ -317,3 +317,10 @@
     left: -5px;
   }
 }
+
+.player {
+  margin-top: clamp(32px, 4vw, 48px);
+}
+.variants {
+  display: block !important;
+}

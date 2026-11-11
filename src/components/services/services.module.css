@@ -1,0 +1,407 @@
+/* Animated building blocks for the services pages. */
+
+/* ── Problem cycler ─────────────────────────────────── */
+.cycler {
+  display: grid;
+  gap: 22px;
+  margin-top: 22px;
+}
+.cyclerStage {
+  min-height: 4.4em;
+  font-size: clamp(24px, 2.6vw, 34px);
+  display: flex;
+  align-items: center;
+}
+.cyclerText {
+  font-family: var(--f-serif);
+  font-style: italic;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--k-dark);
+  animation: cyclerIn 0.6s var(--ease-out) both;
+}
+@keyframes cyclerIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+}
+.cyclerQ {
+  color: #a3442d;
+}
+.cyclerPills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.cyclerPills button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 14.5px;
+  color: var(--k-grey);
+  transition: color 0.25s;
+}
+.cyclerPills button[aria-pressed="true"] {
+  color: var(--k-dark);
+  font-weight: 600;
+}
+.pillBar {
+  position: relative;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--k-line-strong);
+  overflow: hidden;
+}
+.cyclerPills button[aria-pressed="true"] .pillBar {
+  background: rgba(163, 68, 45, 0.25);
+}
+.pillBar i {
+  position: absolute;
+  inset: 0;
+  background: #a3442d;
+  transform-origin: left;
+  animation: pill 2.8s linear both;
+}
+@keyframes pill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ── Word reveal ────────────────────────────────────── */
+.words span {
+  opacity: 0.14;
+  transition: opacity 0.5s ease;
+  transition-delay: calc(var(--i) * 28ms);
+}
+.words[data-on] span {
+  opacity: 1;
+}
+
+/* ── Workflow player ────────────────────────────────── */
+.player {
+  --fg: var(--k-beige);
+  --muted: rgba(251, 245, 233, 0.6);
+  --line: rgba(251, 245, 233, 0.2);
+  --card: rgba(251, 245, 233, 0.06);
+  display: grid;
+  gap: 22px;
+  color: var(--fg);
+}
+.playerLight {
+  --fg: var(--k-dark);
+  --muted: var(--k-grey);
+  --line: var(--k-line-strong);
+  --card: rgba(9, 69, 62, 0.04);
+}
+.track {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+}
+.track::before,
+.trackFill {
+  content: "";
+  position: absolute;
+  top: 17px;
+  left: calc(50% / var(--n));
+  right: calc(50% / var(--n));
+  height: 2px;
+  background: var(--line);
+}
+.trackFill {
+  right: auto;
+  width: calc((100% - 100% / var(--n)) * var(--i) / (var(--n) - 1));
+  background: var(--k-gold);
+  transition: width 0.6s var(--ease-out);
+}
+.track button {
+  position: relative;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.dot {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--k-green);
+  font-size: 13px;
+  transition:
+    background 0.35s,
+    border-color 0.35s,
+    color 0.35s,
+    transform 0.4s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+.playerLight .dot {
+  background: var(--k-white);
+}
+.track button[data-done] .dot {
+  background: var(--k-gold);
+  border-color: var(--k-gold);
+  color: var(--k-dark);
+}
+.track button[aria-selected="true"] {
+  color: var(--fg);
+}
+.track button[aria-selected="true"] .dot {
+  border-color: var(--k-gold);
+  transform: scale(1.18);
+}
+.dotLabel {
+  line-height: 1.25;
+}
+.stepCard {
+  padding: clamp(20px, 2.6vw, 30px);
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  min-height: 140px;
+}
+.stepInner {
+  animation: cyclerIn 0.5s var(--ease-out) both;
+}
+.stepCount {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--k-gold);
+}
+.stepInner h3 {
+  margin-top: 8px;
+  font-size: clamp(22px, 2.2vw, 30px);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.stepInner p {
+  margin-top: 8px;
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 640px;
+}
+
+/* ── Tick list ──────────────────────────────────────── */
+.ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 10px;
+}
+.ticks li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--k-white);
+  box-shadow: 0 0 0 1px var(--k-line);
+  font-size: 15.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  opacity: 0.35;
+  transform: translateY(8px);
+  transition:
+    opacity 0.45s var(--ease-out),
+    transform 0.45s var(--ease-out),
+    box-shadow 0.45s;
+  transition-delay: calc(var(--i) * 90ms);
+}
+.ticks[data-on] li {
+  opacity: 1;
+  transform: none;
+}
+.tick {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(9, 69, 62, 0.08);
+  transition: background 0.3s;
+  transition-delay: calc(var(--i) * 90ms + 200ms);
+}
+.tick path {
+  fill: none;
+  stroke: var(--k-green);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.4s ease;
+  transition-delay: calc(var(--i) * 90ms + 250ms);
+}
+.ticks[data-on] .tick {
+  background: var(--k-gold);
+}
+.ticks[data-on] .tick path {
+  stroke-dashoffset: 0;
+  stroke: var(--k-dark);
+}
+.ticksOutcome {
+  grid-template-columns: 1fr;
+}
+.ticksOutcome li {
+  font-size: 16.5px;
+  padding: 16px 18px;
+}
+
+/* ── Variant tabs ───────────────────────────────────── */
+.vtabs {
+  display: grid;
+  gap: 16px;
+}
+.vtabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.vtabList button {
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--k-line-strong);
+  background: var(--k-white);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--k-dark);
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+.vtabList button[aria-selected="true"] {
+  background: var(--k-green);
+  border-color: var(--k-green);
+  color: var(--k-beige);
+}
+.vtabPanel {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 8px;
+}
+.vtabPanel li {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(9, 69, 62, 0.05);
+  font-size: 15px;
+  animation: cyclerIn 0.45s var(--ease-out) both;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+/* ── Index: tabbed service panel ────────────────────── */
+.panel {
+  display: grid;
+  gap: 16px;
+}
+.panelTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: rgba(9, 69, 62, 0.06);
+  width: fit-content;
+  max-width: 100%;
+}
+.panelTabs button {
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--k-grey);
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+.panelTabs button small {
+  margin-left: 4px;
+  font-size: 11.5px;
+  opacity: 0.7;
+}
+.panelTabs button[aria-selected="true"] {
+  background: var(--k-white);
+  color: var(--k-dark);
+  box-shadow: 0 2px 8px -4px rgba(9, 69, 62, 0.4);
+}
+.panelBody {
+  animation: cyclerIn 0.45s var(--ease-out) both;
+  min-height: 160px;
+}
+.probList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.probList li {
+  position: relative;
+  padding: 13px 16px 13px 44px;
+  border-radius: 12px;
+  background: rgba(163, 68, 45, 0.06);
+  font-size: 15.5px;
+  animation: cyclerIn 0.45s var(--ease-out) both;
+  animation-delay: calc(var(--i) * 70ms);
+}
+.probList li::before {
+  content: "✕";
+  position: absolute;
+  left: 16px;
+  top: 13px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #a3442d;
+}
+
+@media (max-width: 700px) {
+  .track {
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  }
+  .dotLabel {
+    display: none;
+  }
+  .track button[aria-selected="true"] .dotLabel {
+    display: none;
+  }
+
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticks li,
+  .words span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

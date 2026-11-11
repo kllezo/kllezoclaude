@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ServiceDemo from "@/components/shared/ServiceDemo";
+import ProblemCycler from "@/components/services/ProblemCycler";
+import WordReveal from "@/components/services/WordReveal";
+import WorkflowPlayer from "@/components/services/WorkflowPlayer";
+import TickList from "@/components/services/TickList";
+import VariantTabs from "@/components/services/VariantTabs";
 import JsonLd from "@/components/shared/JsonLd";
 import { divisionById, serviceBySlug, services } from "@/content/services";
 import { pairings } from "@/content/pairings";
@@ -72,15 +77,11 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
           <div data-reveal>
             <span className={b.eyebrow}>The problem</span>
             <h2 className={b.h2}>Sound familiar?</h2>
-            <ul className={s.problems}>
-              {sv.problems.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
+            <ProblemCycler items={sv.problems} />
           </div>
           <aside className={s.why} data-reveal style={{ ["--d" as string]: "0.1s" }}>
             <span className={s.whyLabel}>Why it keeps happening</span>
-            <p className={s.whyText}>{sv.whyItFails}</p>
+            <WordReveal text={sv.whyItFails} className={s.whyText} />
           </aside>
         </div>
       </section>
@@ -96,16 +97,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
             <p className={b.lead}>{div.businessLine}</p>
             {sv.variants && (
               <div className={s.variants}>
-                {sv.variants.map((v) => (
-                  <div key={v.name}>
-                    <b>{v.name}</b>
-                    <ul>
-                      {v.points.map((p) => (
-                        <li key={p}>{p}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                <VariantTabs variants={sv.variants} />
               </div>
             )}
           </div>
@@ -119,15 +111,9 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
           <h2 className={b.h2}>
             A clear process, <span className={b.serif}>no guesswork.</span>
           </h2>
-          <ol className={s.steps}>
-            {sv.workflow.map((w, i) => (
-              <li key={w.title} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
-                <span className={s.stepN}>0{i + 1}</span>
-                <h3>{w.title}</h3>
-                <p>{w.detail}</p>
-              </li>
-            ))}
-          </ol>
+          <div className={s.player}>
+            <WorkflowPlayer steps={sv.workflow} />
+          </div>
         </div>
       </section>
 
@@ -138,16 +124,10 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
             <div>
               <span className={b.eyebrow}>Deliverables</span>
               <h2 className={b.h2}>What you receive.</h2>
+              <p className={b.lead}>{sv.deliverables.length} deliverables, all included.</p>
             </div>
           </div>
-          <ul className={s.deliv}>
-            {sv.deliverables.map((d, i) => (
-              <li key={d} data-reveal style={{ ["--d" as string]: `${i * 0.03}s` }}>
-                <span>{String(i + 1).padStart(2, "0")}</span>
-                {d}
-              </li>
-            ))}
-          </ul>
+          <TickList items={sv.deliverables} />
         </div>
       </section>
 
@@ -159,14 +139,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
             <h2 className={b.h2}>What changes.</h2>
             <p className={`${b.lead} ${s.outNote}`}>The results we measure are agreed with you before work starts and reported monthly.</p>
           </div>
-          <ul className={s.outcomes} data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            {sv.outcomes.map((o, i) => (
-              <li key={o}>
-                <span>{String(i + 1).padStart(2, "0")}</span>
-                {o}
-              </li>
-            ))}
-          </ul>
+          <TickList items={sv.outcomes} variant="outcome" />
         </div>
       </section>
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ServiceDemo from "@/components/shared/ServiceDemo";
+import ServicePanel from "@/components/services/ServicePanel";
 import JsonLd from "@/components/shared/JsonLd";
 import { divisions, servicesIn } from "@/content/services";
 import { breadcrumbLd, pageMeta } from "@/lib/seo";
@@ -67,58 +68,12 @@ export default function BusinessServices() {
                     <div className={s.cols}>
                       <div className={s.left}>
                         <p className={s.summary}>{sv.summary}</p>
-                        <div className={s.pair}>
-                          <div>
-                            <h3 className={s.k}>Problems solved</h3>
-                            <ul className={s.dash}>
-                              {sv.problems.map((p) => (
-                                <li key={p}>{p}</li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <h3 className={s.k}>Expected outcomes</h3>
-                            <ul className={b.checks}>
-                              {sv.outcomes.map((o) => (
-                                <li key={o}>{o}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                        {sv.variants && (
-                          <div className={s.variants}>
-                            {sv.variants.map((v) => (
-                              <div key={v.name} className={s.variant}>
-                                <b>{v.name}</b>
-                                <ul>
-                                  {v.points.map((p) => (
-                                    <li key={p}>{p}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        <h3 className={s.k}>Deliverables</h3>
-                        <div className={s.deliv}>
-                          {sv.deliverables.map((x) => (
-                            <span key={x}>{x}</span>
-                          ))}
-                        </div>
+                        <ServicePanel sv={sv} />
                       </div>
                       <div className={s.right}>
                         <ServiceDemo kind={sv.demo} />
                       </div>
                     </div>
-                    <h3 className={s.k}>Workflow</h3>
-                    <ol className={s.flow}>
-                      {sv.workflow.map((w) => (
-                        <li key={w.title}>
-                          <b>{w.title}</b>
-                          <span>{w.detail}</span>
-                        </li>
-                      ))}
-                    </ol>
                     <div className={b.actions}>
                       <Link href={`/contact?service=${sv.slug}`} className={b.btn}>
                         Enquire about {sv.name} →

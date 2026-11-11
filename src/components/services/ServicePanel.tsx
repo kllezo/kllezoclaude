@@ -1,0 +1,49 @@
+"use client";
+
+import { useState } from "react";
+import type { Service } from "@/content/services";
+import TickList from "./TickList";
+import WorkflowPlayer from "./WorkflowPlayer";
+import VariantTabs from "./VariantTabs";
+import s from "./services.module.css";
+
+/* One service on the index page, in slices: pick Problems, Outcomes, Deliverables
+   or Workflow and read just that. Everything that used to be listed at once is
+   still here — one tab at a time. */
+export default function ServicePanel({ sv }: { sv: Service }) {
+  const tabs = [
+    { id: "problems", label: "Problems solved", n: sv.problems.length },
+    { id: "outcomes", label: "Outcomes", n: sv.outcomes.length },
+    ...(sv.variants ? [{ id: "variants", label: "Options", n: sv.variants.length }] : []),
+    { id: "deliverables", label: "Deliverables", n: sv.deliverables.length },
+    { id: "workflow", label: "Workflow", n: sv.workflow.length },
+  ];
+  const [tab, setTab] = useState("problems");
+
+  return (
+    <div className={s.panel}>
+      <div className={s.panelTabs} role="tablist" aria-label={`${sv.name} details`}>
+        {tabs.map((t) => (
+          <button key={t.id} type="button" role="tab" aria-selected={tab === t.id} onClick={() => setTab(t.id)}>
+            {t.label} <small>{t.n}</small>
+          </button>
+        ))}
+      </div>
+      <div key={tab} className={s.panelBody} role="tabpanel">
+        {tab === "problems" && (
+          <ul className={s.probList}>
+            {sv.problems.map((p, i) => (
+              <li key={p} style={{ ["--i" as string]: i }}>
+                {p}
+              </li>
+            ))}
+          </ul>
+        )}
+        {tab === "outcomes" && <TickList items={sv.outcomes} variant="outcome" />}
+        {tab === "variants" && sv.variants && <VariantTabs variants={sv.variants} />}
+        {tab === "deliverables" && <TickList items={sv.deliverables} />}
+        {tab === "workflow" && <WorkflowPlayer steps={sv.workflow} tone="light" />}
+      </div>
+    </div>
+  );
+}
