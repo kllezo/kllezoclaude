@@ -19,19 +19,31 @@ export type Vkind =
   | "landingReal" | "qualifyForm" | "waLead" | "funnelTracked" | "waInstant" | "waQualify" | "waFollow" | "waBooked"
   | "callAnswered" | "callTranscript" | "outboundCalls" | "callBooked"
   // steps
-  | "researchBoard" | "pillars" | "hooksDoc" | "cameraReal" | "target" | "palette" | "brainstorm" | "scriptReal"
+  | "researchBoard" | "researchSites" | "pillars" | "hooksDoc" | "cameraReal" | "target" | "identity" | "brainstorm" | "scriptReal"
   | "gradeReal" | "deliverFiles" | "sitemap" | "figmaReal" | "code" | "deployLive" | "catalogue" | "account" | "abTest"
-  | "flow" | "train" | "testRun" | "convoLog" | "voice";
+  | "flow" | "train" | "testRun" | "convoLog" | "voice" | "productPage" | "integrations"
+  // agents
+  | "waSupport" | "waSales" | "callSupport" | "callSales" | "callBookIn" | "callRemind";
 
 export type Alt = "calls" | "chat";
 /** [short label, animation, variant] */
 export type Beat = [string, Vkind, Alt?];
 export type Step = Vkind | [Vkind, Alt];
 
+/** One agent shown working: tab label, the variant it belongs to, its scene, one line. */
+export interface Agent {
+  tab: string;
+  kind: string;
+  variant: string;
+  v: Vkind;
+  line: string;
+}
+
 export interface ServiceMotion {
   problems: Beat[];
   outcomes: Beat[];
   steps: Step[];
+  agents?: Agent[];
 }
 
 export const motion: Record<string, ServiceMotion> = {
@@ -63,7 +75,7 @@ export const motion: Record<string, ServiceMotion> = {
       ["One session, a month of content", "podcastReal"],
       ["A library that works while you don't", "youtubeReal"],
     ],
-    steps: ["target", "palette", "brainstorm", "scriptReal", "everywhere"],
+    steps: ["target", "identity", "brainstorm", "scriptReal", "everywhere"],
   },
   "video-production": {
     problems: [
@@ -108,7 +120,7 @@ export const motion: Record<string, ServiceMotion> = {
       ["Fast on every device", "lighthouse"],
       ["Every visit, measured", "dashCampaign"],
     ],
-    steps: ["researchBoard", "sitemap", "figmaReal", "code", "deployLive"],
+    steps: ["researchSites", "sitemap", "figmaReal", "code", "deployLive"],
   },
   ecommerce: {
     problems: [
@@ -123,7 +135,7 @@ export const motion: Record<string, ServiceMotion> = {
       ["Everything connected", "connectedApps"],
       ["The whole journey, measured", "dashCampaign"],
     ],
-    steps: ["catalogue", "checkoutGood", "connectedApps", "account", "deployLive"],
+    steps: ["catalogue", "productPage", "integrations", "account", "deployLive"],
   },
   "lead-generation": {
     problems: [
@@ -154,6 +166,11 @@ export const motion: Record<string, ServiceMotion> = {
       ["Booked, confirmed and reminded", "waBooked"],
     ],
     steps: ["flow", "train", ["connectedApps", "chat"], "testRun", "convoLog"],
+    agents: [
+      { tab: "Customer support", kind: "WhatsApp & web chat", variant: "Customer Support Agent", v: "waSupport", line: "Answers questions and order updates in seconds, then hands over to your team with the full chat." },
+      { tab: "Sales", kind: "WhatsApp & web chat", variant: "Sales Agent", v: "waSales", line: "Asks the right questions, recommends the right package and follows up the next day on its own." },
+      { tab: "Appointment booking", kind: "WhatsApp & web chat", variant: "Appointment Booking Agent", v: "waBooked", line: "Finds a free slot, confirms the booking and reminds them before they arrive." },
+    ],
   },
   "ai-calling": {
     problems: [
@@ -169,5 +186,11 @@ export const motion: Record<string, ServiceMotion> = {
       ["Reminded, so they show up", "callBooked"],
     ],
     steps: [["hooksDoc", "calls"], "voice", ["connectedApps", "calls"], "testRun", "convoLog"],
+    agents: [
+      { tab: "Customer support", kind: "Inbound calls", variant: "Inbound AI Voice Agent", v: "callSupport", line: "Picks up every call, day or night, and answers the everyday questions your team keeps getting." },
+      { tab: "Sales", kind: "Outbound calls", variant: "Outbound AI Voice Agent", v: "callSales", line: "Calls new leads within minutes, qualifies them and books the next step." },
+      { tab: "Appointment booking", kind: "Inbound calls", variant: "Inbound AI Voice Agent", v: "callBookIn", line: "Checks your calendar live and books callers in, then texts them a confirmation." },
+      { tab: "Reminders", kind: "Outbound calls", variant: "Outbound AI Voice Agent", v: "callRemind", line: "Calls the day before to confirm, and reschedules on the spot if plans changed." },
+    ],
   },
 };

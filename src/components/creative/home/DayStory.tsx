@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { studioFrames, websites } from "@/content/creativeMedia";
+import { websites } from "@/content/creativeMedia";
 import { sfx } from "@/components/creative/kit/sfx";
 import Sky from "@/components/creative/kit/Sky";
 
@@ -28,8 +28,8 @@ const END = 24 * 60;
 /* Speed bumps: scroll doesn't map to time linearly. Around each moment
    (roughly ±15 minutes) the clock slows right down so the scene holds on
    screen, and it moves quickly through the quiet stretches between. */
-const BUMP = 11; // how much slower time runs at a moment
-const SPREAD = 9; // minutes; the bump fades out by about ±15
+const BUMP = 26; // how much slower time runs at a moment
+const SPREAD = 10; // minutes; the bump fades out by about ±15
 function timeMap(moments: Moment[]) {
   const n = END - START;
   const cum = new Float64Array(n + 1);
@@ -123,7 +123,7 @@ export default function DayStory({
         trigger: el,
         pin: el.querySelector(".cx-story-pin"),
         start: "top top",
-        end: `+=${moments.length * 125 + 80}%`,
+        end: `+=${moments.length * 150 + 80}%`,
         scrub: 0.4,
         onUpdate: (st) => {
           const m = map.toMin(st.progress);
@@ -279,40 +279,113 @@ function Phone({ children, className = "" }: { children: React.ReactNode; classN
   );
 }
 
+/* Small pieces of real app chrome, so each screen reads as the app it is. */
+const A = "/creative/assets";
+const bg = (f: string, pos = "center", size = "cover") => ({ backgroundImage: `url(${A}/${f})`, backgroundPosition: pos, backgroundSize: size });
+const Q = (q: number) => bg("content/1a-1d.webp", ["0% 0%", "100% 0%", "0% 100%", "100% 100%"][q], "200% 200%");
+
+const Ico = {
+  heart: <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />,
+  chat: <path d="M20 12a8 8 0 1 1-3.2-6.4L20 4l-.8 3.6A8 8 0 0 1 20 12z" />,
+  send: <path d="M21 4 3 11l7 2 2 7 9-16zM10 13l11-9" />,
+  save: <path d="M6 3h12v18l-6-4-6 4z" />,
+  dm: <path d="M4 12a8 8 0 1 1 3.2 6.4L4 20l.8-3.6A8 8 0 0 1 4 12zM8 13l3-3 2 2 3-3" />,
+  back: <path d="M15 5l-7 7 7 7" />,
+  phone: <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />,
+  video: <path d="M3 7h12v10H3zM15 10l6-3v10l-6-3" />,
+  search: <path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4" />,
+};
+const Svg = ({ i, z = 22, fill }: { i: keyof typeof Ico; z?: number; fill?: string }) => (
+  <svg width={z} height={z} viewBox="0 0 24 24" fill={fill ?? "none"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    {Ico[i]}
+  </svg>
+);
+
+type Post = { who: string; img: React.CSSProperties; likes: string; cap: string; yours?: boolean; plain?: string };
+function IgPost({ p }: { p: Post }) {
+  return (
+    <div className={`cx-ig-post${p.yours ? " is-yours" : ""}`}>
+      <div className="cx-ig-ph">
+        <i className={p.yours ? "is-plain" : ""} />
+        <b>{p.who}</b>
+        <span>•••</span>
+      </div>
+      {p.plain ? (
+        <div className="cx-ig-img cx-ig-plain">
+          <span>{p.plain}</span>
+        </div>
+      ) : (
+        <div className="cx-ig-img" style={p.img} />
+      )}
+      <div className="cx-ig-act">
+        <Svg i="heart" fill={p.yours && !p.plain ? "#ff3040" : undefined} />
+        <Svg i="chat" />
+        <Svg i="send" />
+        <span />
+        <Svg i="save" />
+      </div>
+      <p className="cx-ig-likes">{p.likes} likes</p>
+      <p className="cx-ig-cap">
+        <b>{p.who}</b> {p.cap}
+      </p>
+    </div>
+  );
+}
+function IgTop() {
+  return (
+    <div className="cx-ig-top">
+      <b>Instagram</b>
+      <span>
+        <Svg i="heart" />
+        <Svg i="dm" />
+      </span>
+    </div>
+  );
+}
+const OTHERS: Post[] = [
+  { who: "thevilla.goa", img: bg("content/5.webp", "38% 55%", "230%"), likes: "8,412", cap: "Golden hour, every evening 🌅" },
+  { who: "studio.noir", img: Q(1), likes: "12.9K", cap: "New drop. Link in bio." },
+  { who: "chef.arjun", img: bg("niche-2.webp", "50% 3%", "160%"), likes: "3,207", cap: "Tonight's tasting menu." },
+  { who: "fit.with.meera", img: bg("niche-3.webp", "50% 2%", "150%"), likes: "21.4K", cap: "Day 41. No excuses." },
+];
+
 function Artifact({ kind }: { kind: Kind }) {
   switch (kind) {
-    case "ignored":
+    case "ignored": {
+      const feed: Post[] = [
+        OTHERS[0],
+        OTHERS[1],
+        OTHERS[2],
+        { who: "your.business", img: {}, likes: "4", cap: "New offer this week! Visit us.", yours: true, plain: "NEW OFFER THIS WEEK!! Visit us today" },
+        OTHERS[3],
+        { who: "kllezo.wear", img: Q(3), likes: "6,021", cap: "Made to be noticed." },
+        OTHERS[0],
+        OTHERS[1],
+      ];
       return (
         <Phone className="is-cold">
-          <div className="cx-a-feed cx-a-feed-fast">
-            {Array.from({ length: 8 }, (_, i) => (
-              <div key={i} className={`cx-a-post${i === 3 ? " is-yours" : ""}`}>
-                <div className="cx-a-post-h">
-                  <i />
-                  {i === 3 ? <b>your.business</b> : <span />}
-                </div>
-                <div className="cx-a-post-m" />
-                {i === 3 && <p className="cx-a-post-c">New offer this week! Visit us.</p>}
-              </div>
-            ))}
+          <div className="cx-ig">
+            <IgTop />
+            <div className="cx-ig-feed cx-a-feed-fast">
+              {feed.map((p, i) => (
+                <IgPost key={i} p={p} />
+              ))}
+            </div>
           </div>
           <span className="cx-a-tag">Scrolled past</span>
         </Phone>
       );
+    }
     case "stopped":
       return (
         <Phone>
-          <div className="cx-a-feed cx-a-feed-stop">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className={`cx-a-post${i === 2 ? " is-kz" : ""}`}>
-                <div className="cx-a-post-h">
-                  <i />
-                  {i === 2 ? <b>your.business</b> : <span />}
-                </div>
-                <div className="cx-a-post-m">{i === 2 && <Image src={studioFrames[0].src} alt="" width={studioFrames[0].w} height={studioFrames[0].h} sizes="280px" unoptimized />}</div>
-                {i === 2 && <p className="cx-a-post-c">We don&apos;t build content. We build desire.</p>}
-              </div>
-            ))}
+          <div className="cx-ig">
+            <IgTop />
+            <div className="cx-ig-feed cx-ig-feed3 cx-a-feed-stop">
+              <IgPost p={OTHERS[1]} />
+              <IgPost p={OTHERS[3]} />
+              <IgPost p={{ who: "your.business", img: Q(0), likes: "2,184", cap: "We don't build content. We build desire.", yours: true }} />
+            </div>
           </div>
           <span className="cx-a-heart">♥</span>
           <span className="cx-a-tag is-gold">Stopped · saved · shared</span>
@@ -325,21 +398,68 @@ function Artifact({ kind }: { kind: Kind }) {
             <i />
             <i />
             <i />
-            <span>google.com/search?q=best+near+me</span>
+            <span>google.com/search?q=best+restaurant+near+me</span>
           </div>
-          <div className="cx-a-site-plain">
-            <p className="cx-a-plain-h">best near me</p>
-            {["Competitor A · ★★★★★", "Competitor B · ★★★★☆", "Competitor C · ★★★★☆"].map((r) => (
-              <p key={r} className="cx-a-plain-link" style={{ textDecoration: "none", opacity: 0.85 }}>
-                {r}
-              </p>
+          <div className="cx-g">
+            <div className="cx-g-head">
+              <b className="cx-g-logo">
+                <i>G</i>
+                <i>o</i>
+                <i>o</i>
+                <i>g</i>
+                <i>l</i>
+                <i>e</i>
+              </b>
+              <span className="cx-g-q">
+                best restaurant near me
+                <Svg i="search" z={16} />
+              </span>
+            </div>
+            <div className="cx-g-tabs">
+              <b>All</b>
+              <span>Maps</span>
+              <span>Images</span>
+              <span>Reviews</span>
+              <span>News</span>
+            </div>
+            {[
+              ["The Grand Table", "thegrandtable.in", "The Grand Table — Book a table tonight", "4.8", "1,240"],
+              ["Saffron House", "saffronhouse.co", "Saffron House | Fine dining & private events", "4.6", "860"],
+              ["Bistro 21", "bistro21.com", "Bistro 21 — Menu, reviews and reservations", "4.5", "512"],
+            ].map(([n, u, h, r, c]) => (
+              <div key={n} className="cx-g-r">
+                <span className="cx-g-site">
+                  <i>{n[0]}</i>
+                  <span>
+                    <b>{n}</b>
+                    <small>https://{u}</small>
+                  </span>
+                </span>
+                <p className="cx-g-t">{h}</p>
+                <p className="cx-g-s">
+                  <em>★★★★★</em> {r} ({c}) · Open now · Reserve online
+                </p>
+              </div>
             ))}
-            {Array.from({ length: 3 }, (_, i) => (
-              <span key={i} style={{ width: `${88 - i * 14}%` }} />
-            ))}
-            <p className="cx-a-plain-link" style={{ opacity: 0.35 }}>
-              your-business.com · page 4
-            </p>
+            <div className="cx-g-pg">
+              <span className="cx-g-pgw">
+                <b className="cx-g-c1">G</b>
+                {Array.from({ length: 4 }, (_, i) => (
+                  <b key={i} className={i === 3 ? "cx-g-c3" : "cx-g-c2"}>
+                    o
+                  </b>
+                ))}
+                <b className="cx-g-c1">gle</b>
+              </span>
+              <span className="cx-g-pgn">
+                <b>1</b>
+                <span>2</span>
+                <span>3</span>
+                <span className="is-you">4</span>
+                <span>Next</span>
+              </span>
+              <small className="cx-g-you">your-business.com is here, on page 4</small>
+            </div>
           </div>
           <svg className="cx-a-cursor cx-a-cursor-leave" width="20" height="24" viewBox="0 0 18 22">
             <path d="M1 1l15 11-7 1-3 7z" fill="#fff" stroke="#070a09" strokeWidth="1.2" />
@@ -375,10 +495,35 @@ function Artifact({ kind }: { kind: Kind }) {
     case "unread":
       return (
         <Phone className="is-cold">
-          <div className="cx-a-chat">
-            <p className="cx-a-chat-who">Instagram · Aisha</p>
-            <p className="cx-a-bub is-them">Hi! Is this available this weekend? 🙏</p>
-            <p className="cx-a-delivered">Delivered</p>
+          <div className="cx-dm">
+            <div className="cx-dm-top">
+              <Svg i="back" z={20} />
+              <b>your.business</b>
+              <Svg i="video" z={20} />
+            </div>
+            <div className="cx-dm-tabs">
+              <b>Primary</b>
+              <span>General</span>
+              <span>Requests (3)</span>
+            </div>
+            {[
+              ["aisha.k", "Hi! Is this available this weekend? 🙏", "now", true, 0],
+              ["rohan_m", "What are your prices?", "2h", true, 1],
+              ["the.priya", "Do you deliver to Bandra?", "5h", true, 2],
+              ["karan.s", "Thanks!", "1d", false, 3],
+              ["meera.fit", "Sent a reel by fit.with.meera", "2d", false, 0],
+            ].map(([n, m, tm, un, q]) => (
+              <div key={n as string} className={`cx-dm-row${un ? " is-unread" : ""}`}>
+                <i style={Q(q as number)} />
+                <span>
+                  <b>{n}</b>
+                  <small>
+                    {m} · {tm}
+                  </small>
+                </span>
+                {un && <em />}
+              </div>
+            ))}
             <div className="cx-a-wait">
               <span>Unread · 12 min</span>
               <span>Unread · 1 hr</span>
@@ -392,17 +537,41 @@ function Artifact({ kind }: { kind: Kind }) {
     case "replied":
       return (
         <Phone>
-          <div className="cx-a-chat">
-            <p className="cx-a-chat-who">WhatsApp · Aisha</p>
-            <p className="cx-a-bub is-them">Hi! Is this available this weekend? 🙏</p>
-            <p className="cx-a-typing">
+          <div className="cx-wa">
+            <div className="cx-wa-top">
+              <Svg i="back" z={18} />
+              <i style={Q(2)} />
+              <span>
+                <b>Aisha</b>
+                <small>online</small>
+              </span>
+              <Svg i="video" z={18} />
+              <Svg i="phone" z={16} />
+            </div>
+            <div className="cx-a-chat cx-wa-body">
+              <p className="cx-wa-day">Today</p>
+              <p className="cx-a-bub is-them">
+                Hi! Is this available this weekend? 🙏<small>14:45</small>
+              </p>
+              <p className="cx-a-typing">
+                <i />
+                <i />
+                <i />
+              </p>
+              <p className="cx-a-bub is-us">
+                Yes! Saturday 7 pm is free. Shall I book it for you?<small>14:45 ✓✓</small>
+              </p>
+              <p className="cx-a-bub is-them cx-a-late">
+                Yes please!<small>14:46</small>
+              </p>
+              <p className="cx-a-bub is-us cx-a-later">
+                Booked ✓ See you Saturday.<small>14:46 ✓✓</small>
+              </p>
+            </div>
+            <div className="cx-wa-input">
+              <span>Message</span>
               <i />
-              <i />
-              <i />
-            </p>
-            <p className="cx-a-bub is-us">Yes! Saturday 7 pm is free — shall I book it for you?</p>
-            <p className="cx-a-bub is-them cx-a-late">Yes please!</p>
-            <p className="cx-a-bub is-us cx-a-later">Booked ✓ See you Saturday.</p>
+            </div>
           </div>
           <span className="cx-a-tag is-gold">Replied in seconds</span>
         </Phone>
@@ -418,6 +587,16 @@ function Artifact({ kind }: { kind: Kind }) {
               <span className="is-red">Missed call</span>
             </p>
             <p className="cx-a-call-vm">Rang out · they tried the next number</p>
+          </div>
+          <div className="cx-a-call-btns">
+            <span className="is-dec">
+              <Svg i="phone" z={24} fill="#fff" />
+              <small>Decline</small>
+            </span>
+            <span className="is-acc">
+              <Svg i="phone" z={24} fill="#fff" />
+              <small>Accept</small>
+            </span>
           </div>
           <span className="cx-a-tag">After hours</span>
         </Phone>
@@ -446,10 +625,18 @@ function Artifact({ kind }: { kind: Kind }) {
       return (
         <Phone className="is-cold">
           <div className="cx-a-lock">
+            <p className="cx-a-lock-d">Monday 14 November</p>
             <p className="cx-a-lock-t">22:30</p>
             <div className="cx-a-lock-n">
-              <b>Booking confirmed</b>
-              <span>Thanks for choosing another business. See you Saturday!</span>
+              <i className="cx-a-lock-app">
+                <Svg i="chat" z={16} fill="#fff" />
+              </i>
+              <span>
+                <b>
+                  The Grand Table <small>now</small>
+                </b>
+                <span>Booking confirmed for Saturday, 7 pm. Thanks for choosing us!</span>
+              </span>
             </div>
           </div>
           <span className="cx-a-tag">Booked elsewhere</span>

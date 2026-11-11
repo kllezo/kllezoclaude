@@ -349,10 +349,12 @@
 /* ═══ phone ═══ */
 .phone {
   position: absolute;
-  top: 20px;
-  width: 204px;
-  height: 420px;
+  top: 13px;
+  width: 196px;
+  height: 424px; /* real iPhone ratio (~2.17), scaled to fit the canvas */
   translate: -50% 0;
+  scale: 0.79;
+  transform-origin: 50% 0;
   padding: 7px;
   border-radius: 40px;
   background: #121212;
@@ -1450,15 +1452,17 @@
   place-items: center;
 }
 .voted {
-  box-shadow:
-    0 0 0 2.5px #c8a25a,
-    0 6px 12px -6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.35);
+  scale: 1.08;
+  z-index: 4;
 }
 .voted::after {
   content: "★ 3 votes";
   position: absolute;
-  top: -9px;
-  right: -8px;
+  top: -10px;
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
   padding: 2px 6px;
   border-radius: 999px;
   background: #09453e;
@@ -3860,4 +3864,216 @@
 }
 .bookCard {
   margin-bottom: 4px;
+}
+/* card meta inside a chat bubble is not the bubble timestamp */
+.waMsg .bookCard small {
+  position: static;
+  font-size: 9px;
+  color: #666;
+}
+.waMsg .bookCard + small {
+  position: static;
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+}
+.waMsg:has(.bookCard) { padding-bottom: 6px; }
+.li .liHead {
+  margin: 2px 22px 0;
+}
+
+/* ═══ live AI call ═══ */
+.cv {
+  display: grid;
+  gap: 7px;
+  padding: 4px 12px;
+  color: #fff;
+}
+.cvHead {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  padding: 10px 0 8px;
+  text-align: center;
+}
+.cvHead small {
+  font-size: 9.5px;
+  opacity: 0.7;
+}
+.cvHead b {
+  font-size: 16px;
+  font-weight: 600;
+}
+.cvWave {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 18px;
+  margin-top: 4px;
+}
+.cvWave i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: #c8a25a;
+  animation: vWave 0.9s ease-in-out infinite;
+}
+@keyframes vWave {
+  0%,
+  100% {
+    scale: 1 0.25;
+  }
+  50% {
+    scale: 1 1;
+  }
+}
+.cvLine {
+  justify-self: start;
+  max-width: 88%;
+  padding: 6px 9px;
+  border-radius: 12px 12px 12px 3px;
+  background: rgba(255, 255, 255, 0.13);
+  font-size: 10px;
+  line-height: 1.35;
+}
+.cvLine small {
+  display: block;
+  margin-bottom: 1px;
+  font-size: 8px;
+  opacity: 0.65;
+}
+.cvAi {
+  justify-self: end;
+  border-radius: 12px 12px 3px 12px;
+  background: #c8a25a;
+  color: #062e29;
+}
+
+/* ═══ sales package card in chat ═══ */
+.pkg {
+  display: grid;
+  gap: 2px;
+  min-width: 130px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  background: #f6f1e6;
+}
+.pkg b {
+  font-size: 11px;
+}
+.pkg small {
+  color: #666;
+  font-size: 9px;
+}
+.pkg em {
+  margin-top: 3px;
+  color: #0a7a5c;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+/* ═══ product page design ═══ */
+.pdp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  height: 100%;
+  padding: 22px;
+  background: #fbf8f2;
+  color: #111;
+}
+.pdpImg {
+  position: relative;
+  display: block;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pdpInfo {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+}
+.pdpInfo > small {
+  color: #8a6d2e;
+  font-size: 9.5px;
+}
+.pdpInfo > b {
+  font: 600 italic 19px/1.1 var(--f-serif, Georgia, serif);
+}
+.pdpPrice {
+  font-size: 15px;
+  font-weight: 700;
+}
+.pdpSizes {
+  display: flex;
+  gap: 6px;
+}
+.pdpSizes em {
+  padding: 5px 8px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #ddd;
+  font-style: normal;
+  font-size: 9.5px;
+}
+.pdpSizes .pdpOn {
+  box-shadow: 0 0 0 1.5px #09453e;
+  font-weight: 700;
+}
+.pdpBtn {
+  display: block;
+  padding: 9px;
+  border-radius: 8px;
+  background: #09453e;
+  color: #fbf5e9;
+  text-align: center;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+/* ═══ store integrations ═══ */
+.intg {
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+}
+.intgRow {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 1px #eee;
+}
+.intgRow > i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  color: #fff;
+  font-style: normal;
+  font-weight: 800;
+}
+.intgRow b {
+  display: block;
+  font-size: 11.5px;
+}
+.intgRow small {
+  color: #888;
+  font-size: 9.5px;
+}
+.waMsg > div small {
+  position: static;
+}
+.waMsg > div + small {
+  position: static;
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+}
+.waMsg:has(> div) {
+  padding-bottom: 6px;
 }

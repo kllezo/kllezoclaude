@@ -13,6 +13,13 @@ export const metadata = pageMeta({
     "Explore Kllezo's three service divisions: content creation, website experiences and AI communication systems. Deliverables, workflows and outcomes for every service.",
 });
 
+const PICKS = [
+  { need: "Get seen", title: "Content", list: "Strategy, personal brand, video, UGC ads", href: "#content", img: "content/5.webp", pos: "40% 50%" },
+  { need: "Get enquiries", title: "Websites", list: "Business sites, online stores, lead pages", href: "#websites", img: "niche-1.webp", pos: "50% 0%" },
+  { need: "Never miss a lead", title: "AI automations", list: "AI texting and calling agents", href: "#ai", img: "calling-agent-1.webp", pos: "50% 40%" },
+  { need: "All of it, connected", title: "Full system", list: "Everything working together, managed for you", href: "/growth", img: "content/7.webp", pos: "30% 30%", system: true },
+];
+
 export default function BusinessServices() {
   return (
     <>
@@ -27,10 +34,21 @@ export default function BusinessServices() {
           <p className={b.lead} data-arrive-item>
             Every service works on its own — open one to see the problem it solves, what you get and how it runs. When you&apos;re ready, the <a href="/growth" style={{ color: "var(--k-green)", textDecoration: "underline", textUnderlineOffset: 3 }}>Growth System</a> runs them together.
           </p>
-          <nav className={s.jump} aria-label="Divisions" data-arrive-item>
-            {divisions.map((d) => (
-              <a key={d.id} href={`#${d.id}`}>
-                <span>{d.index}</span> {d.name}
+          <p className={s.pickQ} data-arrive-item>
+            What do you need help with?
+          </p>
+          <nav className={s.pick} aria-label="Choose what you need" data-arrive-item>
+            {PICKS.map((p) => (
+              <a key={p.title} href={p.href} className={p.system ? s.pickSystem : undefined}>
+                <span className={s.pickImg} style={{ backgroundImage: `url(/creative/assets/${p.img})`, backgroundPosition: p.pos }} />
+                <span className={s.pickText}>
+                  <small>{p.need}</small>
+                  <b>{p.title}</b>
+                  <span>{p.list}</span>
+                </span>
+                <span className={s.pickGo} aria-hidden="true">
+                  {p.system ? "→" : "↓"}
+                </span>
               </a>
             ))}
           </nav>

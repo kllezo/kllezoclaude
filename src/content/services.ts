@@ -177,7 +177,7 @@ export const services: Service[] = [
     ],
     workflow: [
       { title: "Positioning", detail: "Interviews to define what you stand for and who you speak to." },
-      { title: "Identity", detail: "Visual direction, tone of voice and platform roles." },
+      { title: "Identity", detail: "Who you are, who you help and what you stand for, and how you sound saying it." },
       { title: "Story bank", detail: "Your experiences turned into a bank of stories and talking points." },
       { title: "Record", detail: "Efficient recording sessions for video, podcast and long-form." },
       { title: "Publish", detail: "Edited clips and posts tailored to each platform, then reviewed and refined." },

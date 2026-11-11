@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ServiceDemo from "@/components/shared/ServiceDemo";
 import ScrollStory from "@/components/services/ScrollStory";
 import VariantTabs from "@/components/services/VariantTabs";
+import AgentShowcase from "@/components/services/AgentShowcase";
 import JsonLd from "@/components/shared/JsonLd";
 import { divisionById, serviceBySlug, services } from "@/content/services";
 import { pairings } from "@/content/pairings";
@@ -113,6 +114,21 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
         })}
       />
 
+      {/* 4b · The agents, each shown doing its job */}
+      {mo.agents && sv.variants && (
+        <section className={b.section} id="agents">
+          <div className={b.wrap}>
+            <div className={s.getHead}>
+              <span className={b.eyebrow}>Your agents</span>
+              <h2 className={b.h2}>
+                Pick the job. <span className={b.serif}>Watch it work.</span>
+              </h2>
+            </div>
+            <AgentShowcase agents={mo.agents} variants={sv.variants} />
+          </div>
+        </section>
+      )}
+
       {/* 5 · What you get */}
       <section className={`${b.section} ${b.white}`}>
         <div className={b.wrap}>
@@ -130,7 +146,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
               </li>
             ))}
           </ul>
-          {sv.variants && (
+          {sv.variants && !mo.agents && (
             <div className={s.getVariants} data-reveal>
               <p className={s.getVarLabel}>Choose what fits</p>
               <VariantTabs variants={sv.variants} />

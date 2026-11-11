@@ -256,6 +256,31 @@ function WaChat({ name, sub = "online", msgs, av = "#7a9e93", x, time }: { name:
   );
 }
 
+/** A live AI phone call: who's on the line, then the conversation as it happens. */
+function CallView({ who, dir, lines, x = -30 }: { who: string; dir: "in" | "out"; lines: [("c" | "a"), string, number][]; x?: number }) {
+  return (
+    <Phone dark x={x}>
+      <div className={s.cv}>
+        <div className={s.cvHead}>
+          <small>{dir === "in" ? "Incoming call" : "Outgoing call"} · AI agent</small>
+          <b>{who}</b>
+          <span className={s.cvWave}>
+            {Array.from({ length: 16 }, (_, i) => (
+              <i key={i} style={{ animationDelay: `${(i % 5) * -0.13}s` }} />
+            ))}
+          </span>
+        </div>
+        {lines.map(([k, txt, at], i) => (
+          <p key={i} className={cx(s.cvLine, k === "a" && s.cvAi, s.in)} style={d(at)}>
+            <small>{k === "a" ? "Aria · AI" : who.split(" ")[0]}</small>
+            {txt}
+          </p>
+        ))}
+      </div>
+    </Phone>
+  );
+}
+
 function WaList({ rows, x }: { rows: { n: string; m: string; t: string; badge?: number; at: number }[]; x?: number }) {
   return (
     <Phone x={x}>
@@ -563,7 +588,6 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
         <>
           <Win url="kllezo.studio · Content calendar" dark>
             <Shot f="content/2.webp" />
-            <i className={s.sweep} />
           </Win>
           <Float at={1.2} x={300} y={262} w={160} kind="good">
             <b>30 days planned</b>
@@ -625,7 +649,6 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
         <>
           <Win url="kllezo.studio · Monthly report" dark>
             <Shot f="content/7.webp" />
-            <i className={s.ring} style={{ left: "14%", top: "18%", width: "60%", height: "20%" }} />
           </Win>
           <Float at={1.2} x={300} y={262} w={164} kind="good">
             <small>Best performer</small>
@@ -731,7 +754,6 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
         <>
           <Win url="kllezo.studio · Campaigns" dark>
             <Shot f="content/12.webp" />
-            <i className={s.ring} style={{ left: "2%", top: "6%", width: "96%", height: "16%" }} />
           </Win>
           <Float at={1.1} x={16} y={262} w={140} kind="good">
             <small>Return on ad spend</small>
@@ -935,7 +957,6 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
         <>
           <Win url="youtube.com/@yourbrand" dark>
             <Shot f="content/10.webp" />
-            <i className={s.ring} style={{ left: "75%", top: "8%", width: "24%", height: "86%" }} />
           </Win>
           <Float at={1.3} x={16} y={262} w={156} kind="good">
             <small>Subscribers</small>
@@ -965,34 +986,26 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
           </Sticky>
         </Board>
       );
-    case "palette":
+    case "identity":
       return (
-        <Win url="figma.com · Brand identity" dark>
-          <div className={s.figma}>
-            <div className={s.swatches}>
-              {["#09453E", "#C8A25A", "#FBF5E9", "#687B75"].map((c, i) => (
-                <span key={c} className={s.pop} style={d(i * 0.15)}>
-                  <i style={{ background: c }} />
-                  <small>{c}</small>
-                </span>
-              ))}
-            </div>
-            <div className={cx(s.typeSpec, s.in)} style={d(0.8)}>
-              <b>Aa</b>
-              <span>
-                Playfair Display
-                <small>Headlines · Inter for body</small>
-              </span>
-            </div>
-            <div className={s.toneRow}>
-              {["Warm", "Direct", "Expert", "No jargon"].map((x, i) => (
-                <Chip key={x} at={1.3 + i * 0.15}>
-                  {x}
-                </Chip>
-              ))}
-            </div>
-          </div>
-        </Win>
+        <Doc url="notion.so · Who you are" title="Your story, on one page">
+          {[
+            ["You", "Hotelier, 12 years, ran three properties"],
+            ["You help", "Boutique hotel owners stuck paying OTAs"],
+            ["You believe", "Direct bookings beat commissions"],
+            ["You sound", "Warm, direct, zero jargon"],
+            ["Known for", "Turning lookers into direct guests"],
+          ].map(([k, x], i) => (
+            <p key={k} className={s.scriptRow}>
+              <Chip at={0.2 + i * 0.45} kind="soft">
+                {k}
+              </Chip>
+              <Typed at={0.3 + i * 0.45} n={x.length} t={0.45}>
+                {x}
+              </Typed>
+            </p>
+          ))}
+        </Doc>
       );
     case "brainstorm":
       return (
@@ -1033,7 +1046,6 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
         <>
           <Win url="kllezo.studio · Script" dark>
             <Shot f="content/6.webp" />
-            <i className={s.scan} />
           </Win>
           <Float at={1.4} x={320} y={262} w={140} kind="good">
             <small>Hook</small>
@@ -2102,10 +2114,6 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
               </div>
             </div>
           </Phone>
-          <Float at={2.2} x={316} y={150} w={140} kind="good">
-            <small>Lead score</small>
-            <b className={s.bigGood}>Hot</b>
-          </Float>
         </>
       );
     case "waLead":
@@ -2670,6 +2678,230 @@ function Body({ v, alt }: { v: Vkind; alt?: Alt }) {
           <Float at={2} x={318} y={212} w={146} kind="good">
             <small>Show-up rate</small>
             <b className={s.bigGood}>↑ 94%</b>
+          </Float>
+        </>
+      );
+    case "researchSites":
+      return (
+        <Board title="Competitor audit">
+          {[SITE(2), VILLA, SITE(3)].map((img, i) => (
+            <span key={i} className={cx(s.boardShot, s.pop)} style={d(0.1 + i * 0.2, { left: `${[22, 156, 290][i]}px`, top: `${[40, 32, 44][i]}px` })}>
+              <Shot {...img} />
+            </span>
+          ))}
+          <Sticky x={34} y={186} at={1.1} r={-3}>
+            Booking button is buried
+          </Sticky>
+          <Sticky x={166} y={196} at={1.4} c="p" r={2}>
+            No reviews anywhere
+          </Sticky>
+          <Sticky x={300} y={188} at={1.7} c="g" r={-2}>
+            Gap: nobody shows prices
+          </Sticky>
+        </Board>
+      );
+    case "productPage":
+      return (
+        <Win url="figma.com · Product page" dark>
+          <div className={s.pdp}>
+            <span className={cx(s.pdpImg, s.pop)}>
+              <Shot f="content/4.webp" size="465%" pos="55% 41%" />
+            </span>
+            <div className={s.pdpInfo}>
+              <small className={s.in} style={d(0.3)}>
+                ★★★★★ 214 reviews
+              </small>
+              <b className={s.in} style={d(0.45)}>
+                Noir Eau de Parfum
+              </b>
+              <span className={cx(s.pdpPrice, s.in)} style={d(0.6)}>
+                ₹3,490
+              </span>
+              <div className={s.pdpSizes}>
+                {["30 ml", "50 ml", "100 ml"].map((z, i) => (
+                  <em key={z} className={cx(i === 1 && s.pdpOn, s.pop)} style={d(0.8 + i * 0.1)}>
+                    {z}
+                  </em>
+                ))}
+              </div>
+              <span className={cx(s.pdpBtn, s.pop)} style={d(1.3)}>
+                Add to bag
+              </span>
+              <small className={s.in} style={d(1.6)}>
+                Free delivery · 2 days · Easy returns
+              </small>
+            </div>
+          </div>
+        </Win>
+      );
+    case "integrations":
+      return (
+        <Win url="Store admin · Integrations">
+          <div className={s.intg}>
+            {[
+              ["R", "#0c2451", "Razorpay", "Payments"],
+              ["S", "#7a3cf0", "Shiprocket", "Shipping & tracking"],
+              ["I", "#09453e", "Inventory sync", "Stock across channels"],
+              ["W", "#25d366", "WhatsApp", "Order updates"],
+            ].map(([l, c, n, b], i) => (
+              <div key={n} className={cx(s.intgRow, s.in)} style={d(0.15 + i * 0.25)}>
+                <i style={{ background: c }}>{l}</i>
+                <span>
+                  <b>{n}</b>
+                  <small>{b}</small>
+                </span>
+                <Chip at={0.7 + i * 0.35} kind="ok">
+                  Connected ✓
+                </Chip>
+              </div>
+            ))}
+          </div>
+        </Win>
+      );
+
+    /* ═════════ agents · what each one does ═════════ */
+    case "waSupport":
+      return (
+        <>
+          <WaChat
+            name="Your Business"
+            sub="business account"
+            av="#09453E"
+            msgs={[
+              { me: true, t: "Hi, where's my order #2241?", at: 0.2, time: "11:02" },
+              { typing: 0.7, at: 0.6 },
+              { t: "It's out for delivery 🚚 — arriving today before 6 PM.", at: 1.3, time: "11:02" },
+              { me: true, t: "Can I change the address?", at: 2, time: "11:03" },
+              { t: "Sure — handing you to Riya from our team.", at: 2.5, time: "11:03" },
+              { sys: true, t: "Riya joined the chat", at: 3 },
+            ]}
+          />
+          <Float at={1.6} x={316} y={110} w={140} kind="good">
+            <small>Answered in</small>
+            <b className={s.bigGood}>3 sec</b>
+          </Float>
+          <Float at={3.1} x={316} y={210} w={140} kind="good">
+            <small>Handed over</small>
+            <b>With the full chat ✓</b>
+          </Float>
+        </>
+      );
+    case "waSales":
+      return (
+        <>
+          <WaChat
+            name="Your Business"
+            sub="business account"
+            av="#09453E"
+            msgs={[
+              { me: true, t: "How much for a brand shoot?", at: 0.2, time: "19:40" },
+              { t: "For Instagram or your website?", at: 0.8, time: "19:40" },
+              { me: true, t: "Instagram", at: 1.4, time: "19:41" },
+              {
+                at: 1.9,
+                time: "19:41",
+                card: (
+                  <div className={s.pkg}>
+                    <b>Social Starter</b>
+                    <small>20 reels · 1 shoot day</small>
+                    <em>See details</em>
+                  </div>
+                ),
+              },
+              { sys: true, t: "Next day", at: 2.6 },
+              { t: "Still keen? I can hold Friday for you.", at: 2.8, time: "10:00" },
+            ]}
+          />
+          <Float at={3.2} x={316} y={150} w={140} kind="good">
+            <small>Follow-up</small>
+            <b>Sent automatically ✓</b>
+          </Float>
+        </>
+      );
+    case "callSupport":
+      return (
+        <>
+          <CallView
+            who="Customer"
+            dir="in"
+            lines={[
+              ["c", "Are you open this Sunday?", 0.4],
+              ["a", "Yes, 10 AM to 8 PM. Shall I text you directions?", 1.1],
+              ["c", "Please, thanks!", 1.9],
+              ["a", "Sent. Anything else I can help with?", 2.4],
+            ]}
+          />
+          <Float at={2.8} x={316} y={150} w={140} kind="good">
+            <small>Handled by</small>
+            <b>AI agent · 0:48 ✓</b>
+          </Float>
+        </>
+      );
+    case "callSales":
+      return (
+        <>
+          <CallView
+            who="Priya · new lead"
+            dir="out"
+            lines={[
+              ["a", "Hi Priya, it's Aria from Your Business. You asked about membership?", 0.4],
+              ["c", "Yes! What does it cost?", 1.2],
+              ["a", "Plans start at ₹2,999. Want a free trial on Saturday?", 1.8],
+              ["c", "Sure, book me in.", 2.5],
+            ]}
+          />
+          <Float at={0.8} x={316} y={96} w={140} kind="good">
+            <small>Called</small>
+            <b>2 min after enquiry</b>
+          </Float>
+          <Float at={2.9} x={316} y={206} w={140} kind="good">
+            <small>Result</small>
+            <b>Trial booked ✓</b>
+          </Float>
+        </>
+      );
+    case "callBookIn":
+      return (
+        <>
+          <CallView
+            who="Arjun"
+            dir="in"
+            lines={[
+              ["c", "I'd like to book an appointment.", 0.4],
+              ["a", "Of course. Tuesday 4 PM or Wednesday 11 AM?", 1.1],
+              ["c", "Tuesday works.", 1.8],
+              ["a", "Booked! I'll text you a confirmation now.", 2.3],
+            ]}
+          />
+          <Float at={2.7} x={312} y={150} w={154} kind="good">
+            <div className={s.bookCard}>
+              <i>
+                <b>TUE</b>
+                <span>14</span>
+              </i>
+              <div>
+                <b>4:00 PM</b>
+                <small>In your calendar</small>
+              </div>
+            </div>
+          </Float>
+        </>
+      );
+    case "callRemind":
+      return (
+        <>
+          <CallView
+            who="Neha · reminder"
+            dir="out"
+            lines={[
+              ["a", "Hi Neha, a reminder for tomorrow at 3 PM. Still good?", 0.4],
+              ["c", "Can we do 5 instead?", 1.2],
+              ["a", "Done, moved to 5 PM. See you then!", 1.8],
+            ]}
+          />
+          <Float at={2.3} x={316} y={150} w={140} kind="good">
+            <small>Rescheduled</small>
+            <b>No staff time ✓</b>
           </Float>
         </>
       );
