@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ServiceDemo from "@/components/shared/ServiceDemo";
-import ProblemCycler from "@/components/services/ProblemCycler";
-import Scene from "@/components/services/Scene";
+import StoryCycler from "@/components/services/StoryCycler";
 import StepJourney from "@/components/services/StepJourney";
 import TickList from "@/components/services/TickList";
 import VariantTabs from "@/components/services/VariantTabs";
 import JsonLd from "@/components/shared/JsonLd";
 import { divisionById, serviceBySlug, services } from "@/content/services";
 import { pairings } from "@/content/pairings";
+import { motion } from "@/content/motion";
 import { breadcrumbLd, faqLd, pageMeta, serviceLd } from "@/lib/seo";
 import b from "@/components/business/b.module.css";
 import s from "./detail.module.css";
@@ -33,6 +33,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
   const div = divisionById(sv.division);
   // Upgrade path: the services that make this one work harder.
   const pairs = (pairings[sv.slug] ?? []).map((p) => ({ sv: serviceBySlug(p.slug)!, why: p.why }));
+  const mo = motion[sv.slug];
 
   return (
     <>
@@ -71,21 +72,14 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
         </div>
       </section>
 
-      {/* 2 · The problem  →  why the usual approach falls short */}
+      {/* 2 · The problem — one animation per problem, played in turn */}
       <section className={`${b.section} ${b.white}`}>
-        <div className={`${b.wrap} ${s.ps}`}>
-          <div data-reveal>
+        <div className={b.wrap}>
+          <div className={s.secHead} data-reveal>
             <span className={b.eyebrow}>The problem</span>
             <h2 className={b.h2}>Sound familiar?</h2>
-            <ProblemCycler items={sv.problems} />
-            <details className={s.whyMore}>
-              <summary>Why it keeps happening</summary>
-              <p>{sv.whyItFails}</p>
-            </details>
           </div>
-          <div data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            <Scene kind={sv.demo} state="before" />
-          </div>
+          <StoryCycler beats={mo.problems} full={sv.problems} tone="bad" />
         </div>
       </section>
 
@@ -114,7 +108,7 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
           <h2 className={b.h2}>
             A clear process, <span className={b.serif}>no guesswork.</span>
           </h2>
-          <StepJourney steps={sv.workflow} />
+          <StepJourney steps={sv.workflow} motion={mo.steps} />
         </div>
       </section>
 
@@ -132,20 +126,14 @@ export default async function BusinessServiceDetail({ params }: PageProps<"/serv
         </div>
       </section>
 
-      {/* 6 · The outcome */}
+      {/* 6 · The outcome — the same, from the other side */}
       <section className={`${b.section} ${b.white}`}>
-        <div className={`${b.wrap} ${s.out}`}>
-          <div data-reveal>
+        <div className={b.wrap}>
+          <div className={s.secHead} data-reveal>
             <span className={b.eyebrow}>The outcome</span>
             <h2 className={b.h2}>What changes.</h2>
-            <div className={s.outScene}>
-              <Scene kind={sv.demo} state="after" />
-            </div>
           </div>
-          <div>
-            <TickList items={sv.outcomes} variant="outcome" />
-            <p className={s.outNote}>Results are agreed with you before work starts and reported monthly.</p>
-          </div>
+          <StoryCycler beats={mo.outcomes} full={sv.outcomes} tone="good" flip />
         </div>
       </section>
 

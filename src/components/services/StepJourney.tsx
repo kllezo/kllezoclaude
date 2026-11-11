@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "./useInView";
+import Vignette from "./Vignette";
+import type { Step as MotionStep } from "@/content/motion";
 import { IconBolt, IconBrowser, IconCalendar, IconChart, IconLayers, IconMegaphone, IconRocket, IconSearch } from "@/components/business/icons";
 import s from "./StepJourney.module.css";
 
 type Step = { title: string; detail: string };
 
 /* How it works, as a journey: one icon per step on a line, a glowing dot
-   travels along it, and only the step it reaches gets one line of detail.
-   Click any step; hover pauses. */
+   travels along it, and the step it reaches plays its own animation
+   (brainstorming, writing hooks, filming, launching…) beside one line of
+   detail. Click any step; hover pauses. */
 
 const ICONS: [RegExp, (p: { size?: number }) => React.ReactElement][] = [
   [/research|discovery|review|monitor|^map/i, IconSearch],
@@ -22,22 +25,27 @@ const ICONS: [RegExp, (p: { size?: number }) => React.ReactElement][] = [
 ];
 const iconFor = (t: string) => ICONS.find(([re]) => re.test(t))?.[1] ?? IconLayers;
 
-export default function StepJourney({ steps }: { steps: Step[] }) {
-  const { ref, seen, reduce } = useInView<HTMLDivElement>(0.35);
+const MS = 4200;
+
+export default function StepJourney({ steps, motion, tone = "dark" }: { steps: Step[]; motion?: MotionStep[]; tone?: "dark" | "light" }) {
+  const { ref, seen, reduce } = useInView<HTMLDivElement>(0.3);
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     if (!seen || reduce || paused) return;
-    const t = window.setInterval(() => setI((v) => (v + 1) % steps.length), 2600);
-    return () => clearInterval(t);
-  }, [seen, reduce, paused, steps.length]);
+    const t = window.setTimeout(() => setI((v) => (v + 1) % steps.length), MS);
+    return () => clearTimeout(t);
+  }, [seen, reduce, paused, i, steps.length]);
+
+  const m = motion?.[i];
+  const [v, alt] = Array.isArray(m) ? m : [m, undefined];
 
   const n = steps.length;
   return (
     <div
       ref={ref}
-      className={s.root}
+      className={`${s.root} ${tone === "light" ? s.light : ""}`}
       style={{ ["--n" as string]: n, ["--i" as string]: i }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -68,9 +76,20 @@ export default function StepJourney({ steps }: { steps: Step[] }) {
           );
         })}
       </ol>
-      <p key={i} className={s.detail} role="tabpanel" aria-live="polite">
-        <b>{String(i + 1).padStart(2, "0")}</b> {steps[i].detail}
-      </p>
+      <div className={`${s.stage} ${v ? "" : s.noArt}`} role="tabpanel" aria-live="polite">
+        {v && (
+          <div className={s.art}>
+            <Vignette key={seen ? i : "idle"} v={v} alt={alt} tone="good" className={seen ? "" : s.idle} />
+          </div>
+        )}
+        <div key={i} className={s.text}>
+          <span className={s.count}>
+            Step {i + 1} of {steps.length}
+          </span>
+          <h3>{steps[i].title}</h3>
+          <p>{steps[i].detail}</p>
+        </div>
+      </div>
     </div>
   );
 }

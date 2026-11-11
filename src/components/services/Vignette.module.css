@@ -1,0 +1,2805 @@
+/* ── frame & tones ─────────────────────────────────────────── */
+.frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.bad {
+  --bg: linear-gradient(160deg, #f6f0e6, #ece3d4);
+  --ink: #262626;
+  --mute: #8a8378;
+  --card: #fff;
+  --line: rgba(9, 69, 62, 0.11);
+  --a: #a3442d;
+  --aInk: #fff;
+  --soft: rgba(163, 68, 45, 0.13);
+  --softInk: #a3442d;
+  --sh: 0 6px 16px -10px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(9, 69, 62, 0.08);
+}
+.good {
+  --bg: radial-gradient(90% 90% at 85% 0%, #11594f, #09453e);
+  --ink: #fbf5e9;
+  --mute: rgba(251, 245, 233, 0.6);
+  --card: rgba(251, 245, 233, 0.09);
+  --line: rgba(251, 245, 233, 0.16);
+  --a: #c8a25a;
+  --aInk: #062e29;
+  --soft: rgba(200, 162, 90, 0.22);
+  --softInk: #e9d3a0;
+  --sh: none;
+  box-shadow: inset 0 0 0 1px rgba(251, 245, 233, 0.1);
+}
+.v {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 220px;
+  transform-origin: 0 0;
+  padding: 16px;
+  display: grid;
+  place-items: center;
+  font: 500 12px/1.3 var(--f-sans);
+  box-sizing: border-box;
+}
+.v * {
+  box-sizing: border-box;
+}
+.v p {
+  margin: 0;
+}
+
+/* ── atoms ─────────────────────────────────────────────────── */
+.in {
+  animation: vIn 0.5s var(--ease-out) var(--d, 0s) both;
+}
+.pop {
+  animation: vPop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) var(--d, 0s) both;
+}
+.flash {
+  animation: vFlash 0.9s ease var(--d, 0s) both;
+}
+.grow {
+  transform-origin: left;
+  animation: vGrow 0.9s var(--ease-out) var(--d, 0s) both;
+}
+.growY {
+  transform-origin: bottom;
+  animation: vGrowY 0.8s var(--ease-out) var(--d, 0s) both;
+}
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: vDraw 1.3s var(--ease-out) var(--d, 0s) forwards;
+}
+.dash {
+  stroke-dasharray: 0.02 0.02;
+  stroke-dashoffset: 0;
+  animation: vFade 0.8s ease var(--d, 0s) both;
+}
+.type {
+  display: inline-block;
+  white-space: nowrap;
+  clip-path: inset(0 100% 0 0);
+  animation: vType var(--t, 1.2s) steps(var(--n, 24)) var(--d, 0s) forwards;
+}
+.lit {
+  animation: vLit 0.35s ease var(--d, 0s) both;
+}
+.stop {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+.shake {
+  animation: vShake 0.5s ease-in-out infinite;
+}
+.pulse {
+  animation: vPulse 1.4s ease-in-out infinite;
+}
+.blink {
+  animation: vBlink 1s steps(1) infinite;
+}
+.bob {
+  animation: vBob 1.6s ease-in-out infinite;
+}
+.glow {
+  animation: vGlow 0.8s ease var(--d, 0s) both;
+}
+.target {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: calc(-50% + var(--x, 0px)) calc(-50% + var(--y, 0px));
+}
+
+@keyframes vIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes vPop {
+  0% {
+    opacity: 0;
+    scale: 0.5;
+  }
+  70% {
+    scale: 1.08;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+@keyframes vFlash {
+  0% {
+    opacity: 0;
+  }
+  15%,
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes vGrow {
+  from {
+    scale: 0 1;
+  }
+}
+@keyframes vGrowY {
+  from {
+    scale: 1 0;
+  }
+}
+@keyframes vDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes vFade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vOut {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vType {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes vLit {
+  to {
+    background: var(--a);
+    color: var(--aInk);
+    border-color: var(--a);
+  }
+}
+@keyframes vShake {
+  25% {
+    transform: rotate(-14deg);
+  }
+  75% {
+    transform: rotate(14deg);
+  }
+}
+@keyframes vPulse {
+  50% {
+    box-shadow: 0 0 0 7px rgba(200, 162, 90, 0.28);
+  }
+}
+@keyframes vBlink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes vBob {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes vSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes vRipple {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+@keyframes vGlow {
+  from {
+    opacity: 0.3;
+    filter: none;
+  }
+  to {
+    opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(200, 162, 90, 0.9));
+  }
+}
+
+/* ── layout & shared pieces ────────────────────────────────── */
+.col {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  justify-items: center;
+}
+.split {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+}
+.split > .col {
+  justify-items: start;
+}
+.center {
+  position: absolute;
+  inset: 0;
+}
+.rel {
+  position: relative;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+.card {
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: var(--sh);
+  border: 1px solid var(--line);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-style: normal;
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.chipA {
+  background: var(--a);
+  color: var(--aInk);
+}
+.chipSoft {
+  background: var(--soft);
+  color: var(--softInk);
+}
+.chipPlain {
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+.chipsRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.foot {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--a);
+  text-align: center;
+}
+.good .foot {
+  color: #e9d3a0;
+}
+.mute {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  color: var(--mute);
+  font-size: 11px;
+}
+.cornerChip {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}
+.belowChip,
+.belowChip2 {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  translate: -50% 0;
+}
+.rows {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+}
+.row > span {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  min-width: 0;
+}
+.row b {
+  font-size: 12px;
+}
+.row small {
+  font-size: 11px;
+  color: var(--mute);
+  white-space: nowrap;
+}
+.av {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--softInk);
+  font-style: normal;
+  font-weight: 700;
+}
+.person {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  width: 100%;
+}
+.person b {
+  display: block;
+  font-size: 12.5px;
+}
+.person small {
+  color: var(--mute);
+  font-size: 11px;
+}
+.bub {
+  padding: 7px 11px;
+  border-radius: 12px 12px 12px 3px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+  font-size: 11.5px;
+  font-style: normal;
+  justify-self: start;
+  width: max-content;
+  max-width: 82%;
+}
+.bubMe {
+  justify-self: end;
+  border-radius: 12px 12px 3px 12px;
+  background: var(--a);
+  color: var(--aInk);
+  border-color: transparent;
+}
+.chatCol {
+  display: grid;
+  gap: 7px;
+  width: 100%;
+}
+.stack {
+  display: grid;
+}
+.stack > * {
+  grid-area: 1 / 1;
+}
+.typing {
+  display: flex;
+  gap: 3px;
+  padding: 10px 12px;
+}
+.typing i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: vBounce 0.9s infinite;
+}
+.typing i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.typing i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes vBounce {
+  50% {
+    transform: translateY(-3px);
+    opacity: 0.5;
+  }
+}
+.node {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.good .node {
+  background: #0e4c44;
+}
+.topChip {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+.nodeSm {
+  font-size: 9.5px;
+  padding: 4px 7px;
+}
+.hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--a);
+  color: var(--aInk);
+  font-weight: 800;
+  font-size: 16px;
+  box-shadow: 0 0 0 6px var(--soft);
+}
+.hubWide {
+  width: auto;
+  height: auto;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.hubLines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.hubLines line,
+.hubLines path {
+  fill: none;
+  stroke: var(--a);
+  stroke-width: 1.5;
+  opacity: 0.75;
+}
+.chart {
+  width: 100%;
+  height: 70px;
+  overflow: visible;
+}
+.chart path {
+  fill: none;
+  stroke: var(--a);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+.chart .chartBase {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.grid {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+}
+.grid span {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.35;
+  border-radius: 5px;
+  background: var(--line);
+  font-size: 8.5px;
+  font-weight: 700;
+}
+.grid .cellOn {
+  background: var(--soft);
+}
+.grid .cellRand {
+  background: var(--a);
+  opacity: 0.55;
+  rotate: 8deg;
+}
+.grid .cellRand:nth-child(3n) {
+  rotate: -10deg;
+  opacity: 0.3;
+}
+.grid .cellGold {
+  background: var(--a);
+  color: var(--aInk);
+}
+.lineFull,
+.lineShort,
+.lineFaint {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: #e2ddd3;
+  width: 100%;
+}
+.lineShort {
+  width: 60%;
+}
+.doc .lineFull,
+.doc .lineShort,
+.lineFaint {
+  background: var(--line);
+}
+.bigNum {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--a);
+}
+
+/* browser */
+.browser {
+  position: relative;
+  width: 270px;
+  border-radius: 9px;
+  overflow: hidden;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 14px 30px -16px rgba(0, 0, 0, 0.5);
+}
+.bbar {
+  display: flex;
+  gap: 4px;
+  padding: 7px 9px;
+  background: #ebe6dc;
+}
+.bbar i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+}
+.bpage {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding: 16px 16px 22px;
+  min-height: 140px;
+  align-content: start;
+}
+.hPlain {
+  font-size: 17px;
+  color: #555;
+  font-weight: 600;
+}
+.hNew {
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: #09453e;
+}
+.goldBtn {
+  justify-self: start;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: #c8a25a;
+  color: #062e29;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+}
+.bigBtn {
+  justify-self: center;
+  margin-top: 14px;
+  padding: 12px 22px;
+  font-size: 13px;
+}
+.cursor {
+  position: absolute;
+  z-index: 3;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+}
+.curLeave {
+  animation: vLeave 2.2s ease-in-out 0.2s both;
+}
+@keyframes vLeave {
+  0% {
+    left: 45%;
+    top: 62%;
+    opacity: 1;
+  }
+  70% {
+    left: 88%;
+    top: 4%;
+    opacity: 1;
+  }
+  100% {
+    left: 92%;
+    top: -10%;
+    opacity: 0;
+  }
+}
+.curClick {
+  animation: vClick 1.8s ease-in-out 0.1s both;
+}
+@keyframes vClick {
+  0% {
+    left: 80%;
+    top: 18%;
+  }
+  75% {
+    left: 26%;
+    top: 66%;
+    scale: 1;
+  }
+  85% {
+    scale: 0.75;
+  }
+  100% {
+    left: 26%;
+    top: 66%;
+    scale: 1;
+  }
+}
+.curOne {
+  animation: vClickOne 1.8s ease-in-out 0.1s both;
+}
+@keyframes vClickOne {
+  0% {
+    left: 85%;
+    top: 20%;
+  }
+  75% {
+    left: 52%;
+    top: 66%;
+    scale: 1;
+  }
+  85% {
+    scale: 0.75;
+  }
+  100% {
+    left: 52%;
+    top: 66%;
+    scale: 1;
+  }
+}
+.toast {
+  position: absolute;
+  z-index: 4;
+  right: 14px;
+  bottom: 12px;
+  padding: 7px 11px;
+  border-radius: 9px;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5);
+}
+.toastBad {
+  background: #a3442d;
+  color: #fff;
+}
+.toastGood {
+  background: #062e29;
+  color: #fbf5e9;
+}
+
+/* phone */
+.phone {
+  position: relative;
+  width: 110px;
+  height: 188px;
+  border-radius: 18px;
+  border: 3px solid var(--ink);
+  overflow: hidden;
+  background: var(--card);
+}
+.feedFast,
+.feedStop {
+  display: grid;
+  gap: 6px;
+  padding: 6px;
+}
+.feedFast {
+  animation: vScroll 2s cubic-bezier(0.5, 0, 0.2, 1) 0.2s both;
+}
+.feedStop {
+  animation: vScrollStop 1.8s cubic-bezier(0.3, 0.7, 0.2, 1) 0.2s both;
+}
+@keyframes vScroll {
+  to {
+    transform: translateY(-230px);
+  }
+}
+@keyframes vScrollStop {
+  to {
+    transform: translateY(-120px);
+  }
+}
+.feedFast span,
+.feedStop span {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 70px;
+  border-radius: 8px;
+  background: var(--line);
+  font-size: 10px;
+  font-weight: 700;
+}
+.feedFast .feedAd {
+  background: linear-gradient(135deg, #e9d3a0, #c8a25a);
+  color: #3a2c10;
+}
+.feedStop .feedUgc {
+  align-content: end;
+  padding: 6px;
+  background: linear-gradient(160deg, #6b5434, #2b2116);
+  color: #fff;
+}
+.face {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  border-radius: 50%;
+  background: #e9c9a0;
+}
+.feedUgc small {
+  font-size: 9px;
+}
+.heartPop {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  color: #ff6b81;
+  fill: #ff6b81;
+}
+
+/* ── problem scenes ────────────────────────────────────────── */
+.thermo {
+  width: 100%;
+  height: 10px;
+  border-radius: 9px;
+  background: var(--line);
+  overflow: hidden;
+}
+.thermoFill {
+  display: block;
+  height: 100%;
+  border-radius: 9px;
+  animation: vCool 2.4s ease-in 0.2s both;
+}
+@keyframes vCool {
+  from {
+    width: 100%;
+    background: #e0763c;
+  }
+  to {
+    width: 10%;
+    background: #7fa7c9;
+  }
+}
+.days {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+.days small {
+  display: block;
+  font-size: 9px;
+  color: var(--mute);
+  font-weight: 500;
+}
+.stackQ {
+  position: relative;
+  height: 150px;
+  width: 170px;
+}
+.stackQ .bub {
+  position: absolute;
+  left: calc(var(--o) * 6px);
+  top: calc(var(--o) * 26px);
+  max-width: none;
+}
+.counter {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+.counter b {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--a);
+  line-height: 1;
+}
+.counter small {
+  color: var(--mute);
+  font-size: 11px;
+}
+.callTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  width: 100%;
+}
+.ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--a);
+  color: var(--aInk);
+}
+.ring i {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--a);
+  animation: vRipple 1.6s ease-out infinite;
+}
+.ring i:nth-of-type(2) {
+  animation-delay: 0.8s;
+}
+.night {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  justify-self: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mute);
+}
+.slot {
+  padding: 8px 14px;
+  text-align: center;
+}
+.slot small {
+  display: block;
+  color: var(--mute);
+  font-size: 10.5px;
+}
+.slot b {
+  font-size: 13px;
+}
+.chair {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--mute);
+}
+.stamp {
+  position: absolute;
+  padding: 4px 10px;
+  border: 2.5px solid var(--a);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--a);
+  font-style: normal;
+  font-weight: 800;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  rotate: -10deg;
+}
+.busyTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.clock {
+  color: var(--ink);
+}
+.clock .spin {
+  transform-origin: 23px 23px;
+  animation: vSpin 1s linear infinite;
+}
+.clock .spinSlow {
+  transform-origin: 23px 23px;
+  animation: vSpin 6s linear infinite;
+}
+.mini {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+.skipped {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+}
+.skipped span {
+  text-decoration: line-through;
+  color: var(--mute);
+}
+.post {
+  display: grid;
+  gap: 5px;
+  width: 100px;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+}
+.postImg {
+  display: block;
+  height: 90px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #d8d1c4, #bdb5a6);
+}
+.post small {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 10.5px;
+  color: var(--mute);
+}
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+.kpi {
+  position: relative;
+  padding: 10px;
+  text-align: center;
+}
+.kpi small {
+  display: block;
+  color: var(--mute);
+  font-size: 10.5px;
+}
+.kpi b {
+  font-size: 20px;
+}
+.qm {
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--a);
+}
+.adMini {
+  display: grid;
+  gap: 5px;
+  width: 90px;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+  font-size: 11px;
+  text-align: center;
+}
+.adMini span {
+  height: 100px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #d8d1c4, #b5ad9d);
+}
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 110px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+.bars span {
+  position: relative;
+  flex: 1;
+  border-radius: 5px 5px 0 0;
+  background: var(--a);
+}
+.bars small {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9.5px;
+  color: var(--mute);
+}
+.slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+.slots span {
+  display: grid;
+  place-items: center;
+  height: 48px;
+  border-radius: 8px;
+  border: 1.5px dashed var(--mute);
+  color: var(--mute);
+  font-weight: 700;
+}
+.product {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+  color: var(--mute);
+}
+.productGood {
+  color: var(--a);
+}
+.qb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: calc(-50% + var(--x)) calc(-50% + var(--y));
+}
+.datedSite .bpage {
+  font-family: "Times New Roman", serif;
+  background: #fffbe8;
+  color: #222;
+  display: block;
+}
+.serifOld {
+  display: block;
+  font-size: 19px;
+  font-weight: 700;
+  color: #7b2a8a;
+  margin-bottom: 8px;
+}
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  background: #ffe14d;
+  color: #a00;
+  font-size: 11px;
+  padding: 2px 0;
+  margin-bottom: 8px;
+}
+.marquee span {
+  display: inline-block;
+  animation: vMarquee 5s linear infinite;
+}
+@keyframes vMarquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+.datedSite u {
+  color: #2a3fd1;
+  font-size: 11px;
+}
+.counterOld {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: monospace;
+  font-size: 10px;
+  background: #000;
+  color: #3f3;
+  padding: 1px 4px;
+}
+.skel {
+  display: grid;
+  gap: 8px;
+  padding: 14px 10px;
+}
+.skel span {
+  height: 20px;
+  border-radius: 5px;
+  background: var(--line);
+  animation: vShimmer 1.2s ease-in-out infinite alternate;
+}
+@keyframes vShimmer {
+  to {
+    opacity: 0.4;
+  }
+}
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  border-top-color: var(--a);
+  animation: vSpin 0.8s linear infinite;
+}
+.slowBar {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 14px;
+  height: 4px;
+  border-radius: 3px;
+  background: var(--line);
+}
+.slowBar i {
+  display: block;
+  height: 100%;
+  width: 30%;
+  border-radius: 3px;
+  background: var(--a);
+  animation: vSlow 2.4s cubic-bezier(0.1, 0.8, 0.2, 1) both;
+}
+@keyframes vSlow {
+  from {
+    width: 0;
+  }
+}
+.search {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-size: 11.5px;
+  color: var(--mute);
+}
+.ghostRow {
+  width: 100%;
+  opacity: 0.4;
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+.doc {
+  display: grid;
+  gap: 9px;
+  width: 260px;
+  padding: 16px;
+}
+.doc .chipsRow {
+  justify-content: flex-start;
+}
+.doc .foot {
+  text-align: left;
+}
+.docH {
+  font-size: 15px;
+}
+.typeLine {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+  font-size: 14px;
+}
+.typeDel {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: vTypeDel 3.2s steps(28) infinite;
+}
+@keyframes vTypeDel {
+  0% {
+    max-width: 0;
+  }
+  45%,
+  60% {
+    max-width: 220px;
+  }
+  95%,
+  100% {
+    max-width: 0;
+  }
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 16px;
+  margin-left: 2px;
+  background: var(--a);
+  animation: vBlink 0.8s steps(1) infinite;
+}
+.quoteType {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 19px;
+}
+.profiles {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.prof {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  width: 86px;
+  padding: 12px 6px;
+  font-size: 11px;
+  text-align: center;
+}
+.prof small {
+  color: var(--mute);
+  font-size: 9.5px;
+}
+.avBig {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--line);
+}
+.avGold {
+  animation: vGold 0.5s ease var(--d) both;
+}
+@keyframes vGold {
+  from {
+    background: #9a9a9a;
+  }
+  to {
+    background: conic-gradient(from 200deg, #8a6a2c, #e9d3a0, #c8a25a, #8a6a2c);
+    box-shadow:
+      0 0 0 2px #09453e,
+      0 0 0 4px #c8a25a;
+  }
+}
+.jitter {
+  rotate: var(--r);
+  translate: 0 var(--y);
+  animation:
+    vIn 0.5s var(--ease-out) var(--d) both,
+    vJit 2.4s ease-in-out infinite;
+}
+@keyframes vJit {
+  50% {
+    rotate: calc(var(--r) * -0.6);
+  }
+}
+.align {
+  animation: vAlign 1s var(--ease-out) var(--d) both;
+}
+@keyframes vAlign {
+  from {
+    rotate: var(--r);
+    translate: 0 var(--y);
+  }
+  to {
+    rotate: 0deg;
+    translate: 0 0;
+  }
+}
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 260px;
+}
+.thumbs span {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  background: var(--line);
+  color: var(--mute);
+}
+.thumbs small {
+  position: absolute;
+  bottom: 3px;
+  right: 5px;
+  font-size: 8px;
+  opacity: 0.6;
+}
+.count {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 12px 18px;
+}
+.count small {
+  color: var(--mute);
+  font-size: 10.5px;
+}
+.flip {
+  height: 52px;
+  overflow: hidden;
+}
+.flip div {
+  display: grid;
+  animation: vFlip 2.5s steps(4) 0.2s both;
+}
+.flip b {
+  height: 52px;
+  line-height: 52px;
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--a);
+  text-align: center;
+}
+@keyframes vFlip {
+  to {
+    transform: translateY(-208px);
+  }
+}
+.emptyFilm {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 84px;
+  border-radius: 10px;
+  border: 1.5px dashed var(--mute);
+  color: var(--mute);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.pile {
+  position: absolute;
+  inset: 0;
+}
+.fall {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+  font-size: 10px;
+  font-weight: 600;
+  rotate: var(--r);
+  animation: vFall 0.6s cubic-bezier(0.5, 0, 0.6, 1.4) var(--d) both;
+}
+@keyframes vFall {
+  from {
+    transform: translateY(-170px);
+    opacity: 0;
+  }
+}
+.frameV {
+  position: relative;
+  width: 240px;
+  aspect-ratio: 16 / 9;
+  border-radius: 9px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #3b3a36, #1f1e1b);
+}
+.subject {
+  position: absolute;
+  left: 42%;
+  top: 28%;
+  width: 20%;
+  aspect-ratio: 0.7;
+  border-radius: 40% 40% 10% 10%;
+  background: rgba(255, 255, 255, 0.25);
+}
+.jitterCam {
+  filter: blur(0.7px) saturate(0.5);
+  animation: vCam 0.3s steps(3) infinite;
+}
+@keyframes vCam {
+  33% {
+    transform: translate(3px, -2px) rotate(0.8deg);
+  }
+  66% {
+    transform: translate(-3px, 2px) rotate(-0.8deg);
+  }
+}
+.cartRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 16px;
+  font-size: 13px;
+}
+.steps4 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+.steps4 li {
+  padding: 9px 2px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--line);
+}
+.silos {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  width: 100%;
+}
+.silo {
+  display: grid;
+  justify-items: center;
+  padding: 12px 6px;
+}
+.silo small {
+  color: var(--mute);
+  font-size: 10.5px;
+}
+.silo b {
+  font-size: 22px;
+}
+.brk {
+  position: absolute;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--a);
+  color: var(--aInk);
+}
+.funnel {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  width: 100%;
+}
+.fstage {
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--line);
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.leakDrop {
+  position: absolute;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--a);
+  animation: vLeak 2.8s ease-in var(--d) infinite;
+}
+@keyframes vLeak {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  40% {
+    transform: translate(0, 50px);
+  }
+  100% {
+    transform: translate(calc((var(--i) - 3.5) * 34px), 190px);
+    opacity: 0;
+  }
+}
+.form {
+  position: relative;
+  display: grid;
+  gap: 7px;
+  width: 120px;
+  padding: 12px;
+}
+.form span {
+  height: 16px;
+  border-radius: 5px;
+  background: var(--line);
+}
+.form b {
+  font-size: 11px;
+  color: var(--a);
+}
+.flyAway {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: var(--a);
+  animation: vFly 1.2s ease-in var(--d) both;
+}
+@keyframes vFly {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(120px, -90px) rotate(20deg);
+  }
+}
+.tangle {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+}
+.tcol {
+  display: grid;
+  gap: 22px;
+}
+.tlines {
+  width: 100%;
+  height: 120px;
+}
+.tlines path {
+  fill: none;
+  stroke: var(--a);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.routeLines path {
+  fill: none;
+  stroke: var(--a);
+  stroke-width: 1.6;
+}
+.bigQ {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--a);
+}
+
+/* ── outcome scenes ────────────────────────────────────────── */
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+}
+.tlLine {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 15px;
+  height: 2px;
+  background: var(--a);
+}
+.tlNode {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+.tlDot {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--a);
+  color: var(--aInk);
+}
+.week {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  width: 100%;
+  text-align: center;
+}
+.week small {
+  font-size: 10px;
+  color: var(--mute);
+}
+.week span {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--line);
+  font-size: 9.5px;
+  font-weight: 700;
+}
+.week .bookedSlot {
+  background: var(--a);
+  color: var(--aInk);
+}
+.remind {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.ringOnce {
+  color: var(--a);
+  animation: vShake 0.4s ease-in-out 1.4s 3;
+}
+.wave {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 30px;
+}
+.wave i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--a);
+  animation: vWave 0.7s ease-in-out infinite alternate;
+}
+@keyframes vWave {
+  from {
+    transform: scaleY(0.2);
+  }
+}
+.waveBig {
+  height: 44px;
+}
+.waveBig i {
+  width: 4px;
+}
+.weeks {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+.weeks > div {
+  display: grid;
+  gap: 5px;
+  justify-items: center;
+}
+.weeks small {
+  font-size: 10px;
+  color: var(--mute);
+}
+.weeks > div > div {
+  display: grid;
+  gap: 4px;
+}
+.weeks span {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--a);
+  color: var(--aInk);
+}
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ink);
+  opacity: 0.6;
+  animation: vHead 2.4s linear 0.2s both;
+}
+@keyframes vHead {
+  from {
+    left: 0;
+  }
+  to {
+    left: 100%;
+  }
+}
+.reportTop {
+  position: relative;
+  width: 100%;
+  height: 110px;
+}
+.barsSm {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  opacity: 0.35;
+}
+.barsSm span {
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+  background: var(--a);
+}
+.reportTop .chart {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+.thumbs4 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+.thumbs4 span {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 0.8;
+  border-radius: 6px;
+  background: linear-gradient(140deg, #c8a25a, #8a6a2c);
+  color: #fff;
+}
+.recBtn {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+.recBtn i {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #e04a3a;
+}
+.recBtn small {
+  font-size: 11px;
+  color: var(--mute);
+}
+.fan {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.fan span {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 0.75;
+  border-radius: 6px;
+  background: var(--a);
+  color: var(--aInk);
+}
+.fan .foot {
+  grid-column: 1 / -1;
+}
+.spark {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 8px;
+  height: 8px;
+  margin: -4px;
+  border-radius: 50%;
+  background: var(--a);
+  animation: vConverge 0.9s ease-in var(--d) both;
+}
+@keyframes vConverge {
+  from {
+    transform: rotate(var(--ang)) translateY(-90px);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(var(--ang)) translateY(0);
+    opacity: 0;
+  }
+}
+.bulb {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  translate: -50% -50%;
+  color: var(--a);
+}
+.morphBox {
+  display: grid;
+  place-items: center;
+  height: 130px;
+}
+.morph {
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 2px solid var(--a);
+  background: linear-gradient(135deg, #6b5434, #2b2116);
+  color: #fff;
+  animation: vMorph 2.4s ease-in-out 0.2s both;
+}
+@keyframes vMorph {
+  0%,
+  20% {
+    width: 180px;
+    height: 101px;
+  }
+  40%,
+  55% {
+    width: 68px;
+    height: 120px;
+  }
+  75%,
+  85% {
+    width: 100px;
+    height: 100px;
+  }
+  100% {
+    width: 92px;
+    height: 115px;
+  }
+}
+.graded {
+  background: radial-gradient(60% 70% at 60% 40%, #8a6a3c, #15130f 80%);
+  animation: vGrade 2.4s ease 0.2s both;
+}
+.graded .subject {
+  background: rgba(233, 211, 160, 0.6);
+}
+@keyframes vGrade {
+  from {
+    filter: saturate(0) brightness(0.8);
+  }
+  to {
+    filter: saturate(1) brightness(1);
+  }
+}
+.tracks {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  width: 240px;
+}
+.trV {
+  display: flex;
+  gap: 3px;
+  height: 16px;
+}
+.trV i {
+  flex: 1;
+  border-radius: 3px;
+  background: var(--a);
+  opacity: 0.8;
+}
+.trA {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+}
+.trA i {
+  flex: 1;
+  border-radius: 1px;
+  background: var(--mute);
+}
+.hubCard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 46px;
+  border-radius: 8px;
+  border: 2px solid var(--a);
+  background: linear-gradient(135deg, #6b5434, #2b2116);
+  color: #fff;
+}
+.flyDot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px;
+  border-radius: 50%;
+  background: var(--a);
+  animation: vFlyTo 0.7s ease-in-out var(--d) both;
+}
+@keyframes vFlyTo {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
+.belt {
+  width: 100%;
+  overflow: hidden;
+  padding: 6px 0;
+}
+.beltTrack {
+  display: flex;
+  gap: 8px;
+  width: max-content;
+  animation: vBelt 4s linear infinite;
+}
+.beltTrack span {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 80px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, #c8a25a, #8a6a2c);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+@keyframes vBelt {
+  to {
+    transform: translateX(-340px);
+  }
+}
+.rollers {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 4px;
+}
+.rollers i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px dashed var(--mute);
+  animation: vSpin 1s linear infinite;
+}
+.splitCard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  gap: 4px;
+  width: 80px;
+  padding: 6px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-align: center;
+  translate: calc(-50% + var(--x)) calc(-50% + var(--y));
+  animation: vSplit 0.7s var(--ease-out) var(--d) both;
+}
+.splitCard i {
+  height: 36px;
+  border-radius: 5px;
+  background: hsl(var(--h) 28% 52%);
+}
+@keyframes vSplit {
+  from {
+    translate: -50% -50%;
+    opacity: 0;
+    scale: 0.6;
+  }
+}
+.premium .bpage {
+  min-height: 150px;
+}
+.wireLayer {
+  position: absolute;
+  inset: 16px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  animation: vOut 0.4s ease 1s forwards;
+}
+.wireLayer span {
+  height: 16px;
+  border: 1.5px dashed #bbb;
+  border-radius: 4px;
+}
+.wireLayer span:nth-child(3) {
+  height: 40px;
+}
+.polish {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding-right: 92px;
+  animation: vFade 0.6s ease 1.2s both;
+}
+.serifNew {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  color: #09453e;
+}
+.polish small {
+  color: #687b75;
+  font-size: 11px;
+}
+.heroImg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 80px;
+  height: 100px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, #c8a25a, #09453e);
+}
+.gauge {
+  width: 170px;
+  height: 100px;
+  overflow: visible;
+}
+.gaugeBg,
+.gaugeFg {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+.gaugeBg {
+  stroke: var(--line);
+}
+.gaugeFg {
+  stroke: var(--a);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: vGauge 1.3s var(--ease-out) 0.2s forwards;
+}
+@keyframes vGauge {
+  to {
+    stroke-dashoffset: 0.03;
+  }
+}
+.needle {
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transform-origin: 60px 64px;
+  rotate: -90deg;
+  animation: vNeedle 1.3s var(--ease-out) 0.2s forwards;
+}
+@keyframes vNeedle {
+  to {
+    rotate: 82deg;
+  }
+}
+.flow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px;
+  border-radius: 50%;
+  background: var(--ink);
+  animation: vFlowDot 1.2s ease-in-out var(--d) infinite;
+}
+@keyframes vFlowDot {
+  from {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+    opacity: 0;
+  }
+}
+.sieve {
+  position: absolute;
+  inset: 0;
+}
+.sieveBar {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 48%;
+  height: 4px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg, var(--a) 0 14px, transparent 14px 22px);
+}
+.pass,
+.reject {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+}
+.pass {
+  background: var(--a);
+  animation: vPass 1.4s ease-in var(--d) both;
+}
+.reject {
+  background: var(--mute);
+  animation: vReject 1.4s ease-in var(--d) both;
+}
+@keyframes vPass {
+  from {
+    transform: translate(var(--x), 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  to {
+    transform: translate(0, 158px);
+    opacity: 1;
+  }
+}
+@keyframes vReject {
+  from {
+    transform: translate(var(--x), 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  55% {
+    transform: translate(var(--x), 76px);
+  }
+  to {
+    transform: translate(calc(var(--x) + var(--side) * 60px), 60px);
+    opacity: 0;
+  }
+}
+.qualified {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  translate: -50% 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--a);
+  color: var(--aInk);
+  font-weight: 800;
+  font-size: 11px;
+}
+.routeWrap {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  row-gap: 8px;
+  width: 100%;
+}
+.routeWrap .foot {
+  grid-column: 1 / -1;
+}
+.routeSrc {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 9px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.routeLines {
+  width: 100%;
+  height: 120px;
+}
+.routeDst {
+  display: grid;
+  gap: 30px;
+}
+.path {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.path .tlLine {
+  left: 10%;
+  right: 10%;
+  top: 50%;
+}
+.pnode {
+  position: relative;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--line);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ── workflow scenes ───────────────────────────────────────── */
+.found {
+  animation: vFound 0.4s ease var(--d) both;
+}
+@keyframes vFound {
+  to {
+    box-shadow: 0 0 0 2px var(--a);
+  }
+}
+.foundChip {
+  position: absolute;
+  top: -9px;
+  right: -6px;
+}
+.loupe {
+  position: absolute;
+  color: var(--a);
+  animation: vLoupe 2.6s ease-in-out both;
+}
+@keyframes vLoupe {
+  0% {
+    left: 5%;
+    top: 0%;
+  }
+  35% {
+    left: 36%;
+    top: -5%;
+  }
+  70% {
+    left: 76%;
+    top: 45%;
+  }
+  100% {
+    left: 70%;
+    top: 40%;
+  }
+}
+.temple {
+  display: grid;
+  justify-items: center;
+  width: 230px;
+}
+.roof {
+  width: 100%;
+  padding: 24px 8px 8px;
+  text-align: center;
+  background: var(--a);
+  color: var(--aInk);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  font-size: 12px;
+}
+.cols3 {
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+  height: 100px;
+}
+.cols3 span {
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  width: 44px;
+  padding-bottom: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--soft), var(--a));
+}
+.cols3 small {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--aInk);
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+}
+.base {
+  display: block;
+  width: 100%;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--a);
+}
+.viewfinder {
+  background: radial-gradient(60% 70% at 55% 40%, #6b5434, #15130f 80%);
+}
+.viewfinder .subject {
+  background: rgba(233, 211, 160, 0.55);
+  animation: vPan 4s ease-in-out infinite alternate;
+}
+@keyframes vPan {
+  to {
+    transform: translateX(-25%) scale(1.06);
+  }
+}
+.brTL,
+.brBR {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+.brTL {
+  left: 10px;
+  top: 10px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.brBR {
+  right: 10px;
+  bottom: 10px;
+  border-left: 0;
+  border-top: 0;
+}
+.rec {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 800;
+  color: #ff6b6b;
+}
+.tc {
+  position: absolute;
+  left: 12px;
+  bottom: 9px;
+  display: flex;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: #fff;
+}
+.tcRoll {
+  display: inline-block;
+  height: 13px;
+  overflow: hidden;
+}
+.tcRoll span {
+  display: grid;
+  animation: vRoll 10s steps(10) infinite;
+}
+.tcRoll b {
+  height: 13px;
+  line-height: 13px;
+  font-weight: 400;
+}
+@keyframes vRoll {
+  to {
+    transform: translateY(-130px);
+  }
+}
+.ab {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 22px;
+  height: 120px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+.ab span {
+  position: relative;
+  width: 46px;
+  border-radius: 6px 6px 0 0;
+  background: var(--line);
+}
+.ab .win {
+  background: var(--a);
+}
+.ab small {
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-weight: 700;
+}
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(2, 52px);
+  gap: 8px;
+}
+.swatches span {
+  height: 52px;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.aa {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 1;
+}
+.pick {
+  animation:
+    vPop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) var(--d) both,
+    vLit 0.4s ease 1.8s forwards;
+}
+.scriptDoc {
+  width: 150px;
+  padding: 12px;
+}
+.mono {
+  font-family: var(--f-mono);
+  font-size: 10px;
+}
+.board {
+  display: grid;
+  gap: 6px;
+}
+.board span {
+  display: grid;
+  width: 84px;
+  aspect-ratio: 16 / 10;
+  padding: 4px;
+  border-radius: 6px;
+  border: 1.5px solid var(--a);
+}
+.board i {
+  border-radius: 3px;
+  background: var(--soft);
+}
+.hooks {
+  width: 280px;
+  gap: 7px;
+}
+.hookLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 9px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: var(--line);
+  font-size: 12px;
+  font-weight: 600;
+}
+.hookWin {
+  animation: vHookWin 0.4s ease var(--d) both;
+}
+@keyframes vHookWin {
+  to {
+    border-color: var(--a);
+    background: var(--soft);
+  }
+}
+.wireDraw .bpage {
+  min-height: 150px;
+}
+.wbox {
+  position: absolute;
+  border: 1.5px solid #c8a25a;
+  border-radius: 4px;
+  animation: vBox 0.6s ease var(--d) both;
+}
+@keyframes vBox {
+  0% {
+    clip-path: inset(0 100% 100% 0);
+    background: transparent;
+  }
+  70% {
+    clip-path: inset(0 0 0 0);
+    background: transparent;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    background: rgba(200, 162, 90, 0.18);
+  }
+}
+.editor {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  width: 280px;
+  padding: 14px 14px 44px;
+  border-radius: 10px;
+  background: #0f1715;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  color: #d7e3df;
+  box-shadow: 0 14px 30px -16px rgba(0, 0, 0, 0.6);
+}
+.editor b {
+  color: #e9a96b;
+  font-weight: 400;
+}
+.editor i {
+  color: #8fc1e3;
+  font-style: normal;
+}
+.editor u {
+  color: #c8d98a;
+  text-decoration: none;
+}
+.toggle {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  translate: -50% -50%;
+  width: 74px;
+  height: 38px;
+  border-radius: 999px;
+  background: var(--line);
+  animation: vToggleBg 0.3s ease 0.6s both;
+}
+.toggle i {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  animation: vKnob 0.3s ease 0.6s both;
+}
+@keyframes vToggleBg {
+  to {
+    background: var(--a);
+  }
+}
+@keyframes vKnob {
+  to {
+    left: 40px;
+  }
+}
+.liveTxt {
+  position: absolute;
+  left: 50%;
+  top: 64%;
+  translate: -50% -50%;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--a);
+}
+.confetti {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: 6px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--c);
+  animation: vConf 0.9s ease-out var(--d) both;
+}
+@keyframes vConf {
+  from {
+    transform: rotate(var(--ang)) translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(var(--ang)) translateY(-80px);
+    opacity: 0;
+  }
+}
+.rocket {
+  position: absolute;
+  right: 40px;
+  bottom: 24px;
+  color: var(--a);
+  animation: vRocket 1.6s ease-in 1s both;
+}
+@keyframes vRocket {
+  to {
+    transform: translate(60px, -220px);
+  }
+}
+.catalogue {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 250px;
+}
+.catalogue > div {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+}
+.catalogue small {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--mute);
+}
+.sort {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--a);
+  animation: vSort 0.7s var(--ease-out) var(--d) both;
+}
+@keyframes vSort {
+  from {
+    transform: translate(var(--fx), var(--fy)) rotate(10deg);
+  }
+}
+.trackBar {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+}
+.trackBar i {
+  display: block;
+  width: 66%;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--a);
+}
+.bull {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  translate: -50% -50%;
+  width: 110px;
+  height: 110px;
+}
+.bull i {
+  position: absolute;
+  border-radius: 50%;
+  border: 8px solid var(--a);
+}
+.bull i:nth-child(1) {
+  inset: 0;
+  opacity: 0.35;
+}
+.bull i:nth-child(2) {
+  inset: 18px;
+  opacity: 0.6;
+}
+.bull i:nth-child(3) {
+  inset: 38px;
+  background: var(--a);
+}
+.arrow {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 80px;
+  height: 3px;
+  translate: -100% -50%;
+  background: var(--ink);
+  animation: vArrow 0.5s cubic-bezier(0.5, 0, 0.8, 0.6) 0.3s both;
+}
+.arrow::after {
+  content: "";
+  position: absolute;
+  right: -9px;
+  top: -5.5px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid var(--ink);
+}
+@keyframes vArrow {
+  from {
+    transform: translateX(-180px);
+    opacity: 0;
+  }
+}
+.feed {
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  translate: calc(-50% + var(--x)) 0;
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 7px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  animation: vFeed 1s ease-in var(--d) both;
+}
+@keyframes vFeed {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--x) * -1), 62px) scale(0.4);
+  }
+}
+.chipHub {
+  top: 55%;
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+}
+.trainBar {
+  position: absolute;
+  left: 28%;
+  right: 28%;
+  bottom: 48px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+}
+.trainBar i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--a);
+  animation-duration: 1.6s;
+}
+.belowChip2 {
+  bottom: 12px;
+}
+.slider {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  align-items: center;
+  gap: 10px;
+  width: 220px;
+}
+.slider small {
+  font-size: 11px;
+  color: var(--mute);
+}
+.slider span {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.slider i {
+  position: absolute;
+  top: 50%;
+  left: var(--to);
+  width: 14px;
+  height: 14px;
+  margin: -7px;
+  border-radius: 50%;
+  background: var(--a);
+  animation: vSlide 1s var(--ease-out) var(--d) both;
+}
+@keyframes vSlide {
+  from {
+    left: 10%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame * {
+    animation-duration: 0.01s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

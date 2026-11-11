@@ -3,7 +3,9 @@
 import { useState } from "react";
 import type { Service } from "@/content/services";
 import TickList from "./TickList";
-import WorkflowPlayer from "./WorkflowPlayer";
+import StoryCycler from "./StoryCycler";
+import StepJourney from "./StepJourney";
+import { motion } from "@/content/motion";
 import VariantTabs from "./VariantTabs";
 import s from "./services.module.css";
 
@@ -19,6 +21,7 @@ export default function ServicePanel({ sv }: { sv: Service }) {
     { id: "workflow", label: "Workflow", n: sv.workflow.length },
   ];
   const [tab, setTab] = useState("problems");
+  const mo = motion[sv.slug];
 
   return (
     <div className={s.panel}>
@@ -30,19 +33,11 @@ export default function ServicePanel({ sv }: { sv: Service }) {
         ))}
       </div>
       <div key={tab} className={s.panelBody} role="tabpanel">
-        {tab === "problems" && (
-          <ul className={s.probList}>
-            {sv.problems.map((p, i) => (
-              <li key={p} style={{ ["--i" as string]: i }}>
-                {p}
-              </li>
-            ))}
-          </ul>
-        )}
-        {tab === "outcomes" && <TickList items={sv.outcomes} variant="outcome" />}
+        {tab === "problems" && <StoryCycler beats={mo.problems} full={sv.problems} tone="bad" compact />}
+        {tab === "outcomes" && <StoryCycler beats={mo.outcomes} full={sv.outcomes} tone="good" compact />}
         {tab === "variants" && sv.variants && <VariantTabs variants={sv.variants} />}
         {tab === "deliverables" && <TickList items={sv.deliverables} />}
-        {tab === "workflow" && <WorkflowPlayer steps={sv.workflow} tone="light" />}
+        {tab === "workflow" && <StepJourney steps={sv.workflow} motion={mo.steps} tone="light" />}
       </div>
     </div>
   );
